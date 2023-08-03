@@ -1,7 +1,10 @@
 *.js
 *.md
+dist
+build
 *.svg
+*.html
 *.scss
 *.json
 node_modules
-build
+documentation
