@@ -7,13 +7,16 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
+    "test:coverage": "ng test --no-watch --code-coverage",
     "lint": "ng lint",
     "lint:fix": "ng lint --fix",
+    "stylelint": "npx stylelint ./**/*.scss",
+    "stylelint:fix": "npx stylelint ./**/*.scss --fix",
+    "format": "prettier --check \"src/**/*.ts\"",
+    "format:fix": "prettier --write \"src/**/*.ts\"",
     "compodoc:build": "compodoc -p tsconfig.doc.json",
     "compodoc:build-and-serve": "compodoc -p tsconfig.doc.json -s",
-    "compodoc:serve": "compodoc -s",
-    "stylelint": "npx stylelint . --fix",
-    "format": "prettier --write \"src/**/*.ts\""
+    "compodoc:serve": "compodoc -s"
   },
   "private": true,
   "dependencies": {

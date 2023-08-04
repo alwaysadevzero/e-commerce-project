@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { RouterTestingModule } from '@angular/router/testing'
+import { TUI_SANITIZER, TuiAlertModule, TuiDialogModule, TuiRootModule } from '@taiga-ui/core'
+import { NgDompurifySanitizer } from '@tinkoff/ng-dompurify'
 
 import { AppComponent } from './app.component'
-import { TuiRootModule, TuiDialogModule, TuiAlertModule, TUI_SANITIZER } from '@taiga-ui/core'
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
-import { NgDompurifySanitizer } from '@tinkoff/ng-dompurify'
 
 describe('AppComponent', () => {
   beforeEach(async () => {
