@@ -29,6 +29,7 @@
     "@compodoc/compodoc": "^1.1.21",
     "@ngrx/effects": "^15.4.0",
     "@ngrx/store": "^15.4.0",
+    "@ngrx/store-devtools": "^15.4.0",
     "@taiga-ui/addon-commerce": "^3.39.1",
     "@taiga-ui/addon-mobile": "^3.39.1",
     "@taiga-ui/cdk": "^3.39.1",
