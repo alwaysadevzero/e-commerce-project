@@ -1,12 +1,16 @@
 import { TestBed } from '@angular/core/testing'
 import { RouterTestingModule } from '@angular/router/testing'
 import { AppComponent } from './app.component'
+import { TuiRootModule, TuiDialogModule, TuiAlertModule, TUI_SANITIZER } from '@taiga-ui/core'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+import { NgDompurifySanitizer } from '@tinkoff/ng-dompurify'
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
+      imports: [RouterTestingModule, BrowserAnimationsModule, TuiRootModule, TuiDialogModule, TuiAlertModule],
       declarations: [AppComponent],
+      providers: [{ provide: TUI_SANITIZER, useClass: NgDompurifySanitizer }],
     }).compileComponents()
   })
 
@@ -26,6 +30,6 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent)
     fixture.detectChanges()
     const compiled = fixture.nativeElement as HTMLElement
-    expect(compiled.querySelector('.content span')?.textContent).toContain('e-commerce app is running!')
+    expect(compiled.querySelector('.content span')?.textContent?.trim()).toContain('e-commerce app is running!')
   })
 })
