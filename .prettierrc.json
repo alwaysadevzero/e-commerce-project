@@ -10,5 +10,6 @@
   "importOrderCaseInsensitive": true,
   "importOrderSortSpecifiers": true,
   "importOrderParserPlugins": ["decorators-legacy", "typescript"],
-  "endOfLine": "lf"
+  "endOfLine": "lf",
+  "plugins": ["@trivago/prettier-plugin-sort-imports"]
 }

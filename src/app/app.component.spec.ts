@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing'
 import { RouterTestingModule } from '@angular/router/testing'
+
 import { AppComponent } from './app.component'
 import { TuiRootModule, TuiDialogModule, TuiAlertModule, TUI_SANITIZER } from '@taiga-ui/core'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'

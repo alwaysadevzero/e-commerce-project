@@ -3,8 +3,8 @@
 *.html
 *.md
 *.svg
-*.scss
 *.json
+*.ico
 node_modules
 build
 dist
