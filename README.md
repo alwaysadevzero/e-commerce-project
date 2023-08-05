@@ -6,14 +6,14 @@ This platform is an online shopping portal that replicates real-world shopping e
 
 ## Goals:
 
-Provide a convenient and interactive platform for online shopping, replicating real-world shopping experiences.
-Offer a wide selection of fragrance products with detailed descriptions to enable informed purchasing decisions.
-Enhance the shopping experience through features such as user registration and login, product search, categorization, and sorting.
-Create a responsive and visually appealing design that ensures a seamless experience across different devices.
-Build trust and confidence in users by providing a secure and user-friendly checkout process.
-Deliver high-quality customer service and support to meet the needs and expectations of users.
-Collaborate with CommerceTools to leverage reliable and innovative commerce solutions for B2C and B2B enterprises.
-Increase user engagement and conversion rates to achieve the organization's business objectives.
+- Provide a convenient and interactive platform for online shopping, replicating real-world shopping experiences.
+- Offer a wide selection of fragrance products with detailed descriptions to enable informed purchasing decisions.
+- Enhance the shopping experience through features such as user registration and login, product search, categorization, and sorting.
+- Create a responsive and visually appealing design that ensures a seamless experience across different devices.
+- Build trust and confidence in users by providing a secure and user-friendly checkout process.
+- Deliver high-quality customer service and support to meet the needs and expectations of users.
+- Collaborate with CommerceTools to leverage reliable and innovative commerce solutions for B2C and B2B enterprises.
+- Increase user engagement and conversion rates to achieve the organization's business objectives.
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.2.9.
 
@@ -27,24 +27,16 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
   - TypeScript
   - SASS/SCSS
-
-
   - Angular
   - RxJS
   - NgRx
   - Taiga UI
-
-
   - Karma
-
-
   - Prettier
   - ESLint
   - Stylelint
   - Husky
   - Commitlint
-
-
   - Compodoc
 
 ## Deployment
