@@ -19,7 +19,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Authors
 
-- [@AlexaRoad](https://github.com/AleksaRoad)
+- [@AleksaRoad](https://github.com/AleksaRoad)
 - [@alwaysadevzero](https://github.com/alwaysadevzero)
 - [@mgg43err](https://github.com/mgg43err)
 
