@@ -38,25 +38,75 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
   - Husky
   - Commitlint
   - Compodoc
+  - NPM
 
 ## Deployment
 
 [e-commerce]()
 
-<details
-  <summary><h2>Screenshots</h2></summary>
+<details>
+<summary><h2>Screenshots</h2></summary>
 
 
 </details>
 
+## Installation
+
+```bash
+  git clone -b develop https://github.com/AleksaRoad/e-commerce.git
+```
+
+```bash
+  npm install
+```
+
+```bash
+  npm run start
+```
+
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Run
+```
+  npm run start
+```
+
+for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
 ## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Run
+```
+  npm run build
+```
+
+to build the project. The build artifacts will be stored in the `dist/` directory.
 
 ## Running unit tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Run
+```
+  npm run test
+```
+
+to execute the unit tests via [Karma](https://karma-runner.github.io).
+
+## Generating documentation with Compodoc
+
+Run
+```
+  compodoc:build
+```
+```
+  compodoc:build-and-serve
+```
+```
+  compodoc:serve
+```
+
+- compodoc:build: This script builds the documentation for your project using Compodoc based on the tsconfig.doc.json configuration file.
+
+
+- compodoc:build-and-serve: This script builds the documentation using Compodoc and starts a server to view the generated documentation.
+
+- compodoc:serve: This script starts a local server to view the pre-generated documentation using Compodoc.
