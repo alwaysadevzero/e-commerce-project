@@ -11,9 +11,10 @@ import { NgDompurifySanitizer } from '@tinkoff/ng-dompurify'
 import { environment } from '../environments/environment'
 import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
+import { MainComponent } from './main/main-page.component'
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, MainComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

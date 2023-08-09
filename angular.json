@@ -18,7 +18,7 @@
           "builder": "@ngx-env/builder:browser",
           "options": {
             "outputPath": "dist/e-commerce",
-            "baseHref": "",
+            "baseHref": "/",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": ["zone.js"],
