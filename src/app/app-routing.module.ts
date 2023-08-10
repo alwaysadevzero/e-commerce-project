@@ -5,7 +5,11 @@ import { MainComponent } from './main/main-page.component'
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'main' },
-  { path: 'main', title: 'main', component: MainComponent },
+  {
+    path: 'main',
+    title: 'main',
+    loadComponent: () => import('./main/main-page.component').then(mod => mod.MainComponent),
+  },
   {
     path: '**',
     title: 'not-found',
