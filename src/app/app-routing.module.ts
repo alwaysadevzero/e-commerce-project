@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core'
 import { RouterModule, type Routes } from '@angular/router'
 
-import { MainComponent } from './main/main-page.component'
-
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'main' },
   {
@@ -12,7 +10,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    title: 'not-found',
+    title: '404 - Not found',
     loadComponent: () => import('./core/components/not-found/not-found.component').then(mod => mod.NotFoundComponent),
   },
 ]
