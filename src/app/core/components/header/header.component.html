@@ -1,0 +1,20 @@
+<header class="header tui-space_bottom-3">
+  <div class="header-container">
+    <a routerLink="/main" >
+      <tui-svg [src]="src" class="logo"></tui-svg>
+    </a>
+    <div class="button-container">
+      <ng-container *ngIf="!(isLoggedIn$ | async)">
+      <button tuiButton type="button" class="tui-space_right-3" routerLink="/sign-up" appearance="secondary-destructive"
+        size="s">Sign
+        Up</button>
+      <button tuiButton type="button" class="tui-space_right-3" routerLink="/sign-in" appearance="accent" size="s">Sign
+        In</button>
+      </ng-container>
+      <button *ngIf="(isLoggedIn$ | async)" tuiIconButton type="button" routerLink="/user" class="tui-space_right-3"
+        appearance="secondary-destructive" size="s"><tui-svg src="tuiIconUser"></tui-svg></button>
+      <button tuiIconButton type="button" class="tui-space_right-3" routerLink="/cart"
+        appearance="secondary-destructive" size="s"><tui-svg src="tuiIconShoppingCart"></tui-svg></button>
+    </div>
+  </div>
+</header>

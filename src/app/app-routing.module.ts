@@ -5,7 +5,7 @@ const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'main' },
   {
     path: 'main',
-    title: 'main',
+    title: 'Main',
     loadComponent: () => import('./main/main-page.component').then(mod => mod.MainComponent),
   },
   {

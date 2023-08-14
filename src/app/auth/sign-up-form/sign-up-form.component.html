@@ -1,3 +1,4 @@
+<ec-header></ec-header>
 <section class="sign-up  tui-form__row tui-space_bottom-3">
   <h1>{{title}}</h1>
   <form [formGroup]="registrationForm" class="registration-form">
@@ -117,7 +118,7 @@
       </tui-checkbox-labeled>
     </div>
   </form>
-  <button tuiButton type="button" class="tui-space_right-3 tui-form__row"
+  <button tuiButton type="button" class="tui-space_right-3 tui-form__row" appearance="accent"
     [disabled]="!registrationForm.valid" (click)="submitForm()">Sign up</button>
-    <p><b>Already have an account? <a routerLink="/sign-in">Sign in</a></b></p>
+    <p class="an-account">Already have an account? <a routerLink="/sign-in">Sign in</a></p>
 </section>
