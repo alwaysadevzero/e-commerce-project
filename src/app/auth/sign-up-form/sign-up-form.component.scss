@@ -1,0 +1,38 @@
+.sign-up {
+  max-width: 50rem;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.checkbox-container {
+  display: flex;
+  justify-content: space-around;
+}
+
+.registration-form {
+  display: flex;
+  flex-direction: column;
+  padding-inline: 1rem;
+}
+
+.password-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.error-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+}
+
+.addresses-form-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+label {
+  margin-bottom: 0;
+}

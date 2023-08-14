@@ -14,7 +14,8 @@
       "files": ["*.ts"],
       "parser": "@typescript-eslint/parser",
       "parserOptions": {
-        "project": ["tsconfig.*?.json"]
+        "project": ["tsconfig.*?.json"],
+        "emitDecoratorMetadata": true
       },
       "rules": {
         "@typescript-eslint/naming-convention": [

@@ -9,6 +9,11 @@ const routes: Routes = [
     loadComponent: () => import('./main/main-page.component').then(mod => mod.MainComponent),
   },
   {
+    path: 'sign-up',
+    title: 'Sign up',
+    loadComponent: () => import('./auth/sign-up-form/sign-up-form.component').then(mod => mod.SignUpFormComponent),
+  },
+  {
     path: '**',
     title: '404 - Not found',
     loadComponent: () => import('./core/components/not-found/not-found.component').then(mod => mod.NotFoundComponent),
