@@ -5,12 +5,10 @@ import { RouterModule } from '@angular/router'
 import { TuiButtonModule } from '@taiga-ui/core'
 import { TuiBlockStatusModule } from '@taiga-ui/layout'
 
-import { HeaderComponent } from 'src/app/core/components/header/header.component'
-
 @Component({
   selector: 'ec-not-found',
   standalone: true,
-  imports: [CommonModule, TuiBlockStatusModule, TuiButtonModule, RouterModule, HeaderComponent],
+  imports: [CommonModule, TuiBlockStatusModule, TuiButtonModule, RouterModule],
   templateUrl: './not-found.component.html',
   styleUrls: ['./not-found.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

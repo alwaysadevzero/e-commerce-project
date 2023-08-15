@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { CommonModule } from '@angular/common'
 import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms'
@@ -24,7 +23,6 @@ import {
 } from '@taiga-ui/kit'
 import type { Subscription } from 'rxjs'
 
-import { HeaderComponent } from 'src/app/core/components/header/header.component'
 import { atValidator } from 'src/app/shared/validators/at.validator'
 import { confirmPasswordValidator } from 'src/app/shared/validators/confirm.validator'
 import { dateOfBirthValidator } from 'src/app/shared/validators/date-of-birth.validator'
@@ -61,7 +59,6 @@ import { noWhitespaceValidator } from 'src/app/shared/validators/whitespace.vali
     TuiErrorModule,
     TuiHintModule,
     TuiTextfieldControllerModule,
-    HeaderComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './sign-up-form.component.html',

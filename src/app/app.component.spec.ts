@@ -5,11 +5,19 @@ import { TUI_SANITIZER, TuiAlertModule, TuiDialogModule, TuiRootModule } from '@
 import { NgDompurifySanitizer } from '@tinkoff/ng-dompurify'
 
 import { AppComponent } from './app.component'
+import { HeaderComponent } from './core/components/header/header.component'
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, BrowserAnimationsModule, TuiRootModule, TuiDialogModule, TuiAlertModule],
+      imports: [
+        RouterTestingModule,
+        BrowserAnimationsModule,
+        TuiRootModule,
+        TuiDialogModule,
+        TuiAlertModule,
+        HeaderComponent,
+      ],
       declarations: [AppComponent],
       providers: [{ provide: TUI_SANITIZER, useClass: NgDompurifySanitizer }],
     }).compileComponents()
