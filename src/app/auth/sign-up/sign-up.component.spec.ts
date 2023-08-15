@@ -4,22 +4,22 @@ import { RouterTestingModule } from '@angular/router/testing'
 import { TUI_SANITIZER, TuiButtonModule, TuiRootModule } from '@taiga-ui/core'
 import { NgDompurifySanitizer } from '@tinkoff/ng-dompurify'
 
-import { SignUpFormComponent } from './sign-up-form.component'
+import { SignUpComponent } from './sign-up.component'
 
 describe('SignUpComponent', () => {
-  let component: SignUpFormComponent
-  let fixture: ComponentFixture<SignUpFormComponent>
+  let component: SignUpComponent
+  let fixture: ComponentFixture<SignUpComponent>
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, BrowserAnimationsModule, TuiRootModule, TuiButtonModule, SignUpFormComponent],
+      imports: [RouterTestingModule, BrowserAnimationsModule, TuiRootModule, TuiButtonModule, SignUpComponent],
       declarations: [],
       providers: [{ provide: TUI_SANITIZER, useClass: NgDompurifySanitizer }],
     }).compileComponents()
   })
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SignUpFormComponent)
+    fixture = TestBed.createComponent(SignUpComponent)
     component = fixture.componentInstance
     fixture.detectChanges()
   })

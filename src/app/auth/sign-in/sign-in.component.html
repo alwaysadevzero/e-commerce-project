@@ -1,0 +1,20 @@
+<section class="sign-in  tui-form__row tui-space_bottom-3">
+  <h1>{{title}}</h1>
+  <form [formGroup]="loginForm" class="login-form">
+    <tui-input tuiHintContent="Please enter a valid email address (e.g. name@example.com)" class="login-input email"
+      [tuiTextfieldCleaner]="true" [formControl]="email">
+      Email*
+    </tui-input>
+    <tui-error [formControl]="email" [error]="[] | tuiFieldError | async"></tui-error>
+      <tui-input-password formControlName="password" [tuiTextfieldCleaner]="true"
+        tuiHintContent="Password must contain at least one lowercase letter, one uppercase letter, one digit and 8 characters long (e.g. aaaaaa1A)"
+        class="login-input password tui-form__row">
+        Password*
+        <input tuiTextfield placeholder="Make it secure!" />
+      </tui-input-password>
+    <tui-error [formControl]="password" [error]="[] | tuiFieldError | async"></tui-error>
+    <button tuiButton type="button" class="login-input tui-space_right-3 tui-form__row" appearance="accent"
+    [disabled]="!loginForm.valid" (click)="submitForm()">Sign in</button>
+  <p class="an-account">Don't have an account? <a routerLink="/sign-up">Sign up</a></p>
+  </form>
+</section>

@@ -11,7 +11,12 @@ const routes: Routes = [
   {
     path: 'sign-up',
     title: 'Sign up',
-    loadComponent: () => import('./auth/sign-up-form/sign-up-form.component').then(mod => mod.SignUpFormComponent),
+    loadComponent: () => import('./auth/sign-up/sign-up.component').then(mod => mod.SignUpComponent),
+  },
+  {
+    path: 'sign-in',
+    title: 'Sign in',
+    loadComponent: () => import('./auth/sign-in/sign-in.component').then(mod => mod.SignInComponent),
   },
   {
     path: '**',

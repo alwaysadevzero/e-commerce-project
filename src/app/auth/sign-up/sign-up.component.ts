@@ -38,7 +38,7 @@ import { uppercaseValidator } from 'src/app/shared/validators/uppercase.validato
 import { noWhitespaceValidator } from 'src/app/shared/validators/whitespace.validator'
 
 @Component({
-  selector: 'ec-sign-up-form',
+  selector: 'ec-sign-up',
   standalone: true,
   imports: [
     CommonModule,
@@ -61,11 +61,11 @@ import { noWhitespaceValidator } from 'src/app/shared/validators/whitespace.vali
     TuiTextfieldControllerModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  templateUrl: './sign-up-form.component.html',
-  styleUrls: ['./sign-up-form.component.scss'],
+  templateUrl: './sign-up.component.html',
+  styleUrls: ['./sign-up.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SignUpFormComponent {
+export class SignUpComponent {
   test = TuiSelectModule
   title = 'Registration'
   address = 'Addresses'
