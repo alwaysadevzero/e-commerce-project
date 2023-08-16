@@ -19,14 +19,7 @@ import {
   TuiTextAreaModule,
 } from '@taiga-ui/kit'
 
-import { atValidator } from 'src/app/shared/validators/at.validator'
-import { digitValidator } from 'src/app/shared/validators/digit.validator'
-import { domainValidator } from 'src/app/shared/validators/domain.validator'
-import { formatValidator } from 'src/app/shared/validators/format.validator'
-import { lengthValidator } from 'src/app/shared/validators/length.validator'
-import { lowercaseValidator } from 'src/app/shared/validators/lowercase.validator'
-import { uppercaseValidator } from 'src/app/shared/validators/uppercase.validator'
-import { noWhitespaceValidator } from 'src/app/shared/validators/whitespace.validator'
+import { dataValidator } from '../../shared/validators'
 
 @Component({
   selector: 'ec-sign-in',
@@ -59,13 +52,18 @@ export class SignInComponent {
     this.registerInputEventListeners()
   }
   public loginForm = this.formBuilder.group({
-    email: new FormControl<string | null>('', [noWhitespaceValidator, atValidator, domainValidator, formatValidator]),
+    email: new FormControl<string | null>('', [
+      dataValidator.noWhitespaceValidator,
+      dataValidator.atValidator,
+      dataValidator.domainValidator,
+      dataValidator.formatValidator,
+    ]),
     password: new FormControl<string | null>('', [
-      noWhitespaceValidator,
-      lowercaseValidator,
-      uppercaseValidator,
-      digitValidator,
-      lengthValidator,
+      dataValidator.noWhitespaceValidator,
+      dataValidator.lowercaseValidator,
+      dataValidator.uppercaseValidator,
+      dataValidator.digitValidator,
+      dataValidator.lengthValidator,
     ]),
   })
 

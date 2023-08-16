@@ -23,19 +23,7 @@ import {
 } from '@taiga-ui/kit'
 import type { Subscription } from 'rxjs'
 
-import { atValidator } from 'src/app/shared/validators/at.validator'
-import { confirmPasswordValidator } from 'src/app/shared/validators/confirm.validator'
-import { dateOfBirthValidator } from 'src/app/shared/validators/date-of-birth.validator'
-import { digitValidator } from 'src/app/shared/validators/digit.validator'
-import { domainValidator } from 'src/app/shared/validators/domain.validator'
-import { formatValidator } from 'src/app/shared/validators/format.validator'
-import { lengthValidator } from 'src/app/shared/validators/length.validator'
-import { lowercaseValidator } from 'src/app/shared/validators/lowercase.validator'
-import { nameValidator } from 'src/app/shared/validators/name.validator'
-import { postalCodeValidator } from 'src/app/shared/validators/postal-code.validator'
-import { streetValidator } from 'src/app/shared/validators/street.validator'
-import { uppercaseValidator } from 'src/app/shared/validators/uppercase.validator'
-import { noWhitespaceValidator } from 'src/app/shared/validators/whitespace.validator'
+import { dataValidator } from '../../shared/validators'
 
 @Component({
   selector: 'ec-sign-up',
@@ -72,26 +60,34 @@ export class SignUpComponent {
   countries: string[] = ['U.S', 'Canada']
 
   public registrationForm = this.formBuilder.group({
-    email: new FormControl<string | null>('', [noWhitespaceValidator, atValidator, domainValidator, formatValidator]),
-    password: new FormControl<string | null>('', [
-      noWhitespaceValidator,
-      lowercaseValidator,
-      uppercaseValidator,
-      digitValidator,
-      lengthValidator,
+    email: new FormControl<string | null>('', [
+      dataValidator.noWhitespaceValidator,
+      dataValidator.atValidator,
+      dataValidator.domainValidator,
+      dataValidator.formatValidator,
     ]),
-    confirm: new FormControl<string | null>('', [confirmPasswordValidator]),
-    firstName: new FormControl<string | null>('', [nameValidator, noWhitespaceValidator]),
-    lastName: new FormControl<string | null>('', [nameValidator, noWhitespaceValidator]),
-    dateOfBirth: new FormControl<TuiDay | null>(new TuiDay(2000, 0, 1), [dateOfBirthValidator]),
-    street: new FormControl<string | null>('', [streetValidator, noWhitespaceValidator]),
-    city: new FormControl<string | null>('', [nameValidator, noWhitespaceValidator]),
+    password: new FormControl<string | null>('', [
+      dataValidator.noWhitespaceValidator,
+      dataValidator.lowercaseValidator,
+      dataValidator.uppercaseValidator,
+      dataValidator.digitValidator,
+      dataValidator.lengthValidator,
+    ]),
+    confirm: new FormControl<string | null>('', [dataValidator.confirmPasswordValidator]),
+    firstName: new FormControl<string | null>('', [dataValidator.nameValidator, dataValidator.noWhitespaceValidator]),
+    lastName: new FormControl<string | null>('', [dataValidator.nameValidator, dataValidator.noWhitespaceValidator]),
+    dateOfBirth: new FormControl<TuiDay | null>(new TuiDay(2000, 0, 1), [dataValidator.dateOfBirthValidator]),
+    street: new FormControl<string | null>('', [dataValidator.streetValidator, dataValidator.noWhitespaceValidator]),
+    city: new FormControl<string | null>('', [dataValidator.nameValidator, dataValidator.noWhitespaceValidator]),
     country: new FormControl<string | null>('', [value => Validators.required(value)]),
-    postalCode: new FormControl<string | null>('', [postalCodeValidator]),
-    streetBilling: new FormControl<string | null>('', [streetValidator, noWhitespaceValidator]),
-    cityBilling: new FormControl<string | null>('', [nameValidator, noWhitespaceValidator]),
+    postalCode: new FormControl<string | null>('', [dataValidator.postalCodeValidator]),
+    streetBilling: new FormControl<string | null>('', [
+      dataValidator.streetValidator,
+      dataValidator.noWhitespaceValidator,
+    ]),
+    cityBilling: new FormControl<string | null>('', [dataValidator.nameValidator, dataValidator.noWhitespaceValidator]),
     countryBilling: new FormControl<string | null>('', [value => Validators.required(value)]),
-    postalCodeBilling: new FormControl<string | null>('', [postalCodeValidator]),
+    postalCodeBilling: new FormControl<string | null>('', [dataValidator.postalCodeValidator]),
     shipping: [false, Validators.requiredTrue.bind(Validators)],
     billing: [false, Validators.requiredTrue.bind(Validators)],
     shippingToBilling: [false, Validators.requiredTrue.bind(Validators)],

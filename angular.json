@@ -17,6 +17,7 @@
         "build": {
           "builder": "@ngx-env/builder:browser",
           "options": {
+            "allowedCommonJsDependencies": ["buffer", "node-fetch", "text-mask-core", "dompurify"],
             "outputPath": "dist/e-commerce",
             "index": "src/index.html",
             "main": "src/main.ts",
