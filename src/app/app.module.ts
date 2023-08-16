@@ -13,6 +13,7 @@ import { NgDompurifySanitizer } from '@tinkoff/ng-dompurify'
 import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
 import { HeaderComponent } from './core/components/header/header.component'
+import { ApiClientBuilderService } from './core/services/api-client-builder.service'
 
 @NgModule({
   declarations: [AppComponent],
@@ -33,7 +34,11 @@ import { HeaderComponent } from './core/components/header/header.component'
     TuiErrorModule,
     HeaderComponent,
   ],
-  providers: [{ provide: TUI_SANITIZER, useClass: NgDompurifySanitizer }],
+  providers: [{ provide: TUI_SANITIZER, useClass: NgDompurifySanitizer }, ApiClientBuilderService],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(private apiClientBuilderService: ApiClientBuilderService) {
+    // this.apiClientBuilderService.getApi.withProjectKey({ projectKey: environment.PROJECT_KEY }).get().execute()
+  }
+}
