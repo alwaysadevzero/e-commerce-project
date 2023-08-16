@@ -29,7 +29,7 @@ export class ApiClientBuilderService {
 
   private createApiClient(builder: ClientBuilder): ByProjectKeyRequestBuilder {
     return createApiBuilderFromCtpClient(
-      builder.withHttpMiddleware(this.options.getRttpMiddlewareOptions()).withLoggerMiddleware().build(),
+      builder.withHttpMiddleware(this.options.getHttpMiddlewareOptions()).withLoggerMiddleware().build(),
     ).withProjectKey({ projectKey: environment.PROJECT_KEY })
   }
 

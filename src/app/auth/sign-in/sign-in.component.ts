@@ -20,6 +20,7 @@ import {
 } from '@taiga-ui/kit'
 
 import { dataValidator } from '../../shared/validators'
+import { AuthHttpService } from '../services/auth.service'
 
 @Component({
   selector: 'ec-sign-in',
@@ -48,7 +49,10 @@ import { dataValidator } from '../../shared/validators'
 export class SignInComponent {
   title = 'Login'
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private authService: AuthHttpService,
+  ) {
     this.registerInputEventListeners()
   }
   public loginForm = this.formBuilder.group({
@@ -80,10 +84,10 @@ export class SignInComponent {
     })
   }
   public submitForm(): void {
-    if (this.loginForm.valid) {
-      this.loginForm.disable()
-    } else {
-      this.loginForm.enable()
+    const { email, password } = this.loginForm.value
+
+    if (email && password) {
+      this.authService.login({ username: email, password }).subscribe(console.log)
     }
   }
 
