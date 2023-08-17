@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common'
-import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
+import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, inject } from '@angular/core'
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms'
 import { RouterModule } from '@angular/router'
+import { type MyCustomerDraft } from '@commercetools/platform-sdk'
 import { TuiDay } from '@taiga-ui/cdk'
 import {
   TuiButtonModule,
@@ -24,6 +25,7 @@ import {
 import type { Subscription } from 'rxjs'
 
 import { dataValidator } from '../../shared/validators'
+import { AuthHttpService } from '../services/auth.service'
 
 @Component({
   selector: 'ec-sign-up',
@@ -58,6 +60,7 @@ export class SignUpComponent {
   title = 'Registration'
   address = 'Addresses'
   countries: string[] = ['U.S', 'Canada']
+  authHttpService: AuthHttpService = inject(AuthHttpService)
 
   public registrationForm = this.formBuilder.group({
     email: new FormControl<string | null>('', [
@@ -189,6 +192,7 @@ export class SignUpComponent {
       }
     })
   }
+
   private clearBillingFields(): void {
     const fields: string[] = ['streetBilling', 'cityBilling', 'countryBilling', 'postalCodeBilling']
 
@@ -202,12 +206,22 @@ export class SignUpComponent {
   }
 
   public submitForm(): void {
-    const shippingValue = Boolean(this.registrationForm.controls.shipping.value)
+    const email = this.email.value
+    const password = this.password.value
+    const firstName = this.firstName.value
+    const lastName = this.lastName.value
+    const city = this.city.value
+    const country = this.firstName.value
+    const postalCode = this.postalCode.value
 
-    if (this.registrationForm.valid && shippingValue) {
-      this.registrationForm.disable()
-    } else {
-      this.registrationForm.enable()
+    if (email && password && firstName && lastName) {
+      const customer: MyCustomerDraft = {
+        email,
+        password,
+        firstName,
+        lastName,
+      }
+      this.authHttpService.signup(customer)
     }
   }
 

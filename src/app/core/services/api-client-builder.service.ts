@@ -29,8 +29,10 @@ export class ApiClientBuilderService {
 
   private createApiClient(builder: ClientBuilder): ByProjectKeyRequestBuilder {
     return createApiBuilderFromCtpClient(
-      builder.withHttpMiddleware(this.options.getRttpMiddlewareOptions()).withLoggerMiddleware().build(),
-    ).withProjectKey({ projectKey: environment.PROJECT_KEY })
+      builder.withHttpMiddleware(this.options.getHttpMiddlewareOptions()).withLoggerMiddleware().build(),
+    ).withProjectKey({
+      projectKey: environment.PROJECT_KEY,
+    })
   }
 
   public createApiClientWithPasswordFlow(username: string, password: string): ByProjectKeyRequestBuilder {
@@ -41,8 +43,10 @@ export class ApiClientBuilderService {
     return this.createApiClient(builder)
   }
 
-  public createApiClientWithAnonymousFlow(): ByProjectKeyRequestBuilder {
-    const builder = new ClientBuilder().withAnonymousSessionFlow(this.options.getAnonymousAuthMiddlewareOptions())
+  public createApiClientWithAnonymousFlow(clearToken = false): ByProjectKeyRequestBuilder {
+    const builder = new ClientBuilder().withAnonymousSessionFlow(
+      this.options.getAnonymousAuthMiddlewareOptions(clearToken),
+    )
 
     return this.createApiClient(builder)
   }

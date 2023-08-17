@@ -40,7 +40,7 @@ export class Options {
     }
   }
 
-  public getRttpMiddlewareOptions(): HttpMiddlewareOptions {
+  public getHttpMiddlewareOptions(): HttpMiddlewareOptions {
     return {
       host: environment.API_URL,
       includeResponseHeaders: true,
@@ -71,7 +71,7 @@ export class Options {
     }
   }
 
-  public getAnonymousAuthMiddlewareOptions(): AnonymousAuthMiddlewareOptions {
+  public getAnonymousAuthMiddlewareOptions(clearToken = false): AnonymousAuthMiddlewareOptions {
     return {
       host: environment.AUTH_URL,
       projectKey: environment.PROJECT_KEY,
@@ -79,7 +79,7 @@ export class Options {
         clientId: environment.CLIENT_ID,
         clientSecret: environment.CLIENT_SECRET,
       },
-      tokenCache: this.tokenStorage.getTokenCache(),
+      tokenCache: clearToken ? undefined : this.tokenStorage.getTokenCache(),
     }
   }
 }

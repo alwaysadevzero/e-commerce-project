@@ -35,14 +35,6 @@
             "trailingUnderscore": "forbid"
           },
           {
-            "selector": ["variable", "property"],
-            "types": ["boolean"],
-            "format": ["strictCamelCase"],
-            "prefix": ["is", "has", "should", "can", "will"],
-            "leadingUnderscore": "forbid",
-            "trailingUnderscore": "forbid"
-          },
-          {
             "selector": "variable",
             "modifiers": ["destructured"],
             "format": null
