@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common'
-import { Component } from '@angular/core'
+import { Component, inject, type OnInit } from '@angular/core'
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { RouterModule } from '@angular/router'
+import { Store } from '@ngrx/store'
 import {
   TuiButtonModule,
   TuiDataListModule,
@@ -21,6 +22,8 @@ import {
 
 import { dataValidator } from '../../shared/validators'
 import { AuthHttpService } from '../services/auth.service'
+import { loadUser } from '../state/auth.actions'
+import { selectIsLoading } from '../state/auth.selector'
 
 @Component({
   selector: 'ec-sign-in',
@@ -48,13 +51,17 @@ import { AuthHttpService } from '../services/auth.service'
 })
 export class SignInComponent {
   title = 'Login'
+  private formBuilder: FormBuilder = inject(FormBuilder)
+  private authService: AuthHttpService = inject(AuthHttpService)
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private authService: AuthHttpService,
-  ) {
+  public isLoading$ = this.store$.select(selectIsLoading)
+  constructor(private store$: Store) {
     this.registerInputEventListeners()
   }
+
+  // public ngOnInit(): void {
+  //   this.store$.dispatch(loadUser())
+  // }
   public loginForm = this.formBuilder.group({
     email: new FormControl<string | null>('', [
       dataValidator.noWhitespaceValidator,

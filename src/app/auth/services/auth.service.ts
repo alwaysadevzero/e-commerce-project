@@ -13,7 +13,7 @@ import { environment } from 'src/environments/environment'
 export class AuthHttpService {
   private apiClientBuilderService: ApiClientBuilderService = inject(ApiClientBuilderService)
 
-  public login({ username, password }: { username: string; password: string }): Observable<Project> {
+  public login = ({ username, password }: { username: string; password: string }): Observable<Project> => {
     return fromPromise(
       this.apiClientBuilderService.createApiClientWithPasswordFlow(username, password).get().execute(),
     ).pipe(map(({ body }) => body))
