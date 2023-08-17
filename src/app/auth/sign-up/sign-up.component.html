@@ -118,6 +118,8 @@
     </div>
       <button tuiButton type="button" class="tui-space_right-3 tui-form__row" appearance="accent"
         [disabled]="!registrationForm.valid" (click)="submitForm()">Sign up</button>
+        <button tuiButton type="button" class="tui-space_right-3 tui-form__row" appearance="accent"
+        (click)="submitForm()">Sign up</button>
       <p class="an-account">Already have an account? <a routerLink="/sign-in">Sign in</a></p>
   </form>
 </section>
