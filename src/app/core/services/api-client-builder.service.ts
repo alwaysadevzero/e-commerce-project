@@ -4,6 +4,7 @@ import { type ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dis
 import { ClientBuilder } from '@commercetools/sdk-client-v2'
 
 import { environment } from '../../../environments/environment'
+import type { User } from '../../shared/models/user-data'
 import { Options } from '../helpers/option-helper'
 import { TokenSessionStorageService } from './token-session-storage.service'
 
@@ -35,9 +36,9 @@ export class ApiClientBuilderService {
     })
   }
 
-  public createApiClientWithPasswordFlow(username: string, password: string): ByProjectKeyRequestBuilder {
+  public createApiClientWithPasswordFlow(user: User): ByProjectKeyRequestBuilder {
     const builder = new ClientBuilder().withPasswordFlow(
-      this.options.getPasswordAuthMiddlewareOptions(username, password),
+      this.options.getPasswordAuthMiddlewareOptions(user.username, user.password),
     )
 
     return this.createApiClient(builder)

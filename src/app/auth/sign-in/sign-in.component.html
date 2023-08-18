@@ -13,7 +13,9 @@
         <input tuiTextfield placeholder="Make it secure!" />
       </tui-input-password>
     <tui-error [formControl]="password" [error]="[] | tuiFieldError | async"></tui-error>
-    <button tuiButton type="button" class="login-input tui-space_right-3 tui-form__row" appearance="accent"
+    <ng-container *ngIf="isLoading$ | async">Loading</ng-container>
+    <ng-container #loaded></ng-container>
+    <button tuiButton type="button" class="login-input tui-form__row" appearance="accent"
     [disabled]="!loginForm.valid" (click)="submitForm()">Sign in</button>
   <p class="an-account">Don't have an account? <a routerLink="/sign-up">Sign up</a></p>
   </form>

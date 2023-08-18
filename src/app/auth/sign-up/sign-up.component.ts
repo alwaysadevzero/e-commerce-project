@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common'
 import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, inject } from '@angular/core'
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms'
 import { RouterModule } from '@angular/router'
-import { type MyCustomerDraft } from '@commercetools/platform-sdk'
+import type { BaseAddress, MyCustomerDraft } from '@commercetools/platform-sdk'
 import { TuiDay } from '@taiga-ui/cdk'
 import {
   TuiButtonModule,
@@ -59,8 +59,7 @@ export class SignUpComponent {
   test = TuiSelectModule
   title = 'Registration'
   address = 'Addresses'
-  countries: string[] = ['U.S', 'Canada']
-  authHttpService: AuthHttpService = inject(AuthHttpService)
+  countries: string[] = ['United States (US)', 'Canada (CA)']
 
   public registrationForm = this.formBuilder.group({
     email: new FormControl<string | null>('', [
@@ -90,7 +89,7 @@ export class SignUpComponent {
     ]),
     cityBilling: new FormControl<string | null>('', [dataValidator.nameValidator, dataValidator.noWhitespaceValidator]),
     countryBilling: new FormControl<string | null>('', [value => Validators.required(value)]),
-    postalCodeBilling: new FormControl<string | null>('', [dataValidator.postalCodeValidator]),
+    postalCodeBilling: new FormControl<string | null>('', [dataValidator.postalCodeBillingValidator]),
     shipping: [false, Validators.requiredTrue.bind(Validators)],
     billing: [false, Validators.requiredTrue.bind(Validators)],
     shippingToBilling: [false, Validators.requiredTrue.bind(Validators)],
@@ -206,23 +205,111 @@ export class SignUpComponent {
   }
 
   public submitForm(): void {
-    const email = this.email.value
-    const password = this.password.value
-    const firstName = this.firstName.value
-    const lastName = this.lastName.value
-    const city = this.city.value
-    const country = this.firstName.value
-    const postalCode = this.postalCode.value
+    const email = this.email.value ?? ''
+    const password = this.password.value ?? ''
+    const firstName = this.firstName.value ?? ''
+    const lastName = this.lastName.value ?? ''
+    const dateOfBirth = this.getDateOfBirth() ?? undefined
+    const addresses = this.getAddresses() ?? []
+    const defaultShippingAddress = this.getDefaultAddresses()[0] ?? undefined
+    const defaultBillingAddress = this.getDefaultAddresses()[1] ?? undefined
 
-    if (email && password && firstName && lastName) {
-      const customer: MyCustomerDraft = {
-        email,
-        password,
-        firstName,
-        lastName,
-      }
-      this.authHttpService.signup(customer)
+    const customer: MyCustomerDraft = {
+      email,
+      password,
+      firstName,
+      lastName,
+      dateOfBirth,
+      addresses,
+      defaultShippingAddress,
+      defaultBillingAddress,
     }
+    this.authHttpService.signup(customer)
+  }
+
+  private getShippingAddress(): BaseAddress | undefined {
+    const { street, city, postalCode } = this.registrationForm.getRawValue()
+
+    let country = this.registrationForm.controls.country.getRawValue()
+
+    if (country) {
+      const startIndex = country.indexOf('(') + 1
+      const endIndex = country.indexOf(')')
+      country = country.slice(startIndex, endIndex)
+    }
+
+    if (street && city && country && postalCode) {
+      return { key: 'keyShippingAddress', country, city, streetName: street, postalCode }
+    }
+
+    return undefined
+  }
+
+  private getBillingAddress(): BaseAddress | undefined {
+    const { streetBilling, cityBilling, postalCodeBilling } = this.registrationForm.getRawValue()
+
+    let countryBilling = this.registrationForm.controls.countryBilling.getRawValue()
+
+    if (countryBilling) {
+      const startIndex = countryBilling.indexOf('(') + 1
+      const endIndex = countryBilling.indexOf(')')
+      countryBilling = countryBilling.slice(startIndex, endIndex)
+    }
+
+    if (streetBilling && cityBilling && countryBilling && postalCodeBilling) {
+      return {
+        key: 'keyBillingAddress',
+        country: countryBilling,
+        city: cityBilling,
+        streetName: streetBilling,
+        postalCode: postalCodeBilling,
+      }
+    }
+
+    return undefined
+  }
+
+  private getAddresses(): BaseAddress[] {
+    const addresses: BaseAddress[] = []
+    const shippingAddress = this.getShippingAddress()
+    const billingAddress = this.getBillingAddress()
+
+    if (shippingAddress) {
+      addresses.push(shippingAddress as never)
+    }
+
+    if (billingAddress) {
+      addresses.push(billingAddress as never)
+    }
+
+    return addresses
+  }
+
+  private getDateOfBirth(): string | undefined {
+    const day = this.registrationForm.get('dateOfBirth')?.value
+
+    if (day) {
+      const dateOfBirth = `${day.year}-${String(day.month + 1).padStart(2, '0')}-${String(day.day).padStart(2, '0')}`
+
+      return dateOfBirth
+    }
+
+    return undefined
+  }
+
+  private getDefaultAddresses(): Array<number | null> {
+    let defaultShippingAddress: number | null = null
+    let defaultBillingAddress: number | null = null
+
+    if (this.registrationForm.get('shipping')?.value) {
+      defaultShippingAddress = 0
+    }
+
+    if (this.registrationForm.get('billing')?.value) {
+      defaultBillingAddress = 1
+    }
+
+    return [defaultShippingAddress, defaultBillingAddress]
   }
 
   get email(): FormControl<string | null> {

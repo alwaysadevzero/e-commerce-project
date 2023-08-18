@@ -7,7 +7,7 @@ import { formatValidator } from './format.validator'
 import { lengthValidator } from './length.validator'
 import { lowercaseValidator } from './lowercase.validator'
 import { nameValidator } from './name.validator'
-import { postalCodeValidator } from './postal-code.validator'
+import { postalCodeBillingValidator, postalCodeValidator } from './postal-code.validator'
 import { streetValidator } from './street.validator'
 import { uppercaseValidator } from './uppercase.validator'
 import { noWhitespaceValidator } from './whitespace.validator'
@@ -23,6 +23,7 @@ export const dataValidator = {
   lowercaseValidator,
   nameValidator,
   postalCodeValidator,
+  postalCodeBillingValidator,
   streetValidator,
   uppercaseValidator,
   noWhitespaceValidator,
