@@ -96,7 +96,10 @@ export class SignUpComponent {
     shippingAndBilling: [false, Validators.requiredTrue.bind(Validators)],
   })
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private authHttpService: AuthHttpService,
+  ) {
     this.copyShippingToBilling()
     this.registerInputEventListeners()
     this.changePostalCodeAfterChangeCountry()
