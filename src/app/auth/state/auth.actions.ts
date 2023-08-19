@@ -11,3 +11,5 @@ export const signupUser = createAction(UserActionTypes.signupUser, props<{ custo
 export const loadUserSuccess = createAction(UserActionTypes.loadUserSuccess, props<{ user: Customer }>())
 
 export const loadUserFailure = createAction(UserActionTypes.loadUserFailure, props<{ errorMessage: string }>())
+
+export const clearErrorMessage = createAction(UserActionTypes.clearErrorMessage)

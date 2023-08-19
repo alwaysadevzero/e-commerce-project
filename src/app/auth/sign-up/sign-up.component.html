@@ -1,20 +1,20 @@
 <section class="sign-up  tui-form__row tui-space_bottom-3">
-  <h1>{{title}}</h1>
+  <h1>Registration</h1>
   <form [formGroup]="registrationForm" class="registration-form">
     <tui-input tuiHintContent="Please enter a valid email address (e.g. name@example.com)" class="email"
       [tuiTextfieldCleaner]="true" [formControl]="email">
-      Email*
+      Email<span class="required">*</span>
     </tui-input>
     <tui-error [formControl]="email" [error]="[] | tuiFieldError | async"></tui-error>
     <div class="password-wrapper tui-form__row">
       <tui-input-password formControlName="password" [tuiTextfieldCleaner]="true"
         tuiHintContent="Password must contain at least one lowercase letter, one uppercase letter, one digit and 8 characters long (e.g. aaaaaa1A)"
         class="password">
-        Password*
+        Password<span class="required">*</span>
         <input tuiTextfield placeholder="Make it secure!" />
       </tui-input-password>
       <tui-input-password formControlName="confirm" class="password-again">
-        Confirm*
+        Confirm<span class="required">*</span>
         <input tuiTextfield placeholder="Make it secure!" />
       </tui-input-password>
     </div>
@@ -24,24 +24,24 @@
     </div>
     <tui-input formControlName="firstName" class="tui-form__row" [tuiTextfieldCleaner]="true"
       tuiHintContent="Must contain at least one character and no special characters or numbers">
-      First name*
+      First name<span class="required">*</span>
       <input tuiTextfield />
     </tui-input>
     <tui-error [formControl]="firstName" [error]="[] | tuiFieldError | async"></tui-error>
     <tui-input formControlName="lastName" class="tui-form__row" [tuiTextfieldCleaner]="true"
       tuiHintContent="Must contain at least one character and no special characters or numbers">
-      Last name*
+      Last name<span class="required">*</span>
       <input tuiTextfield />
     </tui-input>
     <tui-error [formControl]="lastName" [error]="[] | tuiFieldError | async"></tui-error>
     <tui-input-date [formControl]="dateOfBirth" tuiCalendar="true" class="tui-form__row"
       tuiHintContent="You must be at least 13 years old">
-      Date of birth*
+      Date of birth<span class="required">*</span>
       <input tuiTextfield autocomplete="bday" />
     </tui-input-date>
     <tui-error [formControl]="dateOfBirth" [error]="[] | tuiFieldError | async" class=" tui-space_bottom-3"></tui-error>
 
-    <h2>{{address}}</h2>
+    <h2>Addresses</h2>
     <div class="checkbox-container">
       <tui-checkbox-labeled formControlName="shippingToBilling" size="m">
         Synchronize shipping to billing address
@@ -59,24 +59,24 @@
         </div>
         <tui-input formControlName="street" [tuiTextfieldCleaner]="true"
           tuiHintContent="Must contain at least one character">
-          Street*
+          Street<span class="required">*</span>
           <input tuiTextfield />
         </tui-input>
         <tui-error [formControl]="street" [error]="[] | tuiFieldError | async"></tui-error>
         <tui-input [formControl]="city" class="tui-form__row" [tuiTextfieldCleaner]="true"
           tuiHintContent="Must contain at least one character and no special characters or numbers">
-          City*
+          City<span class="required">*</span>
           <input tuiTextfield />
         </tui-input>
         <tui-error [formControl]="city" [error]="[] | tuiFieldError | async"></tui-error>
         <tui-select formControlName="country" class="tui-form__row">
-          Country*
+          Country<span class="required">*</span>
           <input tuiTextfield placeholder="Choose your country" />
           <tui-data-list-wrapper *tuiDataList [items]="countries"></tui-data-list-wrapper>
         </tui-select>
         <tui-input formControlName="postalCode" class="tui-form__row" [tuiTextfieldCleaner]="true"
           tuiHintContent="Must follow the format for the country (e.g., 12345 or A1B 2C3 for the U.S. and Canada, respectively)">
-          Postal code*
+          Postal code<span class="required">*</span>
           <input tuiTextfield />
         </tui-input>
         <tui-error [formControl]="postalCode" [error]="[] | tuiFieldError | async"></tui-error>
@@ -122,11 +122,12 @@
         Mark for billing address is default
       </tui-checkbox-labeled>
     </div>
-    <tui-error *ngIf="error | async as errorMessage" [error]="errorMessage"></tui-error>
-      <button tuiButton type="button" class="tui-space_right-3 tui-form__row" appearance="accent"
-        [disabled]="!registrationForm.valid" (click)="submitForm()">Sign up</button>
-        <button tuiButton type="button" class="tui-space_right-3 tui-form__row" appearance="accent"
-        (click)="submitForm()">Sign up</button>
-      <p class="an-account">Already have an account? <a routerLink="/sign-in">Sign in</a></p>
+    <tui-notification *ngIf="error | async as errorMessage" status="error" class="notification tui-space_vertical-4">
+      {{ errorMessage }}
+    </tui-notification>
+    <button tuiButton type="button" class="tui-form__row" appearance="accent" [disabled]="!registrationForm.valid"
+      (click)="submitForm()">Sign up</button>
+    <button tuiButton type="button" class="tui-form__row" appearance="accent" (click)="submitForm()">Sign up</button>
+    <p class="an-account">Already have an account? <a routerLink="/sign-in">Sign in</a></p>
   </form>
 </section>

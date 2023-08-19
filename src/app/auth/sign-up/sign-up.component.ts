@@ -11,6 +11,7 @@ import {
   TuiErrorModule,
   TuiHintModule,
   TuiHostedDropdownModule,
+  TuiNotificationModule,
   TuiTextfieldControllerModule,
 } from '@taiga-ui/core'
 import {
@@ -27,7 +28,7 @@ import type { Subscription } from 'rxjs'
 
 import { dataValidator } from '../../shared/validators'
 import { AuthHttpService } from '../services/auth.service'
-import { signupUser } from '../state/auth.actions'
+import { clearErrorMessage, signupUser } from '../state/auth.actions'
 import { selectErrorMessage } from '../state/auth.selector'
 
 @Component({
@@ -52,6 +53,7 @@ import { selectErrorMessage } from '../state/auth.selector'
     TuiErrorModule,
     TuiHintModule,
     TuiTextfieldControllerModule,
+    TuiNotificationModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './sign-up.component.html',
@@ -59,9 +61,6 @@ import { selectErrorMessage } from '../state/auth.selector'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SignUpComponent {
-  test = TuiSelectModule
-  title = 'Registration'
-  address = 'Addresses'
   countries: string[] = ['United States (US)', 'Canada (CA)']
   public error = this.store$.select(selectErrorMessage)
 
@@ -314,6 +313,10 @@ export class SignUpComponent {
       defaultBillingAddress,
     }
     this.store$.dispatch(signupUser({ customer }))
+
+    setTimeout(() => {
+      this.store$.dispatch(clearErrorMessage())
+    }, 3000)
   }
 
   public getShippingAddress(): BaseAddress | undefined {

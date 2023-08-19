@@ -4,7 +4,6 @@ import { Actions, createEffect, ofType } from '@ngrx/effects'
 import { of } from 'rxjs'
 import { catchError, map, switchMap } from 'rxjs/operators'
 
-import { ApiClientBuilderService } from '../../core/services/api-client-builder.service'
 import type { User } from '../../shared/models/user-data'
 import { AuthHttpService } from '../services/auth.service'
 import { loadUserFailure, loadUserSuccess, loginUser, signupUser } from './auth.actions'

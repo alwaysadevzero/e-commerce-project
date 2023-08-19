@@ -9,6 +9,7 @@ import {
   TuiErrorModule,
   TuiHintModule,
   TuiHostedDropdownModule,
+  TuiNotificationModule,
   TuiTextfieldControllerModule,
 } from '@taiga-ui/core'
 import {
@@ -23,8 +24,8 @@ import {
 import type { User } from '../../shared/models/user-data'
 import { dataValidator } from '../../shared/validators'
 import { AuthHttpService } from '../services/auth.service'
-import { loginUser } from '../state/auth.actions'
-import { selectErrorMessage, selectIsLoading } from '../state/auth.selector'
+import { clearErrorMessage, loginUser } from '../state/auth.actions'
+import { selectErrorMessage } from '../state/auth.selector'
 
 @Component({
   selector: 'ec-sign-in',
@@ -46,12 +47,12 @@ import { selectErrorMessage, selectIsLoading } from '../state/auth.selector'
     TuiErrorModule,
     TuiHintModule,
     TuiTextfieldControllerModule,
+    TuiNotificationModule,
   ],
   templateUrl: './sign-in.component.html',
   styleUrls: ['./sign-in.component.scss'],
 })
 export class SignInComponent {
-  title = 'Login'
   private formBuilder: FormBuilder = inject(FormBuilder)
   private authService: AuthHttpService = inject(AuthHttpService)
 
@@ -88,12 +89,17 @@ export class SignInComponent {
       }
     })
   }
+
   public submitForm(): void {
     const { email, password } = this.loginForm.value
 
     if (email && password) {
       const user: User = { username: email, password }
       this.store$.dispatch(loginUser({ user }))
+
+      setTimeout(() => {
+        this.store$.dispatch(clearErrorMessage())
+      }, 3000)
     }
   }
 

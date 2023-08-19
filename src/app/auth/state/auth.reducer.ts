@@ -1,7 +1,7 @@
 import type { Customer } from '@commercetools/platform-sdk'
 import { createReducer, on } from '@ngrx/store'
 
-import { loadUserFailure, loadUserSuccess, loginUser, signupUser } from './auth.actions'
+import { clearErrorMessage, loadUserFailure, loadUserSuccess, loginUser, signupUser } from './auth.actions'
 import { userInitialState } from './constants/user-initial-state.const'
 import { type UserState } from './models/user-state'
 
@@ -18,5 +18,9 @@ export const userReducer = createReducer(
     ...userState,
     isLoading: false,
     errorMessage: action.errorMessage,
+  })),
+  on(clearErrorMessage, (userState: UserState) => ({
+    ...userState,
+    errorMessage: null,
   })),
 )
