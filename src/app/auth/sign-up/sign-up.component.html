@@ -122,10 +122,11 @@
         Mark for billing address is default
       </tui-checkbox-labeled>
     </div>
-    <button tuiButton type="button" class="tui-form__row" appearance="accent" [disabled]="registrationForm.invalid"
-      (click)="submitForm()">Sign up</button>
-    <!-- <button tuiButton type="button" class="tui-space_right-3 tui-form__row" appearance="accent"
-        (click)="submitForm()">Sign up</button> -->
-    <p class="an-account">Already have an account? <a routerLink="/sign-in">Sign in</a></p>
+    <tui-error *ngIf="error | async as errorMessage" [error]="errorMessage"></tui-error>
+      <button tuiButton type="button" class="tui-space_right-3 tui-form__row" appearance="accent"
+        [disabled]="!registrationForm.valid" (click)="submitForm()">Sign up</button>
+        <button tuiButton type="button" class="tui-space_right-3 tui-form__row" appearance="accent"
+        (click)="submitForm()">Sign up</button>
+      <p class="an-account">Already have an account? <a routerLink="/sign-in">Sign in</a></p>
   </form>
 </section>

@@ -1,5 +1,6 @@
 export const enum UserActionTypes {
-  loadUser = 'Load User',
+  loginUser = 'login User',
+  signupUser = 'Sign Up User',
   loadUserSuccess = 'Load User Success',
   loadUserFailure = 'Load User Failure',
 }

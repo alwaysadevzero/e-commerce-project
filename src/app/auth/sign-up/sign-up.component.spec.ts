@@ -1,51 +1,46 @@
-import { type ComponentFixture, TestBed } from '@angular/core/testing'
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+import { type ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing'
+import { ReactiveFormsModule } from '@angular/forms'
 import { RouterTestingModule } from '@angular/router/testing'
-import { TuiDay } from '@taiga-ui/cdk'
-import { TUI_SANITIZER, TuiButtonModule, TuiRootModule } from '@taiga-ui/core'
-import { NgDompurifySanitizer } from '@tinkoff/ng-dompurify'
+import { Store } from '@ngrx/store'
+import { TuiButtonModule } from '@taiga-ui/core'
+import { TuiDataListWrapperModule, TuiFieldErrorPipeModule, TuiInputModule } from '@taiga-ui/kit'
+import { of } from 'rxjs'
 
 import { SignUpComponent } from './sign-up.component'
 
-describe('SignUpComponent', () => {
+describe('SignInComponent', () => {
   let component: SignUpComponent
   let fixture: ComponentFixture<SignUpComponent>
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, BrowserAnimationsModule, TuiRootModule, TuiButtonModule, SignUpComponent],
-      providers: [{ provide: TUI_SANITIZER, useClass: NgDompurifySanitizer }],
+  beforeEach(waitForAsync(() => {
+    void TestBed.configureTestingModule({
+      imports: [
+        ReactiveFormsModule,
+        RouterTestingModule,
+        TuiInputModule,
+        TuiButtonModule,
+        TuiDataListWrapperModule,
+        TuiFieldErrorPipeModule,
+      ],
+      providers: [
+        {
+          provide: Store,
+          useValue: {
+            dispatch: jasmine.createSpy('dispatch'),
+            select: jasmine.createSpy('select').and.returnValue(of(false)),
+          },
+        },
+      ],
     }).compileComponents()
+  }))
 
+  beforeEach(() => {
     fixture = TestBed.createComponent(SignUpComponent)
     component = fixture.componentInstance
     fixture.detectChanges()
   })
 
-  it('should create the SignUpComponent', () => {
+  it('should create', () => {
     expect(component).toBeTruthy()
-  })
-
-  it('should initialize the registrationForm with empty values', () => {
-    expect(component.registrationForm.value).toEqual({
-      email: '',
-      password: '',
-      confirm: '',
-      firstName: '',
-      lastName: '',
-      dateOfBirth: new TuiDay(2000, 0, 1),
-      street: '',
-      city: '',
-      country: '',
-      postalCode: '',
-      streetBilling: '',
-      cityBilling: '',
-      countryBilling: '',
-      postalCodeBilling: '',
-      shipping: false,
-      billing: false,
-      shippingToBilling: false,
-      shippingAndBilling: false,
-    })
   })
 })

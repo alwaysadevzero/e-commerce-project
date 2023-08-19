@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA } from '@ang
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms'
 import { RouterModule } from '@angular/router'
 import type { BaseAddress, MyCustomerDraft } from '@commercetools/platform-sdk'
+import { Store } from '@ngrx/store'
 import { TuiDay } from '@taiga-ui/cdk'
 import {
   TuiButtonModule,
@@ -26,6 +27,8 @@ import type { Subscription } from 'rxjs'
 
 import { dataValidator } from '../../shared/validators'
 import { AuthHttpService } from '../services/auth.service'
+import { signupUser } from '../state/auth.actions'
+import { selectErrorMessage } from '../state/auth.selector'
 
 @Component({
   selector: 'ec-sign-up',
@@ -60,6 +63,7 @@ export class SignUpComponent {
   title = 'Registration'
   address = 'Addresses'
   countries: string[] = ['United States (US)', 'Canada (CA)']
+  public error = this.store$.select(selectErrorMessage)
 
   private shippingToBillingSubscriptions: Subscription[] = []
   public registrationForm = this.formBuilder.group({
@@ -99,6 +103,7 @@ export class SignUpComponent {
   constructor(
     private formBuilder: FormBuilder,
     private authHttpService: AuthHttpService,
+    private store$: Store,
   ) {
     this.copyShippingToBilling()
     this.registerInputEventListeners()
@@ -308,7 +313,7 @@ export class SignUpComponent {
       defaultShippingAddress,
       defaultBillingAddress,
     }
-    this.authHttpService.signup(customer)
+    this.store$.dispatch(signupUser({ customer }))
   }
 
   public getShippingAddress(): BaseAddress | undefined {

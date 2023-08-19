@@ -13,6 +13,8 @@ import type { User } from '../../shared/models/user-data'
 export class AuthHttpService {
   private apiClientBuilderService: ApiClientBuilderService = inject(ApiClientBuilderService)
   public login = (user: User): Observable<Customer> => {
+    this.apiClientBuilderService.user = user
+
     return fromPromise(
       this.apiClientBuilderService
         .createApiClientWithPasswordFlow(user)

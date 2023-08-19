@@ -23,8 +23,8 @@ import {
 import type { User } from '../../shared/models/user-data'
 import { dataValidator } from '../../shared/validators'
 import { AuthHttpService } from '../services/auth.service'
-import { loadUser } from '../state/auth.actions'
-import { selectIsLoading } from '../state/auth.selector'
+import { loginUser } from '../state/auth.actions'
+import { selectErrorMessage, selectIsLoading } from '../state/auth.selector'
 
 @Component({
   selector: 'ec-sign-in',
@@ -55,14 +55,11 @@ export class SignInComponent {
   private formBuilder: FormBuilder = inject(FormBuilder)
   private authService: AuthHttpService = inject(AuthHttpService)
 
-  public isLoading$ = this.store$.select(selectIsLoading)
+  public error = this.store$.select(selectErrorMessage)
   constructor(private store$: Store) {
     this.registerInputEventListeners()
   }
 
-  // public ngOnInit(): void {
-  //   this.store$.dispatch(loadUser())
-  // }
   public loginForm = this.formBuilder.group({
     email: new FormControl<string | null>('', [
       dataValidator.noWhitespaceValidator,
@@ -96,8 +93,7 @@ export class SignInComponent {
 
     if (email && password) {
       const user: User = { username: email, password }
-      this.store$.dispatch(loadUser({ user }))
-      // this.authService.login({ username: email, password }).subscribe(console.log)
+      this.store$.dispatch(loginUser({ user }))
     }
   }
 
