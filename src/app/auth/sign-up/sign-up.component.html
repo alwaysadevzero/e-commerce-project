@@ -53,9 +53,12 @@
 
     <div class="addresses-form-container">
       <div class="sipping-form">
-        <h4>Shipping address</h4>
+        <div class="title-container">
+          <h4>Shipping address</h4>
+          <tui-checkbox-labeled formControlName="useShipping" size="m"></tui-checkbox-labeled>
+        </div>
         <tui-input formControlName="street" [tuiTextfieldCleaner]="true"
-          tuiHintContent="Must contain at least one character" class="tui-form__row">
+          tuiHintContent="Must contain at least one character">
           Street*
           <input tuiTextfield />
         </tui-input>
@@ -80,8 +83,11 @@
       </div>
 
       <div class="billing-form">
-        <h4>Billing address</h4>
-        <tui-input formControlName="streetBilling" tuiHintContent="Must contain at least one character"
+        <div class="title-container">
+          <h4>Billing address</h4>
+          <tui-checkbox-labeled formControlName="useBilling" size="m"></tui-checkbox-labeled>
+        </div>
+        <tui-input [formControl]="streetBilling" tuiHintContent="Must contain at least one character"
           [tuiTextfieldCleaner]="true">
           Street
           <input tuiTextfield />
@@ -116,10 +122,10 @@
         Mark for billing address is default
       </tui-checkbox-labeled>
     </div>
-      <button tuiButton type="button" class="tui-space_right-3 tui-form__row" appearance="accent"
-        [disabled]="!registrationForm.valid" (click)="submitForm()">Sign up</button>
-        <button tuiButton type="button" class="tui-space_right-3 tui-form__row" appearance="accent"
-        (click)="submitForm()">Sign up</button>
-      <p class="an-account">Already have an account? <a routerLink="/sign-in">Sign in</a></p>
+    <button tuiButton type="button" class="tui-form__row" appearance="accent" [disabled]="registrationForm.invalid"
+      (click)="submitForm()">Sign up</button>
+    <!-- <button tuiButton type="button" class="tui-space_right-3 tui-form__row" appearance="accent"
+        (click)="submitForm()">Sign up</button> -->
+    <p class="an-account">Already have an account? <a routerLink="/sign-in">Sign in</a></p>
   </form>
 </section>

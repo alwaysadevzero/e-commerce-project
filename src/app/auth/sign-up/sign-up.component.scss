@@ -41,3 +41,10 @@ label {
 .an-account {
   font-weight: 700;
 }
+
+.title-container {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+}

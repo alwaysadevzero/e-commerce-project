@@ -61,6 +61,7 @@ export class SignUpComponent {
   address = 'Addresses'
   countries: string[] = ['United States (US)', 'Canada (CA)']
 
+  private shippingToBillingSubscriptions: Subscription[] = []
   public registrationForm = this.formBuilder.group({
     email: new FormControl<string | null>('', [
       dataValidator.noWhitespaceValidator,
@@ -79,21 +80,20 @@ export class SignUpComponent {
     firstName: new FormControl<string | null>('', [dataValidator.nameValidator, dataValidator.noWhitespaceValidator]),
     lastName: new FormControl<string | null>('', [dataValidator.nameValidator, dataValidator.noWhitespaceValidator]),
     dateOfBirth: new FormControl<TuiDay | null>(new TuiDay(2000, 0, 1), [dataValidator.dateOfBirthValidator]),
-    street: new FormControl<string | null>('', [dataValidator.streetValidator, dataValidator.noWhitespaceValidator]),
+    street: new FormControl<string | null>('', [dataValidator.streetValidator]),
     city: new FormControl<string | null>('', [dataValidator.nameValidator, dataValidator.noWhitespaceValidator]),
     country: new FormControl<string | null>('', [value => Validators.required(value)]),
     postalCode: new FormControl<string | null>('', [dataValidator.postalCodeValidator]),
-    streetBilling: new FormControl<string | null>('', [
-      dataValidator.streetValidator,
-      dataValidator.noWhitespaceValidator,
-    ]),
-    cityBilling: new FormControl<string | null>('', [dataValidator.nameValidator, dataValidator.noWhitespaceValidator]),
-    countryBilling: new FormControl<string | null>('', [value => Validators.required(value)]),
-    postalCodeBilling: new FormControl<string | null>('', [dataValidator.postalCodeBillingValidator]),
-    shipping: [false, Validators.requiredTrue.bind(Validators)],
-    billing: [false, Validators.requiredTrue.bind(Validators)],
-    shippingToBilling: [false, Validators.requiredTrue.bind(Validators)],
-    shippingAndBilling: [false, Validators.requiredTrue.bind(Validators)],
+    streetBilling: new FormControl<string | null>('', []),
+    cityBilling: new FormControl<string | null>('', []),
+    countryBilling: new FormControl<string | null>('', []),
+    postalCodeBilling: new FormControl<string | null>('', []),
+    shipping: [false],
+    billing: [false],
+    useBilling: [false],
+    useShipping: [{ value: true, disabled: true }],
+    shippingToBilling: [false],
+    shippingAndBilling: [false],
   })
 
   constructor(
@@ -103,7 +103,11 @@ export class SignUpComponent {
     this.copyShippingToBilling()
     this.registerInputEventListeners()
     this.changePostalCodeAfterChangeCountry()
+    this.setBillingValidate()
+    this.addDisabledFields()
+    this.toggleDisabledFields()
     this.setBothAddressesAsDefault()
+    this.toggleDisabledDefaults()
   }
 
   private registerInputEventListeners(): void {
@@ -126,38 +130,127 @@ export class SignUpComponent {
 
   private setBothAddressesAsDefault(): void {
     const shippingAndBilling = this.registrationForm.get('shippingAndBilling')
+    const useBilling = this.registrationForm.get('useBilling')
     const shipping = this.registrationForm.get('shipping')
     const billing = this.registrationForm.get('billing')
 
     if (shippingAndBilling && shipping && billing) {
       shippingAndBilling.valueChanges.subscribe((value: boolean | null) => {
         const toggleValue = value ?? false
+        useBilling?.setValue(toggleValue)
         shipping.setValue(toggleValue)
-        shipping.disabled ? shipping.enable() : shipping.disable()
         billing.setValue(toggleValue)
-        billing.disabled ? billing.enable() : billing.disable()
       })
     }
   }
 
   private copyShippingToBilling(): void {
     const shippingToBillingControl = this.registrationForm.get('shippingToBilling')
-    const billingControl = this.registrationForm.get('billing')
+    const billingControl = this.registrationForm.get('useBilling')
 
-    if (shippingToBillingControl && billingControl) {
+    if (shippingToBillingControl) {
       shippingToBillingControl.valueChanges.subscribe(value => {
         if (value) {
+          billingControl?.setValue(true)
           this.copyValuesFromShippingToBilling()
           this.subscribeShippingToBilling()
+          this.toggleDisabledFields()
+          this.setBillingValidate()
         } else {
-          this.clearBillingFields()
+          billingControl?.setValue(false)
           this.unsubscribeShippingToBilling()
+          this.setBillingValidate()
+        }
+      })
+    }
+  }
+  private setBillingValidate(): void {
+    const billingControl = this.registrationForm.get('useBilling')
+
+    if (billingControl) {
+      billingControl.valueChanges.subscribe(value => {
+        if (value) {
+          this.addBillingValidators()
+        } else {
+          this.addClearValidators()
         }
       })
     }
   }
 
-  private shippingToBillingSubscriptions: Subscription[] = []
+  private addBillingValidators(): void {
+    const { streetBilling, cityBilling, countryBilling, postalCodeBilling } = this.registrationForm.controls
+
+    if (streetBilling && cityBilling && countryBilling && postalCodeBilling) {
+      streetBilling?.addValidators([dataValidator.streetValidator])
+      cityBilling?.addValidators([dataValidator.nameValidator])
+      countryBilling?.addValidators([value => Validators.required(value)])
+      postalCodeBilling?.addValidators([dataValidator.postalCodeBillingValidator])
+    }
+  }
+
+  private toggleDisabledFields(): void {
+    const billingControl = this.registrationForm.get('useBilling')
+
+    if (billingControl) {
+      billingControl.valueChanges.subscribe(value => {
+        if (value) {
+          this.addEnabledFields()
+        } else {
+          this.addDisabledFields()
+        }
+      })
+    }
+  }
+
+  private toggleDisabledDefaults(): void {
+    const useBilling = this.registrationForm.get('useBilling')
+    const billing = this.registrationForm.get('billing')
+
+    if (billing && useBilling) {
+      useBilling.valueChanges.subscribe(value => {
+        if (value) {
+          billing.enable()
+        } else {
+          billing.disable()
+          billing.setValue(false)
+        }
+      })
+    }
+  }
+
+  private addClearValidators(): void {
+    const { streetBilling, cityBilling, countryBilling, postalCodeBilling } = this.registrationForm.controls
+
+    const controls = [streetBilling, cityBilling, countryBilling, postalCodeBilling]
+    controls.forEach(control => {
+      if (control) {
+        control.clearValidators()
+      }
+    })
+  }
+
+  private addDisabledFields(): void {
+    const { streetBilling, cityBilling, countryBilling, postalCodeBilling } = this.registrationForm.controls
+
+    const controls = [streetBilling, cityBilling, countryBilling, postalCodeBilling]
+    controls.forEach(control => {
+      if (control) {
+        control.disable()
+      }
+    })
+  }
+
+  private addEnabledFields(): void {
+    const { streetBilling, cityBilling, countryBilling, postalCodeBilling } = this.registrationForm.controls
+
+    const controls = [streetBilling, cityBilling, countryBilling, postalCodeBilling]
+    controls.forEach(control => {
+      if (control) {
+        control.enable()
+      }
+    })
+  }
 
   private subscribeShippingToBilling(): void {
     const fields: string[] = ['street', 'city', 'country', 'postalCode']
@@ -191,18 +284,6 @@ export class SignUpComponent {
 
       if (shippingControl && billingControl) {
         billingControl.setValue(shippingControl.value as never)
-      }
-    })
-  }
-
-  private clearBillingFields(): void {
-    const fields: string[] = ['streetBilling', 'cityBilling', 'countryBilling', 'postalCodeBilling']
-
-    fields.forEach((field: string) => {
-      const billingField = this.registrationForm.get(field)
-
-      if (billingField) {
-        billingField.setValue(null)
       }
     })
   }
