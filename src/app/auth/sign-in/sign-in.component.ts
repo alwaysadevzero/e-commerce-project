@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common'
-import { Component, inject, type OnInit } from '@angular/core'
+import { Component, inject } from '@angular/core'
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { RouterModule } from '@angular/router'
 import { Store } from '@ngrx/store'

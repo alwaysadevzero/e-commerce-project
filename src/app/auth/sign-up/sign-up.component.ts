@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common'
-import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, inject } from '@angular/core'
+import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms'
 import { RouterModule } from '@angular/router'
 import type { BaseAddress, MyCustomerDraft } from '@commercetools/platform-sdk'
@@ -230,7 +230,7 @@ export class SignUpComponent {
     this.authHttpService.signup(customer)
   }
 
-  private getShippingAddress(): BaseAddress | undefined {
+  public getShippingAddress(): BaseAddress | undefined {
     const { street, city, postalCode } = this.registrationForm.getRawValue()
 
     let country = this.registrationForm.controls.country.getRawValue()

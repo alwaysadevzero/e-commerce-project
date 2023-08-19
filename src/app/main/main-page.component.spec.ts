@@ -6,7 +6,7 @@ import { NgDompurifySanitizer } from '@tinkoff/ng-dompurify'
 
 import { MainComponent } from './main-page.component'
 
-describe('SignUpComponent', () => {
+describe('MainComponent', () => {
   let component: MainComponent
   let fixture: ComponentFixture<MainComponent>
 
@@ -24,7 +24,7 @@ describe('SignUpComponent', () => {
     fixture.detectChanges()
   })
 
-  it('should create the SignUpComponent', () => {
+  it('should create the MainComponent', () => {
     expect(component).toBeTruthy()
   })
 })
