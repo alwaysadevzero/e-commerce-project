@@ -13,7 +13,7 @@ import { TokenSessionStorageService } from './token-session-storage.service'
 })
 export class ApiClientBuilderService {
   private api: ByProjectKeyRequestBuilder
-  public user: User | null = null
+  public apiWithPasswordFlow!: ByProjectKeyRequestBuilder
 
   constructor(private tokenSessionStorageService: TokenSessionStorageService) {
     this.api = this.createApiClientWithAnonymousFlow()

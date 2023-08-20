@@ -1,10 +1,11 @@
 import { inject, Injectable } from '@angular/core'
-import type { Customer, MyCustomerDraft } from '@commercetools/platform-sdk'
+import { Router } from '@angular/router'
+import type { Customer } from '@commercetools/platform-sdk'
 import { Actions, createEffect, ofType } from '@ngrx/effects'
 import { of } from 'rxjs'
-import { catchError, map, switchMap } from 'rxjs/operators'
+import { catchError, map, switchMap, tap } from 'rxjs/operators'
 
-import type { User } from '../../shared/models/user-data'
+import { ApiClientBuilderService } from '../../core/services/api-client-builder.service'
 import { AuthHttpService } from '../services/auth.service'
 import { loadUserFailure, loadUserSuccess, loginUser, signupUser } from './auth.actions'
 
@@ -12,32 +13,48 @@ import { loadUserFailure, loadUserSuccess, loginUser, signupUser } from './auth.
 export class UserEffects {
   private actions$ = inject(Actions)
   private authHttpService: AuthHttpService = inject(AuthHttpService)
+  private apiClientBuilderService: ApiClientBuilderService = inject(ApiClientBuilderService)
+  private router: Router = inject(Router)
 
-  loginUser$ = createEffect(() => {
-    return this.actions$.pipe(
+  loginUser$ = createEffect(() =>
+    this.actions$.pipe(
       ofType(loginUser),
-      switchMap(({ user }: { user: User }) =>
+      switchMap(({ user }) =>
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         this.authHttpService.login(user).pipe(
-          map((loggedUser: Customer) => {
-            return loadUserSuccess({ user: loggedUser })
+          map((customer: Customer) => loadUserSuccess({ customer })),
+          tap(() => {
+            this.apiClientBuilderService.setApi = this.apiClientBuilderService.apiWithPasswordFlow
           }),
           catchError((error: string) => of(loadUserFailure({ errorMessage: error }))),
         ),
       ),
-    )
-  })
+    ),
+  )
 
-  signupUser$ = createEffect(() => {
-    return this.actions$.pipe(
+  signupUser$ = createEffect(() =>
+    this.actions$.pipe(
       ofType(signupUser),
-      switchMap(({ customer }: { customer: MyCustomerDraft }) =>
-        this.authHttpService.signup(customer).pipe(
-          map((loggedUser: Customer) => {
-            return loadUserSuccess({ user: loggedUser })
+      switchMap(({ customerDraft }) =>
+        this.authHttpService.signup(customerDraft).pipe(
+          map((customer: Customer) => loadUserSuccess({ customer })),
+          tap(() => {
+            this.apiClientBuilderService.setApi = this.apiClientBuilderService.apiWithPasswordFlow
           }),
           catchError((error: string) => of(loadUserFailure({ errorMessage: error }))),
         ),
       ),
-    )
-  })
+    ),
+  )
+
+  redirectAfterLoadUser$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(loadUserSuccess),
+        tap(() => {
+          void this.router.navigateByUrl('main')
+        }),
+      ),
+    { dispatch: false },
+  )
 }
