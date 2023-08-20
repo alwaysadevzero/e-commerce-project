@@ -16,7 +16,6 @@ import { UserEffects } from './auth/state/auth.effects'
 import { userReducer } from './auth/state/auth.reducer'
 import { HeaderComponent } from './core/components/header/header.component'
 import { CoreModule } from './core/core.module'
-import { ApiClientBuilderService } from './core/services/api-client-builder.service'
 
 @NgModule({
   declarations: [AppComponent],
@@ -38,11 +37,7 @@ import { ApiClientBuilderService } from './core/services/api-client-builder.serv
     CoreModule,
     HeaderComponent,
   ],
-  providers: [{ provide: TUI_SANITIZER, useClass: NgDompurifySanitizer }, ApiClientBuilderService],
+  providers: [{ provide: TUI_SANITIZER, useClass: NgDompurifySanitizer }],
   bootstrap: [AppComponent],
 })
-export class AppModule {
-  constructor(private apiClientBuilderService: ApiClientBuilderService) {
-    // this.apiClientBuilderService.getApi.withProjectKey({ projectKey: environment.PROJECT_KEY }).get().execute()
-  }
-}
+export class AppModule {}

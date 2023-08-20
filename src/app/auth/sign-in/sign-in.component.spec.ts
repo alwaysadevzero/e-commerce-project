@@ -6,6 +6,8 @@ import { TuiButtonModule } from '@taiga-ui/core'
 import { TuiDataListWrapperModule, TuiFieldErrorPipeModule, TuiInputModule } from '@taiga-ui/kit'
 import { of } from 'rxjs'
 
+import { AuthModule } from '../auth.module'
+import { AuthFacade } from '../state/auth.facade'
 import { SignInComponent } from './sign-in.component'
 
 describe('SignInComponent', () => {
@@ -15,6 +17,7 @@ describe('SignInComponent', () => {
   beforeEach(waitForAsync(() => {
     void TestBed.configureTestingModule({
       imports: [
+        AuthModule,
         ReactiveFormsModule,
         RouterTestingModule,
         TuiInputModule,
@@ -30,6 +33,7 @@ describe('SignInComponent', () => {
             select: jasmine.createSpy('select').and.returnValue(of(false)),
           },
         },
+        AuthFacade,
       ],
     }).compileComponents()
   }))

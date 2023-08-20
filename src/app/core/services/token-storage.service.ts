@@ -6,7 +6,7 @@ const ANONYMOUS_TOKEN_STORAGE_KEY = 'ct-anonymous-token'
 @Injectable({
   providedIn: 'root',
 })
-export class TokenSessionStorageService {
+export class TokenStorageService {
   private currentTokenStore: TokenStore | Record<string, never> = {}
 
   public getRefreshToken(): string | undefined {
@@ -20,7 +20,7 @@ export class TokenSessionStorageService {
   public getTokenCache(): TokenCache {
     return {
       get: (tokenCacheOptions?: TokenCacheOptions) => {
-        this.currentTokenStore = this.getTokenFromSessionStorage()
+        this.currentTokenStore = this.getTokenFromStorage()
 
         if (this.isTokenStore(this.currentTokenStore)) {
           return this.currentTokenStore
@@ -33,14 +33,14 @@ export class TokenSessionStorageService {
       },
       set: (newTokenStore: TokenStore) => {
         this.currentTokenStore = newTokenStore
-        sessionStorage.setItem(ANONYMOUS_TOKEN_STORAGE_KEY, JSON.stringify(this.currentTokenStore))
+        localStorage.setItem(ANONYMOUS_TOKEN_STORAGE_KEY, JSON.stringify(this.currentTokenStore))
 
         return newTokenStore
       },
     }
   }
-  private getTokenFromSessionStorage(): TokenStore | Record<string, never> {
-    const storedValue = sessionStorage.getItem(ANONYMOUS_TOKEN_STORAGE_KEY)
+  private getTokenFromStorage(): TokenStore | Record<string, never> {
+    const storedValue = localStorage.getItem(ANONYMOUS_TOKEN_STORAGE_KEY)
 
     if (storedValue) {
       const parsed: TokenStore | undefined = JSON.parse(storedValue) as TokenStore | undefined
@@ -50,7 +50,7 @@ export class TokenSessionStorageService {
       }
     }
 
-    sessionStorage.removeItem(ANONYMOUS_TOKEN_STORAGE_KEY)
+    localStorage.removeItem(ANONYMOUS_TOKEN_STORAGE_KEY)
 
     return {}
   }

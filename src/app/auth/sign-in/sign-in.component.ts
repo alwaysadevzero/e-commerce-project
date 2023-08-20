@@ -21,15 +21,15 @@ import {
 } from '@taiga-ui/kit'
 
 import { dataValidator } from '../../shared/validators'
+import { AuthModule } from '../auth.module'
 import { AuthFacade } from '../state/auth.facade'
 
 @Component({
   selector: 'ec-sign-in',
   standalone: true,
-  providers: [AuthFacade],
   imports: [
+    AuthModule,
     CommonModule,
-    RouterModule,
     TuiInputModule,
     TuiInputPasswordModule,
     ReactiveFormsModule,

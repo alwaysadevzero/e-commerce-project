@@ -32,7 +32,6 @@ import { AuthFacade } from '../state/auth.facade'
 @Component({
   selector: 'ec-sign-up',
   standalone: true,
-  providers: [AuthFacade],
   imports: [
     CommonModule,
     RouterModule,

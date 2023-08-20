@@ -6,7 +6,7 @@ import { ClientBuilder } from '@commercetools/sdk-client-v2'
 import { environment } from '../../../environments/environment'
 import type { User } from '../../shared/models/user-data'
 import { Options } from '../helpers/option-helper'
-import { TokenSessionStorageService } from './token-session-storage.service'
+import { TokenStorageService } from './token-storage.service'
 
 @Injectable({
   providedIn: 'root',
@@ -15,11 +15,11 @@ export class ApiClientBuilderService {
   private api: ByProjectKeyRequestBuilder
   public apiWithPasswordFlow!: ByProjectKeyRequestBuilder
 
-  constructor(private tokenSessionStorageService: TokenSessionStorageService) {
+  constructor(private tokenStorageService: TokenStorageService) {
     this.api = this.createApiClientWithAnonymousFlow()
   }
 
-  private options = new Options(this.tokenSessionStorageService)
+  private options = new Options(this.tokenStorageService)
 
   public get getApi(): ByProjectKeyRequestBuilder {
     return this.api

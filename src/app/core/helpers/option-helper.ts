@@ -7,10 +7,10 @@ import {
 } from '@commercetools/sdk-client-v2'
 
 import { environment } from '../../../environments/environment'
-import type { TokenSessionStorageService } from '../services/token-session-storage.service'
+import type { TokenStorageService } from '../services/token-storage.service'
 
 export class Options {
-  constructor(private tokenStorage: TokenSessionStorageService) {}
+  constructor(private tokenStorage: TokenStorageService) {}
 
   public getAuthMiddlewareOptions(): AuthMiddlewareOptions {
     return {
