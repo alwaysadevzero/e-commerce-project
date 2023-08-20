@@ -37,3 +37,19 @@ a {
 tui-svg {
   color: #fd774d;
 }
+
+.tabs {
+  justify-content: flex-end;
+}
+
+@media (width < 550px) {
+  .title {
+    margin: 0;
+    font-size: 1.5rem;
+  }
+
+  .logo {
+    width: 1.2rem;
+    height: 1.2rem;
+  }
+}

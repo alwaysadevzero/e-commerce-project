@@ -125,9 +125,8 @@
     <tui-notification *ngIf="error | async as errorMessage" status="error" class="notification tui-space_vertical-4">
       {{ errorMessage }}
     </tui-notification>
-    <button tuiButton type="button" class="tui-form__row" appearance="accent" [disabled]="!registrationForm.valid"
+    <button tuiButton type="button" class="tui-form__row" appearance="accent" [disabled]="registrationForm.invalid"
       (click)="submitForm()">Sign up</button>
-    <button tuiButton type="button" class="tui-form__row" appearance="accent" (click)="submitForm()">Sign up</button>
   </form>
   <p class="an-account">Already have an account? <a routerLink="/sign-in">Sign in</a></p>
 </section>

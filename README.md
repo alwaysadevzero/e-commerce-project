@@ -21,7 +21,6 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 - [@AleksaRoad](https://github.com/AleksaRoad)
 - [@alwaysadevzero](https://github.com/alwaysadevzero)
-- [@mgg43err](https://github.com/mgg43err)
 
 ## Tech stack
 
@@ -42,11 +41,14 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Deployment
 
-[e-commerce]()
+[e-commerce](https://e-commerce-qzix.onrender.com/)
 
 <details>
 <summary><h2>Screenshots</h2></summary>
 
+![main](./src/assets/images/image.png)
+![login](./src/assets/images/image-1.png)
+![registration](./src/assets/images/image-2.png)
 
 </details>
 
