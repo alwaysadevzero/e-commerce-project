@@ -1,9 +1,8 @@
 import { CommonModule } from '@angular/common'
-import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
+import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, inject } from '@angular/core'
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms'
 import { RouterModule } from '@angular/router'
 import type { BaseAddress, MyCustomerDraft } from '@commercetools/platform-sdk'
-import { Store } from '@ngrx/store'
 import { TuiDay } from '@taiga-ui/cdk'
 import {
   TuiButtonModule,
@@ -28,12 +27,12 @@ import type { Subscription } from 'rxjs'
 
 import { dataValidator } from '../../shared/validators'
 import { AuthHttpService } from '../services/auth.service'
-import { clearErrorMessage, signupUser } from '../state/auth.actions'
-import { selectErrorMessage } from '../state/auth.selector'
+import { AuthFacade } from '../state/auth.facade'
 
 @Component({
   selector: 'ec-sign-up',
   standalone: true,
+  providers: [AuthFacade],
   imports: [
     CommonModule,
     RouterModule,
@@ -62,7 +61,11 @@ import { selectErrorMessage } from '../state/auth.selector'
 })
 export class SignUpComponent {
   countries: string[] = ['United States (US)', 'Canada (CA)']
-  public error = this.store$.select(selectErrorMessage)
+  private formBuilder: FormBuilder = inject(FormBuilder)
+  private authHttpService: AuthHttpService = inject(AuthHttpService)
+  private authFacade: AuthFacade = inject(AuthFacade)
+
+  public error = this.authFacade.errorMessage$
 
   private shippingToBillingSubscriptions: Subscription[] = []
   public registrationForm = this.formBuilder.group({
@@ -99,11 +102,7 @@ export class SignUpComponent {
     shippingAndBilling: [false],
   })
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private authHttpService: AuthHttpService,
-    private store$: Store,
-  ) {
+  constructor() {
     this.copyShippingToBilling()
     this.registerInputEventListeners()
     this.changePostalCodeAfterChangeCountry()
@@ -312,10 +311,12 @@ export class SignUpComponent {
       defaultShippingAddress,
       defaultBillingAddress,
     }
-    this.store$.dispatch(signupUser({ customerDraft }))
+    this.authFacade.signupUser(customerDraft)
+    // this.store$.dispatch(signupUser({ customerDraft }))
 
     setTimeout(() => {
-      this.store$.dispatch(clearErrorMessage())
+      // this.store$.dispatch(clearErrorMessage())
+      this.authFacade.clearErrorMessage()
     }, 3000)
   }
 

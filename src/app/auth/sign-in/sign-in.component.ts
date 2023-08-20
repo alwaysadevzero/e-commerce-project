@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common'
 import { Component, inject } from '@angular/core'
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { RouterModule } from '@angular/router'
-import { Store } from '@ngrx/store'
 import {
   TuiButtonModule,
   TuiDataListModule,
@@ -21,15 +20,13 @@ import {
   TuiTextAreaModule,
 } from '@taiga-ui/kit'
 
-import type { User } from '../../shared/models/user-data'
 import { dataValidator } from '../../shared/validators'
-import { AuthHttpService } from '../services/auth.service'
-import { clearErrorMessage, loginUser } from '../state/auth.actions'
-import { selectErrorMessage } from '../state/auth.selector'
+import { AuthFacade } from '../state/auth.facade'
 
 @Component({
   selector: 'ec-sign-in',
   standalone: true,
+  providers: [AuthFacade],
   imports: [
     CommonModule,
     RouterModule,
@@ -54,10 +51,11 @@ import { selectErrorMessage } from '../state/auth.selector'
 })
 export class SignInComponent {
   private formBuilder: FormBuilder = inject(FormBuilder)
-  private authService: AuthHttpService = inject(AuthHttpService)
+  private authFacade: AuthFacade = inject(AuthFacade)
 
-  public error = this.store$.select(selectErrorMessage)
-  constructor(private store$: Store) {
+  public error = this.authFacade.errorMessage$
+
+  constructor() {
     this.registerInputEventListeners()
   }
 
@@ -95,10 +93,12 @@ export class SignInComponent {
 
     if (email && password) {
       const user = { username: email, password }
-      this.store$.dispatch(loginUser({ user }))
+      // this.store$.dispatch(loginUser({ user }))
+      this.authFacade.loginUser(user)
 
       setTimeout(() => {
-        this.store$.dispatch(clearErrorMessage())
+        this.authFacade.clearErrorMessage()
+        // this.store$.dispatch(clearErrorMessage())
       }, 3000)
     }
   }
