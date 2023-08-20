@@ -9,10 +9,10 @@ export const userReducer = createReducer(
   userInitialState,
   on(loginUser, (userState: UserState) => ({ ...userState, isLoading: true })),
   on(signupUser, (userState: UserState) => ({ ...userState, isLoading: true })),
-  on(loadUserSuccess, (userState: UserState, action: { user: Customer }) => ({
+  on(loadUserSuccess, (userState: UserState, action: { customer: Customer }) => ({
     ...userState,
     isLoading: false,
-    user: action.user,
+    customer: action.customer,
   })),
   on(loadUserFailure, (userState: UserState, action: { errorMessage: string }) => ({
     ...userState,

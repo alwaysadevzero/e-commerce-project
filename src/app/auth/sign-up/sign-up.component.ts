@@ -302,7 +302,7 @@ export class SignUpComponent {
     const defaultShippingAddress = this.getDefaultAddresses()[0] ?? undefined
     const defaultBillingAddress = this.getDefaultAddresses()[1] ?? undefined
 
-    const customer: MyCustomerDraft = {
+    const customerDraft: MyCustomerDraft = {
       email,
       password,
       firstName,
@@ -312,7 +312,7 @@ export class SignUpComponent {
       defaultShippingAddress,
       defaultBillingAddress,
     }
-    this.store$.dispatch(signupUser({ customer }))
+    this.store$.dispatch(signupUser({ customerDraft }))
 
     setTimeout(() => {
       this.store$.dispatch(clearErrorMessage())

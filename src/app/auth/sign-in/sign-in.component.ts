@@ -94,7 +94,7 @@ export class SignInComponent {
     const { email, password } = this.loginForm.value
 
     if (email && password) {
-      const user: User = { username: email, password }
+      const user = { username: email, password }
       this.store$.dispatch(loginUser({ user }))
 
       setTimeout(() => {
