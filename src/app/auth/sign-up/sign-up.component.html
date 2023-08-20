@@ -1,6 +1,6 @@
 <section class="sign-up  tui-form__row tui-space_bottom-3">
-  <h1>Registration</h1>
   <form [formGroup]="registrationForm" class="registration-form">
+    <p class="title">Registration</p>
     <tui-input tuiHintContent="Please enter a valid email address (e.g. name@example.com)" class="email"
       [tuiTextfieldCleaner]="true" [formControl]="email">
       Email<span class="required">*</span>
@@ -41,7 +41,7 @@
     </tui-input-date>
     <tui-error [formControl]="dateOfBirth" [error]="[] | tuiFieldError | async" class=" tui-space_bottom-3"></tui-error>
 
-    <h2>Addresses</h2>
+    <p class="title">Addresses</p>
     <div class="checkbox-container">
       <tui-checkbox-labeled formControlName="shippingToBilling" size="m">
         Synchronize shipping to billing address
@@ -128,6 +128,6 @@
     <button tuiButton type="button" class="tui-form__row" appearance="accent" [disabled]="!registrationForm.valid"
       (click)="submitForm()">Sign up</button>
     <button tuiButton type="button" class="tui-form__row" appearance="accent" (click)="submitForm()">Sign up</button>
-    <p class="an-account">Already have an account? <a routerLink="/sign-in">Sign in</a></p>
   </form>
+  <p class="an-account">Already have an account? <a routerLink="/sign-in">Sign in</a></p>
 </section>

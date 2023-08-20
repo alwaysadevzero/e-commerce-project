@@ -13,6 +13,4 @@ import { TuiBlockStatusModule } from '@taiga-ui/layout'
   styleUrls: ['./not-found.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NotFoundComponent {
-  description = 'Not found page'
-}
+export class NotFoundComponent {}

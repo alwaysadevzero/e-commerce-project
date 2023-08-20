@@ -1,23 +1,46 @@
 <header class="header tui-space_bottom-3">
   <div class="header-container">
     <a routerLink="/main">
-      <tui-svg [src]="src" class="logo"></tui-svg>
+      <tui-svg src="../../../assets/icons/logo.svg" class="logo"></tui-svg>
+      <p class="title">Perfume</p>
     </a>
-    <div class="button-container">
+    <tui-tabs-with-more [(activeItemIndex)]="activeItemIndex" [underline]="false">
+      <button *tuiItem tuiTab routerLink="/">
+        <tui-svg src="tuiIconHome" class="tui-space_right-2"></tui-svg>
+        Home
+      </button>
+      <button *tuiItem tuiTab disabled routerLink="/about-us">
+        <tui-svg src="tuiIconUsers" class="tui-space_right-2"></tui-svg>
+        About Us
+      </button>
+      <button *tuiItem tuiTab disabled routerLink="/catalog">
+        <tui-svg src="tuiIconFileText" class="tui-space_right-2"></tui-svg>
+        Catalog
+      </button>
       <ng-container *ngIf="!(isLoggedIn$ | async)">
-        <button tuiButton type="button" class="tui-space_right-3" routerLink="/sign-up"
-          appearance="secondary-destructive" size="s">Sign Up</button>
-        <button tuiButton type="button" class="tui-space_right-3" routerLink="/sign-in" appearance="accent"
-          size="s">Sign In</button>
+        <button *tuiItem tuiTab routerLink="/sign-in">
+          <tui-svg src="tuiIconUserCheck" class="tui-space_right-2"></tui-svg>
+          Sign In
+        </button>
+        <button *tuiItem tuiTab routerLink="/sign-up">
+          <tui-svg src="tuiIconUserPlus" class="tui-space_right-2"></tui-svg>
+          Sign Up
+        </button>
       </ng-container>
+      <button *tuiItem tuiTab disabled routerLink="/cart">
+        <tui-svg src="tuiIconShoppingCart" class="tui-space_right-2"></tui-svg>
+        Cart
+      </button>
       <ng-container *ngIf="(isLoggedIn$ | async)">
-      <button tuiButton type=" button" class="tui-space_right-3" routerLink="/main"
-        appearance="accent" size="s">Logout</button>
-      <button tuiIconButton type="button" routerLink="/user" class="tui-space_right-3"
-        appearance="secondary-destructive" size="s"><tui-svg src="tuiIconUser"></tui-svg></button>
+        <button *tuiItem tuiTab disabled routerLink="/profile">
+          <tui-svg src="tuiIconUser" class="tui-space_right-2"></tui-svg>
+          Profile
+        </button>
+        <button *tuiItem tuiTab routerLink="/">
+          <tui-svg src="tuiIconLogOut"></tui-svg>
+          Logout
+        </button>
       </ng-container>
-      <button tuiIconButton type="button" class="tui-space_right-3" routerLink="/cart"
-        appearance="secondary-destructive" size="s"><tui-svg src="tuiIconShoppingCart"></tui-svg></button>
-    </div>
+    </tui-tabs-with-more>
   </div>
 </header>

@@ -4,5 +4,9 @@
 
 .not-found {
   position: fixed;
-  min-height: 100vh;
+  min-height: calc(100vh - 5rem);
+}
+
+.title {
+  font-size: 3rem;
 }
