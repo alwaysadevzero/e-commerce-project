@@ -94,7 +94,7 @@ export class SignUpComponent {
     countryBilling: new FormControl<string | null>('', []),
     postalCodeBilling: new FormControl<string | null>('', []),
     shipping: [false],
-    billing: [false],
+    billing: [{ value: false, disabled: true }],
     useBilling: [false],
     useShipping: [{ value: true, disabled: true }],
     shippingToBilling: [false],
@@ -311,12 +311,11 @@ export class SignUpComponent {
       defaultBillingAddress,
     }
     this.authFacade.signupUser(customerDraft)
-    // this.store$.dispatch(signupUser({ customerDraft }))
 
-    setTimeout(() => {
-      // this.store$.dispatch(clearErrorMessage())
+    const formValueChangesSubscription = this.registrationForm.valueChanges.subscribe(() => {
       this.authFacade.clearErrorMessage()
-    }, 3000)
+      formValueChangesSubscription.unsubscribe()
+    })
   }
 
   public getShippingAddress(): BaseAddress | undefined {

@@ -96,9 +96,10 @@ export class SignInComponent {
       const user = { username: email, password }
       this.authFacade.loginUser(user)
 
-      setTimeout(() => {
+      const formValueChangesSubscription = this.loginForm.valueChanges.subscribe(() => {
         this.authFacade.clearErrorMessage()
-      }, 3000)
+        formValueChangesSubscription.unsubscribe()
+      })
     }
   }
 
