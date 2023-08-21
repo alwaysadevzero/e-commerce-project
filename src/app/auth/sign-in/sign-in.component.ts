@@ -28,6 +28,7 @@ import { AuthFacade } from '../state/auth.facade'
   selector: 'ec-sign-in',
   standalone: true,
   imports: [
+    RouterModule,
     AuthModule,
     CommonModule,
     TuiInputModule,
@@ -93,12 +94,10 @@ export class SignInComponent {
 
     if (email && password) {
       const user = { username: email, password }
-      // this.store$.dispatch(loginUser({ user }))
       this.authFacade.loginUser(user)
 
       setTimeout(() => {
         this.authFacade.clearErrorMessage()
-        // this.store$.dispatch(clearErrorMessage())
       }, 3000)
     }
   }

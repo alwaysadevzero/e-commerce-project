@@ -20,7 +20,7 @@ export class Options {
         clientId: environment.CLIENT_ID,
         clientSecret: environment.CLIENT_SECRET,
       },
-      tokenCache: this.tokenStorage.getTokenCache(),
+      tokenCache: this.tokenStorage,
     }
   }
 
@@ -36,7 +36,7 @@ export class Options {
           password,
         },
       },
-      tokenCache: this.tokenStorage.getTokenCache(),
+      tokenCache: this.tokenStorage,
     }
   }
 
@@ -58,8 +58,6 @@ export class Options {
   }
 
   public getRefreshAuthMiddlewareOptions(token?: string): RefreshAuthMiddlewareOptions {
-    const refreshTokenToken = this.tokenStorage.getRefreshToken()
-
     return {
       host: environment.AUTH_URL,
       projectKey: environment.PROJECT_KEY,
@@ -67,11 +65,15 @@ export class Options {
         clientId: environment.CLIENT_ID,
         clientSecret: environment.CLIENT_SECRET,
       },
-      refreshToken: token || refreshTokenToken || '',
+      refreshToken: token || this.tokenStorage.refreshToken || '',
     }
   }
 
   public getAnonymousAuthMiddlewareOptions(clearToken = false): AnonymousAuthMiddlewareOptions {
+    if (clearToken) {
+      this.tokenStorage.clearToken()
+    }
+
     return {
       host: environment.AUTH_URL,
       projectKey: environment.PROJECT_KEY,
@@ -79,7 +81,7 @@ export class Options {
         clientId: environment.CLIENT_ID,
         clientSecret: environment.CLIENT_SECRET,
       },
-      tokenCache: clearToken ? undefined : this.tokenStorage.getTokenCache(),
+      tokenCache: clearToken ? undefined : this.tokenStorage,
     }
   }
 }

@@ -45,9 +45,12 @@ export class AuthHttpService {
   }
 
   public logout(): Observable<Customer> {
-    const api = this.apiClientBuilderService.createApiClientWithAnonymousFlow(true)
-    this.apiClientBuilderService.setApi = api
+    return fromPromise(this.apiClientBuilderService.createApiClientWithAnonymousFlow().me().get().execute()).pipe(
+      map(({ body }) => body),
+    )
+  }
 
-    return fromPromise(api.me().get().execute()).pipe(map(({ body }) => body))
+  public getProject(): Observable<Customer> {
+    return fromPromise(this.apiClientBuilderService.getApi.me().get().execute()).pipe(map(({ body }) => body))
   }
 }
