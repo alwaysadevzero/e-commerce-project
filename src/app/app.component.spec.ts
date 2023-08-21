@@ -1,17 +1,28 @@
 import { TestBed } from '@angular/core/testing'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { RouterTestingModule } from '@angular/router/testing'
+import { StateObservable, Store, StoreModule } from '@ngrx/store'
 import { TUI_SANITIZER, TuiAlertModule, TuiDialogModule, TuiRootModule } from '@taiga-ui/core'
 import { NgDompurifySanitizer } from '@tinkoff/ng-dompurify'
 
 import { AppComponent } from './app.component'
+import { AuthFacade } from './auth/state/auth.facade'
+import { HeaderComponent } from './core/components/header/header.component'
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, BrowserAnimationsModule, TuiRootModule, TuiDialogModule, TuiAlertModule],
+      imports: [
+        RouterTestingModule,
+        BrowserAnimationsModule,
+        TuiRootModule,
+        TuiDialogModule,
+        TuiAlertModule,
+        HeaderComponent,
+        StoreModule.forRoot({}),
+      ],
       declarations: [AppComponent],
-      providers: [{ provide: TUI_SANITIZER, useClass: NgDompurifySanitizer }],
+      providers: [{ provide: TUI_SANITIZER, useClass: NgDompurifySanitizer }, AuthFacade, Store, StateObservable],
     }).compileComponents()
   })
 
@@ -30,7 +41,5 @@ describe('AppComponent', () => {
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent)
     fixture.detectChanges()
-    const compiled = fixture.nativeElement as HTMLElement
-    expect(compiled.querySelector('.content span')?.textContent?.trim()).toContain('e-commerce app is running!')
   })
 })

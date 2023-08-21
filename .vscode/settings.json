@@ -1,23 +1,26 @@
 {
   "cSpell.words": [
-    "alwaysadevzero",
-    "devkit",
-    "ngrx",
-    "Parens",
-    "proto",
-    "tinkoff",
-    "trivago",
+    "ABCEGHJKLMNPRSTVXY",
     "Aleksa",
+    "alwaysadevzero",
+    "commercetools",
     "Commitlint",
     "compodoc",
+    "devkit",
     "Dompurify",
     "hljs",
+    "importapi",
     "jsons",
     "maxlength",
+    "ngrx",
+    "Parens",
     "plusplus",
+    "proto",
     "pullrequest",
     "Sofachrome",
     "stylelint",
+    "tinkoff",
+    "trivago",
     "webp"
   ]
 }

@@ -1,0 +1,84 @@
+<main class="main">
+  <div class="main-container">
+  <section class="profile">
+    <a routerLink="/profile" tuiAction>
+      <tui-marker-icon size="s" src="tuiIconUserLarge" class="tui-island__marker"
+        [style.color]="'yellowgreen'"></tui-marker-icon>
+      <h3 class="header tui-text_body-m">User Profile</h3>
+      <p class="description tui-text_body-s">
+        The User Profile page will display the personal information of the user. This includes their name, date of
+        birth, and a
+        list of their addresses. This page will also provide an interface for users to edit their personal details and
+        addresses.
+      </p>
+    </a>
+  </section>
+  <section class="cart">
+    <a routerLink="/cart" tuiAction>
+      <tui-marker-icon size="s" src="tuiIconShoppingCartLarge" class="tui-island__marker"
+        [style.color]="'red'"></tui-marker-icon>
+      <h3 class="header tui-text_body-m">Shopping Cart</h3>
+      <p class="description tui-text_body-s">
+        The Basket page is where users can view the products they have added to their basket. They can increase or
+        decrease the
+        quantity of each item or remove items from the basket. The page will also display the subtotal and total prices
+        and
+        provide an option for the users to proceed to the checkout page.
+      </p>
+    </a>
+  </section>
+  <section class="about-us">
+    <a routerLink="/about-us" tuiAction>
+      <tui-marker-icon size="s" src="tuiIconUsersLarge" class="tui-island__marker"
+        [style.color]="'blue'"></tui-marker-icon>
+      <h3 class="header tui-text_body-m">About Us</h3>
+      <p class="description tui-text_body-s">
+        The About Us page will give a brief introduction to the development team. It will highlight each member's
+        contributions
+        to the project and provide personal details such as names, roles, short bios, relevant photos, and GitHub
+        profile links.
+        The page will also feature and link the RS School logo, allowing users to learn more about the educational
+        program.
+      </p>
+    </a>
+  </section>
+  <section class="catalog">
+    <a routerLink="/catalog" tuiAction>
+      <tui-marker-icon size="s" src="tuiIconFileTextLarge" class="tui-island__marker"
+        [style.color]="'orange'"></tui-marker-icon>
+      <h3 class="header tui-text_body-m">Catalog Product</h3>
+      <p class="description tui-text_body-s">
+        The Catalog Product page will display a list of products in a specific category. The products will be displayed
+        as
+        interactive cards with a picture and essential details about the product. Users can click on these cards to get
+        more
+        detailed information about the product.
+      </p>
+    </a>
+  </section>
+  <section class="sign-in">
+    <a routerLink="/sign-in" tuiAction>
+      <tui-marker-icon size="s" src="tuiIconUserCheckLarge" class="tui-island__marker"
+        [style.color]="'green'"></tui-marker-icon>
+      <h3 class="header tui-text_body-m">Sign In</h3>
+      <p class="description tui-text_body-s">
+        The Login page is the user's entry point to the application. It will have fields for entering the username and password.
+        There will be validation checks in place to ensure that all fields are filled before allowing the user to submit the
+        form. On successful login, the user will be directed to the main page of the application.
+      </p>
+    </a>
+  </section>
+    <section class="sign-up">
+      <a routerLink="/sign-up" tuiAction>
+        <tui-marker-icon size="s" src="tuiIconUserPlusLarge" class="tui-island__marker"
+          [style.color]="'brown'"></tui-marker-icon>
+        <h3 class="header tui-text_body-m">Sign Up</h3>
+        <p class="description tui-text_body-s">
+          The Registration page will allow new users to sign up for the application. It will have fields for entering user
+          information including a username, email, and password. Once the user submits the form after entering all the necessary
+          details, they will be registered and directed to the login page.
+        </p>
+      </a>
+    </section>
+  </div>
+</main>

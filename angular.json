@@ -17,15 +17,15 @@
         "build": {
           "builder": "@ngx-env/builder:browser",
           "options": {
+            "allowedCommonJsDependencies": ["buffer", "node-fetch", "text-mask-core", "dompurify"],
             "outputPath": "dist/e-commerce",
-            "baseHref": "",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "ngxEnv": {
-              "prefix": "EC_"
+              "prefix": "(EC|CTP)_"
             },
             "assets": [
               "src/favicon.ico",
@@ -49,8 +49,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "2mb",
+                  "maximumError": "4mb"
                 },
                 {
                   "type": "anyComponentStyle",

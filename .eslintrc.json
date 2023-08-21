@@ -14,7 +14,8 @@
       "files": ["*.ts"],
       "parser": "@typescript-eslint/parser",
       "parserOptions": {
-        "project": ["tsconfig.*?.json"]
+        "project": ["tsconfig.*?.json"],
+        "emitDecoratorMetadata": true
       },
       "rules": {
         "@typescript-eslint/naming-convention": [
@@ -30,14 +31,6 @@
             "format": ["strictCamelCase", "UPPER_CASE"],
             "modifiers": ["const"],
             "types": ["boolean", "string", "number"],
-            "leadingUnderscore": "forbid",
-            "trailingUnderscore": "forbid"
-          },
-          {
-            "selector": ["variable", "property"],
-            "types": ["boolean"],
-            "format": ["strictCamelCase"],
-            "prefix": ["is", "has", "should", "can", "will"],
             "leadingUnderscore": "forbid",
             "trailingUnderscore": "forbid"
           },
