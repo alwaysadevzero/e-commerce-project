@@ -55,6 +55,7 @@ export class UserEffects {
             this.tokenStorageService.currentToken = undefined
             this.apiClientBuilderService.setApi = this.apiClientBuilderService.apiWithPasswordFlow
             this.authHttpService.getProject()
+            void this.router.navigateByUrl('main')
           }),
           catchError((error: string) => of(loadUserFailure({ errorMessage: error }))),
         ),
@@ -72,6 +73,7 @@ export class UserEffects {
             this.tokenStorageService.currentToken = undefined
             this.apiClientBuilderService.setApi = this.apiClientBuilderService.apiWithPasswordFlow
             this.authHttpService.getProject()
+            void this.router.navigateByUrl('main')
           }),
           catchError((error: string) => of(loadUserFailure({ errorMessage: error }))),
         ),
@@ -87,23 +89,12 @@ export class UserEffects {
           map(() => logoutUserSuccess()),
           tap(() => {
             this.tokenStorageService.clearToken()
-
             this.apiClientBuilderService.setApi = this.apiClientBuilderService.createApiClientWithAnonymousFlow()
+            void this.router.navigateByUrl('main')
           }),
           catchError((error: string) => of(loadUserFailure({ errorMessage: error }))),
         ),
       ),
     ),
-  )
-
-  redirectAfterLoadUser$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(loadUserSuccess),
-        tap(() => {
-          void this.router.navigateByUrl('main')
-        }),
-      ),
-    { dispatch: false },
   )
 }
