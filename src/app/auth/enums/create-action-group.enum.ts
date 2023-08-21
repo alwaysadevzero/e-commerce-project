@@ -1,4 +1,4 @@
-export const enum UserActionTypes {
+export const enum CreateActionGroup {
   loginUser = 'login User',
   signupUser = 'Sign Up User',
   logoutUser = 'Logout User',

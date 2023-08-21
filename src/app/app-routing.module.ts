@@ -8,26 +8,27 @@ const routes: Routes = [
   {
     path: 'main',
     title: 'Main',
-    loadComponent: () => import('./main/main-page.component').then(mod => mod.MainComponent),
+    loadComponent: () => import('./main/main-page.component').then(component => component.MainComponent),
   },
   {
     path: 'sign-up',
     title: 'Sign up',
-    loadComponent: () => import('./auth/sign-up/sign-up.component').then(mod => mod.SignUpComponent),
+    loadComponent: () => import('./auth/sign-up/sign-up.component').then(component => component.SignUpComponent),
     canActivate: [AuthGuard],
     canLoad: [AuthGuard],
   },
   {
     path: 'sign-in',
     title: 'Sign in',
-    loadComponent: () => import('./auth/sign-in/sign-in.component').then(mod => mod.SignInComponent),
+    loadComponent: () => import('./auth/sign-in/sign-in.component').then(component => component.SignInComponent),
     canActivate: [AuthGuard],
     canLoad: [AuthGuard],
   },
   {
     path: '**',
     title: '404 - Not found',
-    loadComponent: () => import('./core/components/not-found/not-found.component').then(mod => mod.NotFoundComponent),
+    loadComponent: () =>
+      import('./core/components/not-found/not-found.component').then(component => component.NotFoundComponent),
   },
 ]
 

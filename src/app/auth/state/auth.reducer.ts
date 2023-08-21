@@ -24,10 +24,10 @@ export const userReducer = createReducer(
     loadStatus: LoadStatus.loaded,
     customer: action.customer,
   })),
-  on(loadUserFailure, (userState: UserState, action: { errorMessage: string }) => ({
+  on(loadUserFailure, (userState: UserState, { errorMessage }) => ({
     ...userState,
     loadStatus: LoadStatus.notLoaded,
-    errorMessage: action.errorMessage,
+    errorMessage,
   })),
   on(clearErrorMessage, (userState: UserState) => ({
     ...userState,
