@@ -1,61 +1,40 @@
-import { Injectable } from '@angular/core'
-import type { TokenCache, TokenCacheOptions, TokenStore } from '@commercetools/sdk-client-v2'
+import { inject, Injectable } from '@angular/core'
+import type { TokenCache, TokenStore } from '@commercetools/sdk-client-v2'
 
-const ANONYMOUS_TOKEN_STORAGE_KEY = 'ct-anonymous-token'
+import { LocalStorage } from './storage.service'
+
+const TOKEN_STORAGE_KEY = 'ct-anonymous-token'
 
 @Injectable({
   providedIn: 'root',
 })
-export class TokenStorageService {
-  private currentTokenStore: TokenStore | Record<string, never> = {}
+export class TokenStorageService implements TokenCache {
+  private ls = inject(LocalStorage)
+  public currentToken: TokenStore | undefined = this.ls.getField<TokenStore>(TOKEN_STORAGE_KEY) ?? undefined
 
-  public getRefreshToken(): string | undefined {
-    if ('token' in this.currentTokenStore && typeof this.currentTokenStore.token == 'string') {
-      return this.currentTokenStore.refreshToken
+  get refreshToken(): string | undefined {
+    if (this.currentToken) {
+      return this.currentToken?.refreshToken
     }
 
     return undefined
   }
 
-  public getTokenCache(): TokenCache {
+  get = (): TokenStore => {
+    if (this.currentToken) {
+      return this.currentToken
+    }
+
     return {
-      get: (tokenCacheOptions?: TokenCacheOptions) => {
-        this.currentTokenStore = this.getTokenFromStorage()
-
-        if (this.isTokenStore(this.currentTokenStore)) {
-          return this.currentTokenStore
-        }
-
-        return {
-          token: '',
-          expirationTime: 0,
-        }
-      },
-      set: (newTokenStore: TokenStore) => {
-        this.currentTokenStore = newTokenStore
-        localStorage.setItem(ANONYMOUS_TOKEN_STORAGE_KEY, JSON.stringify(this.currentTokenStore))
-
-        return newTokenStore
-      },
+      token: '',
+      expirationTime: 0,
     }
   }
-  private getTokenFromStorage(): TokenStore | Record<string, never> {
-    const storedValue = localStorage.getItem(ANONYMOUS_TOKEN_STORAGE_KEY)
 
-    if (storedValue) {
-      const parsed: TokenStore | undefined = JSON.parse(storedValue) as TokenStore | undefined
+  set = (token: TokenStore): TokenStore => {
+    this.currentToken = token
+    this.ls.setField(TOKEN_STORAGE_KEY, token)
 
-      if (parsed && this.isTokenStore(parsed) && parsed.expirationTime >= Date.now()) {
-        return parsed
-      }
-    }
-
-    localStorage.removeItem(ANONYMOUS_TOKEN_STORAGE_KEY)
-
-    return {}
-  }
-
-  private isTokenStore(obj: object): obj is TokenStore {
-    return obj && 'expirationTime' in obj
+    return token
   }
 }

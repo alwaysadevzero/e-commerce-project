@@ -2,19 +2,31 @@ import { inject, Injectable } from '@angular/core'
 import { Router } from '@angular/router'
 import type { Customer } from '@commercetools/platform-sdk'
 import { Actions, createEffect, ofType } from '@ngrx/effects'
-import { of } from 'rxjs'
+import { interval, of } from 'rxjs'
 import { catchError, map, switchMap, tap } from 'rxjs/operators'
 
 import { ApiClientBuilderService } from '../../core/services/api-client-builder.service'
+import { TokenStorageService } from '../../core/services/token-storage.service'
 import { AuthHttpService } from '../services/auth.service'
-import { loadUserFailure, loadUserSuccess, loginUser, signupUser } from './auth.actions'
+import { initUserState, loadUserFailure, loadUserSuccess, loginUser, logoutUser, signupUser } from './auth.actions'
 
 @Injectable()
 export class UserEffects {
   private actions$ = inject(Actions)
+  private tokenStorageService: TokenStorageService = inject(TokenStorageService)
   private authHttpService: AuthHttpService = inject(AuthHttpService)
   private apiClientBuilderService: ApiClientBuilderService = inject(ApiClientBuilderService)
   private router: Router = inject(Router)
+
+  initUserState$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(initUserState),
+      switchMap(() =>
+        this.authHttpService.getProject().pipe(map((customer: Customer) => loadUserSuccess({ customer }))),
+      ),
+      catchError((error: string) => of(loadUserFailure({ errorMessage: error }))),
+    ),
+  )
 
   loginUser$ = createEffect(() =>
     this.actions$.pipe(
@@ -24,7 +36,9 @@ export class UserEffects {
         this.authHttpService.login(user).pipe(
           map((customer: Customer) => loadUserSuccess({ customer })),
           tap(() => {
+            this.tokenStorageService.currentToken = undefined
             this.apiClientBuilderService.setApi = this.apiClientBuilderService.apiWithPasswordFlow
+            this.authHttpService.getProject()
           }),
           catchError((error: string) => of(loadUserFailure({ errorMessage: error }))),
         ),
@@ -39,7 +53,26 @@ export class UserEffects {
         this.authHttpService.signup(customerDraft).pipe(
           map((customer: Customer) => loadUserSuccess({ customer })),
           tap(() => {
+            this.tokenStorageService.currentToken = undefined
             this.apiClientBuilderService.setApi = this.apiClientBuilderService.apiWithPasswordFlow
+            this.authHttpService.getProject()
+          }),
+          catchError((error: string) => of(loadUserFailure({ errorMessage: error }))),
+        ),
+      ),
+    ),
+  )
+
+  logout$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(logoutUser),
+      switchMap(() =>
+        this.authHttpService.logout().pipe(
+          map((customer: Customer) => loadUserSuccess({ customer })),
+          tap(() => {
+            this.tokenStorageService.currentToken = undefined
+            this.apiClientBuilderService.setApi = this.apiClientBuilderService.apiWithPasswordFlow
+            this.authHttpService.getProject()
           }),
           catchError((error: string) => of(loadUserFailure({ errorMessage: error }))),
         ),

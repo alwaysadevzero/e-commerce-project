@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common'
-import { NgModule } from '@angular/core'
+import { inject, NgModule } from '@angular/core'
 import { RouterModule } from '@angular/router'
 
 import { ApiClientBuilderService } from '../core/services/api-client-builder.service'

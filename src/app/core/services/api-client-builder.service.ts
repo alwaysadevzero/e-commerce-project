@@ -16,7 +16,11 @@ export class ApiClientBuilderService {
   public apiWithPasswordFlow!: ByProjectKeyRequestBuilder
 
   constructor(private tokenStorageService: TokenStorageService) {
-    this.api = this.createApiClientWithAnonymousFlow()
+    if (this.tokenStorageService.refreshToken) {
+      this.api = this.createApiClientWithRefreshedToken()
+    } else {
+      this.api = this.createApiClientWithAnonymousFlow()
+    }
   }
 
   private options = new Options(this.tokenStorageService)
@@ -53,7 +57,7 @@ export class ApiClientBuilderService {
     return this.createApiClient(builder)
   }
 
-  public createApiClientWithRefreshedToken(token: string): ByProjectKeyRequestBuilder {
+  public createApiClientWithRefreshedToken(token?: string): ByProjectKeyRequestBuilder {
     const builder = new ClientBuilder().withRefreshTokenFlow(this.options.getRefreshAuthMiddlewareOptions(token))
 
     return this.createApiClient(builder)

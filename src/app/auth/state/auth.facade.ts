@@ -3,7 +3,7 @@ import type { MyCustomerDraft } from '@commercetools/platform-sdk'
 import { Store } from '@ngrx/store'
 
 import type { User } from '../../shared/models/user-data'
-import { clearErrorMessage, loginUser, signupUser } from './auth.actions'
+import { clearErrorMessage, initUserState, loginUser, logoutUser, signupUser } from './auth.actions'
 import { selectErrorMessage, selectLoadStatus, selectUser } from './auth.selector'
 
 @Injectable({
@@ -24,7 +24,15 @@ export class AuthFacade {
     this.store$.dispatch(signupUser({ customerDraft }))
   }
 
+  public logout(): void {
+    this.store$.dispatch(logoutUser())
+  }
+
   public clearErrorMessage(): void {
     this.store$.dispatch(clearErrorMessage())
+  }
+
+  public initUserState(): void {
+    this.store$.dispatch(initUserState())
   }
 }

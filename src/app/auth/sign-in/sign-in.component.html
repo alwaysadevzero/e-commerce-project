@@ -17,7 +17,7 @@
       class="notification tui-space_vertical-4">
       {{ errorMessage }}
     </tui-notification>
-    <button tuiButton type="button" class="login-input tui-form__row" appearance="accent" [disabled]="!loginForm.valid"
+    <button tuiButton type="button" class="login-input tui-form__row" appearance="accent" [disabled]="loginForm.invalid"
       (click)="submitForm()">Sign in</button>
   </form>
   <p class="an-account">Don't have an account? <a routerLink="/sign-up">Sign up</a></p>

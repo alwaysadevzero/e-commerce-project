@@ -1,4 +1,4 @@
-import { isDevMode, NgModule } from '@angular/core'
+import { inject, isDevMode, NgModule } from '@angular/core'
 import { ReactiveFormsModule } from '@angular/forms'
 import { BrowserModule } from '@angular/platform-browser'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
@@ -13,6 +13,7 @@ import { NgDompurifySanitizer } from '@tinkoff/ng-dompurify'
 import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
 import { UserEffects } from './auth/state/auth.effects'
+import { AuthFacade } from './auth/state/auth.facade'
 import { userReducer } from './auth/state/auth.reducer'
 import { HeaderComponent } from './core/components/header/header.component'
 import { CoreModule } from './core/core.module'
@@ -40,4 +41,10 @@ import { CoreModule } from './core/core.module'
   providers: [{ provide: TUI_SANITIZER, useClass: NgDompurifySanitizer }],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule {
+  private authFacade: AuthFacade = inject(AuthFacade)
+
+  constructor() {
+    this.authFacade.initUserState()
+  }
+}

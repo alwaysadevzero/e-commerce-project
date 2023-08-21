@@ -8,6 +8,10 @@ export const loginUser = createAction(UserActionTypes.loginUser, props<{ user: U
 
 export const signupUser = createAction(UserActionTypes.signupUser, props<{ customerDraft: MyCustomerDraft }>())
 
+export const logoutUser = createAction(UserActionTypes.signupUser)
+
+export const initUserState = createAction(UserActionTypes.initUserState)
+
 export const loadUserSuccess = createAction(UserActionTypes.loadUserSuccess, props<{ customer: Customer }>())
 
 export const loadUserFailure = createAction(UserActionTypes.loadUserFailure, props<{ errorMessage: string }>())
