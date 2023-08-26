@@ -310,7 +310,7 @@ export class SignUpComponent {
       defaultShippingAddress,
       defaultBillingAddress,
     }
-    this.authFacade.signupUser(customerDraft)
+    this.authFacade.registerCustomer(customerDraft)
 
     const formValueChangesSubscription = this.registrationForm.valueChanges.subscribe(() => {
       this.authFacade.clearErrorMessage()

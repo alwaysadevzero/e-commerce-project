@@ -1,42 +1,46 @@
 import { inject, Injectable } from '@angular/core'
 import type { MyCustomerDraft } from '@commercetools/platform-sdk'
 import { Store } from '@ngrx/store'
+import { map } from 'rxjs'
 
-import { TokenStorageService } from '../../core/services/token-storage.service'
-import type { User } from '../../shared/models/user-data'
-import { clearErrorMessage, initUserState, loginUser, logoutUser, signupUser } from './auth.actions'
-import { selectErrorMessage, selectLoadStatus, selectUser } from './auth.selector'
+import type { CustomerCredential } from '../../shared/models/user-data.inteface'
+import { LoadStatus } from '../enums/load.enum'
+import { authActions } from './auth.actions'
+import { selectCustomer, selectErrorMessage, selectLoadStatus } from './auth.selector'
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthFacade {
   private store$ = inject(Store)
-  private tokenStorageService: TokenStorageService = inject(TokenStorageService)
 
-  public user$ = this.store$.select(selectUser)
+  public customer$ = this.store$.select(selectCustomer)
   public errorMessage$ = this.store$.select(selectErrorMessage)
-  public userLoadStatus$ = this.store$.select(selectLoadStatus)
+  public customerLoadStatus$ = this.store$.select(selectLoadStatus)
+  public customerIsLoaded$ = this.store$
+    .select(selectLoadStatus)
+    .pipe(map(userStatus => userStatus === LoadStatus.loaded))
+  public customerIsLoading$ = this.store$
+    .select(selectLoadStatus)
+    .pipe(map(userStatus => userStatus === LoadStatus.loading))
 
-  public loginUser(user: User): void {
-    this.store$.dispatch(loginUser({ user }))
+  public loginCustomer(customer: CustomerCredential): void {
+    this.store$.dispatch(authActions.loginCustomer(customer))
   }
 
-  public signupUser(customerDraft: MyCustomerDraft): void {
-    this.store$.dispatch(signupUser({ customerDraft }))
+  public registerCustomer(customerDraft: MyCustomerDraft): void {
+    this.store$.dispatch(authActions.registerCustomer(customerDraft))
   }
 
-  public logout(): void {
-    this.store$.dispatch(logoutUser())
+  public logoutCustomer(): void {
+    this.store$.dispatch(authActions.logoutCustomer())
   }
 
   public clearErrorMessage(): void {
-    this.store$.dispatch(clearErrorMessage())
+    this.store$.dispatch(authActions.clearErrorMessage())
   }
 
-  public initUserState(): void {
-    if (this.tokenStorageService.refreshToken) {
-      this.store$.dispatch(initUserState())
-    }
+  public initCustomerState(): void {
+    this.store$.dispatch(authActions.initCustomerState())
   }
 }

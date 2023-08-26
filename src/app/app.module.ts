@@ -23,7 +23,7 @@ import { CoreModule } from './core/core.module'
   imports: [
     BrowserModule,
     AppRoutingModule,
-    StoreModule.forRoot({ userState: userReducer }, {}),
+    StoreModule.forRoot({ customerState: userReducer }, {}),
     EffectsModule.forRoot([UserEffects]),
     BrowserAnimationsModule,
     TuiRootModule,
@@ -45,10 +45,6 @@ export class AppModule {
   private authFacade: AuthFacade = inject(AuthFacade)
 
   constructor() {
-    this.authFacade.initUserState()
-    // eslint-disable-next-line no-alert
-    alert(
-      'Привет! К сожалению тимлид 2 недели как остался один и пытается в соло дописать таску. Очень сильная просьба не проверять до 7-го сентября!',
-    )
+    this.authFacade.initCustomerState()
   }
 }

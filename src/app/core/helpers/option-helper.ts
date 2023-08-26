@@ -7,6 +7,7 @@ import {
 } from '@commercetools/sdk-client-v2'
 
 import { environment } from '../../../environments/environment'
+import { FlowTokenType } from '../../shared/enums/token-type.enum'
 import type { TokenStorageService } from '../services/token-storage.service'
 
 export class Options {
@@ -24,7 +25,15 @@ export class Options {
     }
   }
 
-  public getPasswordAuthMiddlewareOptions(username: string, password: string): PasswordAuthMiddlewareOptions {
+  public getPasswordAuthMiddlewareOptions({
+    username,
+    password,
+  }: {
+    username: string
+    password: string
+  }): PasswordAuthMiddlewareOptions {
+    this.tokenStorage.tokenType = FlowTokenType.refresh
+
     return {
       host: environment.AUTH_URL,
       projectKey: environment.PROJECT_KEY,
@@ -58,6 +67,8 @@ export class Options {
   }
 
   public getRefreshAuthMiddlewareOptions(token?: string): RefreshAuthMiddlewareOptions {
+    this.tokenStorage.tokenType = FlowTokenType.refresh
+
     return {
       host: environment.AUTH_URL,
       projectKey: environment.PROJECT_KEY,
@@ -69,10 +80,8 @@ export class Options {
     }
   }
 
-  public getAnonymousAuthMiddlewareOptions(clearToken = false): AnonymousAuthMiddlewareOptions {
-    if (clearToken) {
-      this.tokenStorage.clearToken()
-    }
+  public getAnonymousAuthMiddlewareOptions(): AnonymousAuthMiddlewareOptions {
+    this.tokenStorage.tokenType = FlowTokenType.anonymous
 
     return {
       host: environment.AUTH_URL,
@@ -81,7 +90,7 @@ export class Options {
         clientId: environment.CLIENT_ID,
         clientSecret: environment.CLIENT_SECRET,
       },
-      tokenCache: clearToken ? undefined : this.tokenStorage,
+      tokenCache: this.tokenStorage,
     }
   }
 }

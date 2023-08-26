@@ -94,7 +94,7 @@ export class SignInComponent {
 
     if (email && password) {
       const user = { username: email, password }
-      this.authFacade.loginUser(user)
+      this.authFacade.loginCustomer(user)
 
       const formValueChangesSubscription = this.loginForm.valueChanges.subscribe(() => {
         this.authFacade.clearErrorMessage()

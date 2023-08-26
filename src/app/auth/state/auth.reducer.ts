@@ -1,37 +1,36 @@
-import type { Customer } from '@commercetools/platform-sdk'
 import { createReducer, on } from '@ngrx/store'
 
 import { LoadStatus } from '../enums/load.enum'
-import {
-  clearErrorMessage,
-  initUserState,
-  loadUserFailure,
-  loadUserSuccess,
-  loginUser,
-  logoutUserSuccess,
-  signupUser,
-} from './auth.actions'
-import { userInitialState } from './constants/user-initial-state.const'
-import { type UserState } from './models/user-state'
+import { authActions } from './auth.actions'
+import { customerInitialState } from './constants/user-initial-state.const'
+import type { CustomerState } from './models/user-state'
 
 export const userReducer = createReducer(
-  userInitialState,
-  on(loginUser, (userState: UserState) => ({ ...userState, loadStatus: LoadStatus.loading })),
-  on(signupUser, (userState: UserState) => ({ ...userState, loadStatus: LoadStatus.loading })),
-  on(initUserState, (userState: UserState) => ({ ...userState, loadStatus: LoadStatus.loading })),
-  on(loadUserSuccess, (userState: UserState, action: { customer: Customer }) => ({
-    ...userState,
+  customerInitialState,
+  on(
+    authActions.loginCustomer,
+    authActions.registerCustomer,
+    authActions.initCustomerState,
+    authActions.loadAnonymousCustomer,
+    (customerState: CustomerState) => ({
+      ...customerState,
+      loadStatus: LoadStatus.loading,
+    }),
+  ),
+  on(authActions.loadCustomerSuccess, authActions.refreshCustomerSuccess, (customerState, { customer }) => ({
+    ...customerState,
     loadStatus: LoadStatus.loaded,
-    customer: action.customer,
+    customer,
+    errorMessage: null,
   })),
-  on(loadUserFailure, (userState: UserState, { errorMessage }) => ({
-    ...userState,
+  on(authActions.loadCustomerFailure, authActions.loadAnonymousCustomerFailure, (customerState, { errorMessage }) => ({
+    ...customerState,
     loadStatus: LoadStatus.notLoaded,
     errorMessage,
   })),
-  on(clearErrorMessage, (userState: UserState) => ({
-    ...userState,
+  on(authActions.clearErrorMessage, customerState => ({
+    ...customerState,
     errorMessage: null,
   })),
-  on(logoutUserSuccess, () => userInitialState),
+  on(authActions.loadAnonymousCustomerSuccess, () => customerInitialState),
 )

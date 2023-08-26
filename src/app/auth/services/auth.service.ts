@@ -1,11 +1,11 @@
 import { inject, Injectable } from '@angular/core'
-import type { Customer, MyCustomerDraft } from '@commercetools/platform-sdk'
+import type { Customer, MyCustomerDraft, Project } from '@commercetools/platform-sdk'
 import type { Observable } from 'rxjs'
 import { fromPromise } from 'rxjs/internal/observable/innerFrom'
 import { map } from 'rxjs/operators'
 
 import { ApiClientBuilderService } from '../../core/services/api-client-builder.service'
-import type { User } from '../../shared/models/user-data'
+import type { CustomerCredential } from '../../shared/models/user-data.inteface'
 
 @Injectable({
   providedIn: 'root',
@@ -13,15 +13,17 @@ import type { User } from '../../shared/models/user-data'
 export class AuthHttpService {
   private apiClientBuilderService: ApiClientBuilderService = inject(ApiClientBuilderService)
 
-  public login = (user: User): Observable<Customer> => {
-    const api = this.apiClientBuilderService.createApiClientWithPasswordFlow(user)
+  public login = (customerCredential: CustomerCredential): Observable<Customer> => {
+    const api = this.apiClientBuilderService.createApiClientWithPasswordFlow(customerCredential)
     this.apiClientBuilderService.apiWithPasswordFlow = api
 
     return fromPromise(
-      this.apiClientBuilderService.getApi
+      this.apiClientBuilderService.apiWithPasswordFlow
         .me()
         .login()
-        .post({ body: { email: user.username, password: user.password } })
+        .post({
+          body: { email: customerCredential.username, password: customerCredential.password },
+        })
         .execute(),
     ).pipe(map(({ body }) => body.customer))
   }
@@ -34,7 +36,7 @@ export class AuthHttpService {
     this.apiClientBuilderService.apiWithPasswordFlow = api
 
     return fromPromise(
-      this.apiClientBuilderService.getApi
+      this.apiClientBuilderService.apiWithPasswordFlow
         .me()
         .signup()
         .post({
@@ -44,13 +46,19 @@ export class AuthHttpService {
     ).pipe(map(({ body }) => body.customer))
   }
 
-  public logout(): Observable<Customer> {
-    return fromPromise(this.apiClientBuilderService.createApiClientWithAnonymousFlow().me().get().execute()).pipe(
-      map(({ body }) => body),
-    )
+  public getCustomer(): Observable<Customer> {
+    return fromPromise(this.apiClientBuilderService.getApi.me().get().execute()).pipe(map(({ body }) => body))
   }
 
-  public getProject(): Observable<Customer> {
-    return fromPromise(this.apiClientBuilderService.getApi.me().get().execute()).pipe(map(({ body }) => body))
+  public refreshCustomer(): Observable<Customer> {
+    this.apiClientBuilderService.setApi = this.apiClientBuilderService.createApiClientWithRefreshedToken()
+
+    return this.getCustomer()
+  }
+
+  public makeAnonymousCustomer(): Observable<Project> {
+    this.apiClientBuilderService.setApi = this.apiClientBuilderService.createApiClientWithAnonymousFlow()
+
+    return fromPromise(this.apiClientBuilderService.getApi.get().execute()).pipe(map(({ body }) => body))
   }
 }

@@ -1,11 +1,11 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store'
 
-import { type UserState } from './models/user-state'
+import type { CustomerState } from './models/user-state'
 
-const selectUserFeature = createFeatureSelector<UserState>('userState')
+const selectCustomerFeature = createFeatureSelector<CustomerState>('customerState')
 
-export const selectLoadStatus = createSelector(selectUserFeature, (userState: UserState) => userState.loadStatus)
+export const selectLoadStatus = createSelector(selectCustomerFeature, ({ loadStatus }) => loadStatus)
 
-export const selectUser = createSelector(selectUserFeature, (userState: UserState): UserState => userState)
+export const selectCustomer = createSelector(selectCustomerFeature, ({ customer }) => customer)
 
-export const selectErrorMessage = createSelector(selectUserFeature, (userState: UserState) => userState.errorMessage)
+export const selectErrorMessage = createSelector(selectCustomerFeature, ({ errorMessage }) => errorMessage)
