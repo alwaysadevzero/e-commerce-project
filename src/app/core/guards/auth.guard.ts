@@ -1,24 +1,28 @@
-import { inject, Injectable } from '@angular/core'
-import { type CanActivateFn, Router } from '@angular/router'
-import type { Observable } from 'rxjs'
-import { map, tap } from 'rxjs/operators'
+import { inject } from '@angular/core'
+import { type CanMatchFn, Router } from '@angular/router'
+import { filter, map, mergeMap } from 'rxjs/operators'
 
-import { LoadStatus } from '../../auth/enums/load.enum'
 import { AuthFacade } from '../../auth/state/auth.facade'
 
-@Injectable()
-export class AuthGuard {
-  private authFacade: AuthFacade = inject(AuthFacade)
-  private router: Router = inject(Router)
+export const authGuardFn: CanMatchFn = () => {
+  const router = inject(Router)
+  const authFacade = inject(AuthFacade)
 
-  public canActivate: CanActivateFn = (): Observable<boolean> => {
-    return this.authFacade.userLoadStatus$.pipe(
-      map(userStatus => userStatus === LoadStatus.notLoaded),
-      tap(userStatus => {
-        if (!userStatus) {
-          void this.router.navigateByUrl('main')
-        }
-      }),
-    )
-  }
+  return authFacade.customerIsLoading$.pipe(
+    filter(isLoading => !isLoading),
+    mergeMap(() => authFacade.customerIsLoaded$),
+    map(isLoaded => {
+      if (isLoaded) {
+        router.navigateByUrl('main').catch(error => {
+          if (error instanceof Error) {
+            return error.message
+          }
+
+          return null
+        })
+      }
+
+      return true
+    }),
+  )
 }

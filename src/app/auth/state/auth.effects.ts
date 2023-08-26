@@ -3,20 +3,13 @@ import { Router } from '@angular/router'
 import type { Customer } from '@commercetools/platform-sdk'
 import { Actions, createEffect, ofType } from '@ngrx/effects'
 import { of } from 'rxjs'
-import { catchError, map, switchMap, tap } from 'rxjs/operators'
+import { catchError, map, retry, switchMap } from 'rxjs/operators'
 
 import { ApiClientBuilderService } from '../../core/services/api-client-builder.service'
 import { TokenStorageService } from '../../core/services/token-storage.service'
+import { FlowTokenType } from '../../shared/enums/token-type.enum'
 import { AuthHttpService } from '../services/auth.service'
-import {
-  initUserState,
-  loadUserFailure,
-  loadUserSuccess,
-  loginUser,
-  logoutUser,
-  logoutUserSuccess,
-  signupUser,
-} from './auth.actions'
+import { authActions } from './auth.actions'
 
 @Injectable()
 export class UserEffects {
@@ -26,75 +19,111 @@ export class UserEffects {
   private apiClientBuilderService: ApiClientBuilderService = inject(ApiClientBuilderService)
   private router: Router = inject(Router)
 
-  initUserState$ = createEffect(() =>
+  initCustomerState$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(initUserState),
-      switchMap(() =>
-        this.authHttpService.getProject().pipe(
-          map((customer: Customer) => loadUserSuccess({ customer })),
-          catchError(() => {
-            this.tokenStorageService.currentToken = undefined
-            this.apiClientBuilderService.setApi = this.apiClientBuilderService.createApiClientWithAnonymousFlow()
+      ofType(authActions.initCustomerState),
+      switchMap(() => {
+        switch (this.tokenStorageService.tokenType) {
+          case FlowTokenType.refresh:
+            return of(authActions.refreshCustomer())
 
-            return this.authHttpService
-              .getProject()
-              .pipe(map((retryCustomer: Customer) => loadUserSuccess({ customer: retryCustomer })))
-          }),
-        ),
-      ),
+          default:
+            return of(authActions.loadAnonymousCustomer())
+        }
+      }),
     ),
   )
 
-  loginUser$ = createEffect(() =>
+  loginCustomer$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(loginUser),
-      switchMap(({ user }) =>
-        this.authHttpService.login(user).pipe(
-          map((customer: Customer) => loadUserSuccess({ customer })),
-          tap(() => {
-            this.tokenStorageService.currentToken = undefined
+      ofType(authActions.loginCustomer),
+      switchMap(({ customerCredential }) =>
+        this.authHttpService.login(customerCredential).pipe(
+          map((customer: Customer) => {
             this.apiClientBuilderService.setApi = this.apiClientBuilderService.apiWithPasswordFlow
-            this.authHttpService.getProject()
-            void this.router.navigateByUrl('main')
+            this.router.navigateByUrl('main').catch(error => {
+              throw error
+            })
+
+            return authActions.loadCustomerSuccess(customer)
           }),
-          catchError((error: string) => of(loadUserFailure({ errorMessage: error }))),
+          catchError((errorMessage: string) => of(authActions.loadCustomerFailure(errorMessage))),
         ),
       ),
     ),
   )
 
-  signupUser$ = createEffect(() =>
+  registerCustomer$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(signupUser),
+      ofType(authActions.registerCustomer),
       switchMap(({ customerDraft }) =>
         this.authHttpService.signup(customerDraft).pipe(
-          map((customer: Customer) => loadUserSuccess({ customer })),
-          tap(() => {
-            this.tokenStorageService.currentToken = undefined
+          map((customer: Customer) => {
             this.apiClientBuilderService.setApi = this.apiClientBuilderService.apiWithPasswordFlow
-            this.authHttpService.getProject()
-            void this.router.navigateByUrl('main')
+            this.router.navigateByUrl('main').catch(error => {
+              throw error
+            })
+
+            return authActions.loadCustomerSuccess(customer)
           }),
-          catchError((error: string) => of(loadUserFailure({ errorMessage: error }))),
+          retry(2),
+          catchError((errorMessage: string) => of(authActions.loadCustomerFailure(errorMessage))),
         ),
       ),
     ),
   )
 
-  logout$ = createEffect(() =>
+  loadAnonymousCustomer$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(logoutUser),
+      ofType(authActions.loadAnonymousCustomer),
       switchMap(() =>
-        this.authHttpService.logout().pipe(
-          map(() => logoutUserSuccess()),
-          tap(() => {
-            this.tokenStorageService.clearToken()
-            this.apiClientBuilderService.setApi = this.apiClientBuilderService.createApiClientWithAnonymousFlow()
-            void this.router.navigateByUrl('main')
-          }),
-          catchError((error: string) => of(loadUserFailure({ errorMessage: error }))),
+        this.authHttpService.makeAnonymousCustomer().pipe(
+          map(() => authActions.loadAnonymousCustomerSuccess()),
+          catchError(error => of(authActions.loadAnonymousCustomerFailure({ errorMessage: error as string }))),
         ),
       ),
+    ),
+  )
+
+  refreshCustomer$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(authActions.refreshCustomer),
+      switchMap(() =>
+        this.authHttpService.refreshCustomer().pipe(
+          map((customer: Customer) => authActions.loadCustomerSuccess(customer)),
+          catchError(() => of(authActions.refreshCustomerFailure())),
+        ),
+      ),
+    ),
+  )
+
+  refreshCustomerFailure$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(authActions.refreshCustomerFailure),
+      switchMap(() => of(authActions.loadAnonymousCustomer())),
+    ),
+  )
+
+  logoutCustomer$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(authActions.logoutCustomer),
+      switchMap(() => {
+        return of(authActions.loadAnonymousCustomer())
+      }),
+    ),
+  )
+
+  loadAnonymousUserFailure$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(authActions.loadAnonymousCustomerFailure),
+      switchMap(() => {
+        this.tokenStorageService.clearToken()
+
+        return this.authHttpService.makeAnonymousCustomer().pipe(
+          map(() => authActions.loadAnonymousCustomerSuccess()),
+          catchError(error => of(authActions.loadAnonymousCustomerFailure({ errorMessage: error as string }))),
+        )
+      }),
     ),
   )
 }

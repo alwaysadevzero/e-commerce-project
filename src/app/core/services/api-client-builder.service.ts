@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core'
+import { inject, Injectable } from '@angular/core'
 import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk'
 import { type ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder'
 import { ClientBuilder } from '@commercetools/sdk-client-v2'
 
 import { environment } from '../../../environments/environment'
-import type { User } from '../../shared/models/user-data'
+import type { CustomerCredential } from '../../shared/models/user-data.inteface'
 import { Options } from '../helpers/option-helper'
 import { TokenStorageService } from './token-storage.service'
 
@@ -12,16 +12,9 @@ import { TokenStorageService } from './token-storage.service'
   providedIn: 'root',
 })
 export class ApiClientBuilderService {
-  private api: ByProjectKeyRequestBuilder
+  private tokenStorageService = inject(TokenStorageService)
+  private api!: ByProjectKeyRequestBuilder
   public apiWithPasswordFlow!: ByProjectKeyRequestBuilder
-
-  constructor(private tokenStorageService: TokenStorageService) {
-    if (this.tokenStorageService.refreshToken) {
-      this.api = this.createApiClientWithRefreshedToken()
-    } else {
-      this.api = this.createApiClientWithAnonymousFlow()
-    }
-  }
 
   private options = new Options(this.tokenStorageService)
 
@@ -41,18 +34,14 @@ export class ApiClientBuilderService {
     })
   }
 
-  public createApiClientWithPasswordFlow(user: User): ByProjectKeyRequestBuilder {
-    const builder = new ClientBuilder().withPasswordFlow(
-      this.options.getPasswordAuthMiddlewareOptions(user.username, user.password),
-    )
+  public createApiClientWithPasswordFlow(customer: CustomerCredential): ByProjectKeyRequestBuilder {
+    const builder = new ClientBuilder().withPasswordFlow(this.options.getPasswordAuthMiddlewareOptions(customer))
 
     return this.createApiClient(builder)
   }
 
-  public createApiClientWithAnonymousFlow(clearToken = false): ByProjectKeyRequestBuilder {
-    const builder = new ClientBuilder().withAnonymousSessionFlow(
-      this.options.getAnonymousAuthMiddlewareOptions(clearToken),
-    )
+  public createApiClientWithAnonymousFlow(): ByProjectKeyRequestBuilder {
+    const builder = new ClientBuilder().withAnonymousSessionFlow(this.options.getAnonymousAuthMiddlewareOptions())
 
     return this.createApiClient(builder)
   }

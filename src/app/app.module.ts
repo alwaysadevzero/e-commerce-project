@@ -23,7 +23,7 @@ import { CoreModule } from './core/core.module'
   imports: [
     BrowserModule,
     AppRoutingModule,
-    StoreModule.forRoot({ userState: userReducer }, {}),
+    StoreModule.forRoot({ customerState: userReducer }, {}),
     EffectsModule.forRoot([UserEffects]),
     BrowserAnimationsModule,
     TuiRootModule,
@@ -45,6 +45,6 @@ export class AppModule {
   private authFacade: AuthFacade = inject(AuthFacade)
 
   constructor() {
-    this.authFacade.initUserState()
+    this.authFacade.initCustomerState()
   }
 }

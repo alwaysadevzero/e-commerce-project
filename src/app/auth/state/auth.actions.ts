@@ -1,21 +1,24 @@
 import type { Customer, MyCustomerDraft } from '@commercetools/platform-sdk'
-import { createAction, props } from '@ngrx/store'
+import { createActionGroup, emptyProps } from '@ngrx/store'
 
-import type { User } from '../../shared/models/user-data'
-import { CreateActionGroup } from '../enums/create-action-group.enum'
+import type { CustomerCredential } from '../../shared/models/user-data.inteface'
 
-export const loginUser = createAction(CreateActionGroup.loginUser, props<{ user: User }>())
-
-export const signupUser = createAction(CreateActionGroup.signupUser, props<{ customerDraft: MyCustomerDraft }>())
-
-export const logoutUser = createAction(CreateActionGroup.logoutUser)
-
-export const initUserState = createAction(CreateActionGroup.initUserState)
-
-export const loadUserSuccess = createAction(CreateActionGroup.loadUserSuccess, props<{ customer: Customer }>())
-
-export const loadUserFailure = createAction(CreateActionGroup.loadUserFailure, props<{ errorMessage: string }>())
-
-export const clearErrorMessage = createAction(CreateActionGroup.clearErrorMessage)
-
-export const logoutUserSuccess = createAction(CreateActionGroup.logoutUserSuccess)
+export const authActions = createActionGroup({
+  source: 'Customer',
+  events: {
+    /* eslint-disable @typescript-eslint/naming-convention */
+    'Login Customer': (customerCredential: CustomerCredential) => ({ customerCredential }),
+    'Register Customer': (customerDraft: MyCustomerDraft) => ({ customerDraft }),
+    'Logout Customer': emptyProps(),
+    'Init Customer State': emptyProps(),
+    'Refresh Customer': emptyProps(),
+    'Refresh Customer Success': (customer: Customer) => ({ customer }),
+    'Refresh Customer Failure': emptyProps(),
+    'Load Anonymous Customer': emptyProps(),
+    'Load Anonymous Customer Success': emptyProps(),
+    'Load Anonymous Customer Failure': ({ errorMessage }: { errorMessage: string }) => ({ errorMessage }),
+    'Load Customer Success': (customer: Customer) => ({ customer }),
+    'Load Customer Failure': (errorMessage: string) => ({ errorMessage }),
+    'Clear Error Message': emptyProps(),
+  },
+})
