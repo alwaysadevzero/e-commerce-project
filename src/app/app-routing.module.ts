@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core'
 import { RouterModule, type Routes } from '@angular/router'
 
 import { authGuardFn } from './core/guards/auth.guard'
+import { profileGuardFn } from './core/guards/profile.guard'
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'main' },
@@ -21,6 +22,12 @@ const routes: Routes = [
     title: 'Sign in',
     loadComponent: () => import('./auth/sign-in/sign-in.component').then(component => component.SignInComponent),
     canMatch: [authGuardFn],
+  },
+  {
+    path: 'profile',
+    title: 'Profile',
+    loadComponent: () => import('./profile/profile.component').then(component => component.ProfileComponent),
+    canMatch: [profileGuardFn],
   },
   {
     path: '**',

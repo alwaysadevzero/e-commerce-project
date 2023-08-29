@@ -20,7 +20,7 @@ export class HeaderComponent {
 
   activeItemIndex = 0
 
-  isLoggedIn$ = this.authFacade.customerLoadStatus$.pipe(map((status: LoadStatus) => status === LoadStatus.loaded))
+  isLoggedIn$ = this.authFacade.customerIsLoaded$
 
   public logout(): void {
     this.authFacade.logoutCustomer()
