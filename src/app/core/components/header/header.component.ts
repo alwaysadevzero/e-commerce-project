@@ -5,8 +5,8 @@ import { TuiButtonModule, TuiSvgModule } from '@taiga-ui/core'
 import { TuiTabsModule } from '@taiga-ui/kit'
 import { map } from 'rxjs'
 
-import { LoadStatus } from '../../../auth/enums/load.enum'
 import { AuthFacade } from '../../../auth/state/auth.facade'
+import { LoadStatus } from '../../enums/load.enum'
 
 @Component({
   selector: 'ec-header',

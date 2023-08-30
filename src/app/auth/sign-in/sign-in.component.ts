@@ -20,6 +20,7 @@ import {
   TuiTextAreaModule,
 } from '@taiga-ui/kit'
 
+import { CustomerFacade } from '../../core/store/customer/customer.facade'
 import { dataValidator } from '../../shared/validators'
 import { AuthModule } from '../auth.module'
 import { AuthFacade } from '../state/auth.facade'
@@ -53,7 +54,7 @@ import { AuthFacade } from '../state/auth.facade'
 export class SignInComponent {
   private formBuilder: FormBuilder = inject(FormBuilder)
   private authFacade: AuthFacade = inject(AuthFacade)
-
+  private customerFacade = inject(CustomerFacade)
   public error = this.authFacade.errorMessage$
 
   constructor() {
@@ -97,7 +98,7 @@ export class SignInComponent {
       this.authFacade.loginCustomer(user)
 
       const formValueChangesSubscription = this.loginForm.valueChanges.subscribe(() => {
-        this.authFacade.clearErrorMessage()
+        this.customerFacade.clearErrorMessage()
         formValueChangesSubscription.unsubscribe()
       })
     }

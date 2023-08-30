@@ -1,14 +1,15 @@
 import { inject } from '@angular/core'
 import { type CanMatchFn } from '@angular/router'
-import { map, mergeMap } from 'rxjs/operators'
+import { filter, map, mergeMap } from 'rxjs/operators'
 
-import { AuthFacade } from '../../auth/state/auth.facade'
+import { CustomerFacade } from '../store/customer/customer.facade'
 
 export const profileGuardFn: CanMatchFn = () => {
-  const authFacade = inject(AuthFacade)
+  const customerFacade = inject(CustomerFacade)
 
-  return authFacade.customerIsLoading$.pipe(
-    mergeMap(() => authFacade.customerIsLoaded$),
+  return customerFacade.customerIsLoading$.pipe(
+    filter(isLoading => !isLoading),
+    mergeMap(() => customerFacade.customerIsLoaded$),
     map(isLoaded => isLoaded),
   )
 }

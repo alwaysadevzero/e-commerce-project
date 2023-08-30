@@ -5,7 +5,7 @@ import { fromPromise } from 'rxjs/internal/observable/innerFrom'
 import { map } from 'rxjs/operators'
 
 import { ApiClientBuilderService } from '../../core/services/api-client-builder.service'
-import type { CustomerCredential } from '../../shared/models/user-data.inteface'
+import type { CustomerCredential } from '../../shared/models/customer-data.interface'
 
 @Injectable({
   providedIn: 'root',

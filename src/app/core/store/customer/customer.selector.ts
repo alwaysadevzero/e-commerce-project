@@ -1,6 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store'
 
-import type { CustomerState } from './models/user-state'
+import type { CustomerState } from './models/customer-state'
 
 const selectCustomerFeature = createFeatureSelector<CustomerState>('customerState')
 
