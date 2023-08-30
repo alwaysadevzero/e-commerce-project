@@ -7,12 +7,13 @@ import { catchError, map, retry, switchMap } from 'rxjs/operators'
 
 import { ApiClientBuilderService } from '../../core/services/api-client-builder.service'
 import { TokenStorageService } from '../../core/services/token-storage.service'
+import { customerActions } from '../../core/store/customer/customer.actions'
 import { FlowTokenType } from '../../shared/enums/token-type.enum'
 import { AuthHttpService } from '../services/auth.service'
 import { authActions } from './auth.actions'
 
 @Injectable()
-export class UserEffects {
+export class AuthEffects {
   private actions$ = inject(Actions)
   private tokenStorageService: TokenStorageService = inject(TokenStorageService)
   private authHttpService: AuthHttpService = inject(AuthHttpService)
@@ -45,9 +46,9 @@ export class UserEffects {
               throw error
             })
 
-            return authActions.loadCustomerSuccess(customer)
+            return customerActions.loadCustomerSuccess(customer)
           }),
-          catchError((errorMessage: string) => of(authActions.loadCustomerFailure(errorMessage))),
+          catchError((errorMessage: string) => of(customerActions.loadCustomerFailure(errorMessage))),
         ),
       ),
     ),
@@ -64,10 +65,9 @@ export class UserEffects {
               throw error
             })
 
-            return authActions.loadCustomerSuccess(customer)
+            return customerActions.loadCustomerSuccess(customer)
           }),
-          retry(2),
-          catchError((errorMessage: string) => of(authActions.loadCustomerFailure(errorMessage))),
+          catchError((errorMessage: string) => of(customerActions.loadCustomerFailure(errorMessage))),
         ),
       ),
     ),
@@ -78,8 +78,9 @@ export class UserEffects {
       ofType(authActions.loadAnonymousCustomer),
       switchMap(() =>
         this.authHttpService.makeAnonymousCustomer().pipe(
-          map(() => authActions.loadAnonymousCustomerSuccess()),
-          catchError(error => of(authActions.loadAnonymousCustomerFailure({ errorMessage: error as string }))),
+          map(() => customerActions.resetCustomerState()),
+          retry(2),
+          catchError((errorMessage: string) => of(customerActions.loadCustomerFailure(errorMessage))),
         ),
       ),
     ),
@@ -90,17 +91,10 @@ export class UserEffects {
       ofType(authActions.refreshCustomer),
       switchMap(() =>
         this.authHttpService.refreshCustomer().pipe(
-          map((customer: Customer) => authActions.loadCustomerSuccess(customer)),
-          catchError(() => of(authActions.refreshCustomerFailure())),
+          map((customer: Customer) => customerActions.loadCustomerSuccess(customer)),
+          catchError(() => of(authActions.loadAnonymousCustomer())),
         ),
       ),
-    ),
-  )
-
-  refreshCustomerFailure$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(authActions.refreshCustomerFailure),
-      switchMap(() => of(authActions.loadAnonymousCustomer())),
     ),
   )
 
@@ -109,20 +103,6 @@ export class UserEffects {
       ofType(authActions.logoutCustomer),
       switchMap(() => {
         return of(authActions.loadAnonymousCustomer())
-      }),
-    ),
-  )
-
-  loadAnonymousUserFailure$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(authActions.loadAnonymousCustomerFailure),
-      switchMap(() => {
-        this.tokenStorageService.clearToken()
-
-        return this.authHttpService.makeAnonymousCustomer().pipe(
-          map(() => authActions.loadAnonymousCustomerSuccess()),
-          catchError(error => of(authActions.loadAnonymousCustomerFailure({ errorMessage: error as string }))),
-        )
       }),
     ),
   )

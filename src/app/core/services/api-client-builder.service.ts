@@ -4,7 +4,7 @@ import { type ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dis
 import { ClientBuilder } from '@commercetools/sdk-client-v2'
 
 import { environment } from '../../../environments/environment'
-import type { CustomerCredential } from '../../shared/models/user-data.inteface'
+import type { CustomerCredential } from '../../shared/models/customer-data.interface'
 import { Options } from '../helpers/option-helper'
 import { TokenStorageService } from './token-storage.service'
 
