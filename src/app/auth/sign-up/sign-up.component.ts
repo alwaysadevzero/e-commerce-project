@@ -27,8 +27,6 @@ import type { Subscription } from 'rxjs'
 
 import { CustomerFacade } from '../../core/store/customer/customer.facade'
 import { dataValidator } from '../../shared/validators'
-import { AuthHttpService } from '../services/auth.service'
-import { AuthFacade } from '../state/auth.facade'
 
 @Component({
   selector: 'ec-sign-up',
@@ -61,12 +59,10 @@ import { AuthFacade } from '../state/auth.facade'
 })
 export class SignUpComponent {
   countries: string[] = ['United States (US)', 'Canada (CA)']
-  private formBuilder: FormBuilder = inject(FormBuilder)
-  private authHttpService: AuthHttpService = inject(AuthHttpService)
-  private authFacade: AuthFacade = inject(AuthFacade)
+  private formBuilder = inject(FormBuilder)
   private customerFacade = inject(CustomerFacade)
 
-  public error = this.authFacade.errorMessage$
+  public error = this.customerFacade.errorMessage$
 
   private shippingToBillingSubscriptions: Subscription[] = []
   public registrationForm = this.formBuilder.group({
@@ -312,7 +308,7 @@ export class SignUpComponent {
       defaultShippingAddress,
       defaultBillingAddress,
     }
-    this.authFacade.registerCustomer(customerDraft)
+    this.customerFacade.registerCustomer(customerDraft)
 
     const formValueChangesSubscription = this.registrationForm.valueChanges.subscribe(() => {
       this.customerFacade.clearErrorMessage()

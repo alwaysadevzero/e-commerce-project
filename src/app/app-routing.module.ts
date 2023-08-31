@@ -4,7 +4,6 @@ import { EffectsModule } from '@ngrx/effects'
 
 import { authGuardFn } from './core/guards/auth.guard'
 import { profileGuardFn } from './core/guards/profile.guard'
-import { ProfileEffects } from './profile/state/profile.effects'
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'main' },
@@ -29,7 +28,6 @@ const routes: Routes = [
     path: 'profile',
     title: 'Profile',
     loadComponent: () => import('./profile/profile.component').then(component => component.ProfileComponent),
-    providers: [importProvidersFrom(EffectsModule.forFeature([ProfileEffects]))],
     canMatch: [profileGuardFn],
   },
   {

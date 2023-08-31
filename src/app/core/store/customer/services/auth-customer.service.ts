@@ -4,8 +4,8 @@ import type { Observable } from 'rxjs'
 import { fromPromise } from 'rxjs/internal/observable/innerFrom'
 import { map } from 'rxjs/operators'
 
-import { ApiClientBuilderService } from '../../core/services/api-client-builder.service'
-import type { CustomerCredential } from '../../shared/models/customer-data.interface'
+import type { CustomerCredential } from '../../../../shared/models/customer-data.interface'
+import { ApiClientBuilderService } from '../../../services/api-client-builder.service'
 
 @Injectable({
   providedIn: 'root',
@@ -28,7 +28,7 @@ export class AuthHttpService {
     ).pipe(map(({ body }) => body.customer))
   }
 
-  public signup(customerDraft: MyCustomerDraft): Observable<Customer> {
+  public register(customerDraft: MyCustomerDraft): Observable<Customer> {
     const api = this.apiClientBuilderService.createApiClientWithPasswordFlow({
       username: customerDraft.email,
       password: customerDraft.password,
@@ -36,7 +36,7 @@ export class AuthHttpService {
     this.apiClientBuilderService.apiWithPasswordFlow = api
 
     return fromPromise(
-      this.apiClientBuilderService.apiWithPasswordFlow
+      this.apiClientBuilderService.getApi
         .me()
         .signup()
         .post({
@@ -60,5 +60,9 @@ export class AuthHttpService {
     this.apiClientBuilderService.setApi = this.apiClientBuilderService.createApiClientWithAnonymousFlow()
 
     return fromPromise(this.apiClientBuilderService.getApi.get().execute()).pipe(map(({ body }) => body))
+  }
+
+  public setDefaultApiPasswordFlow(): void {
+    this.apiClientBuilderService.setApi = this.apiClientBuilderService.apiWithPasswordFlow
   }
 }

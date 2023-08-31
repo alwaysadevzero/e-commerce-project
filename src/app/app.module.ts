@@ -12,9 +12,9 @@ import { NgDompurifySanitizer } from '@tinkoff/ng-dompurify'
 
 import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
-import { AuthEffects } from './auth/state/auth.effects'
 import { HeaderComponent } from './core/components/header/header.component'
 import { CoreModule } from './core/core.module'
+import { CustomerEffects } from './core/store/customer/customer.effects'
 import { CustomerFacade } from './core/store/customer/customer.facade'
 import { customerReducer } from './core/store/customer/customer.reducer'
 
@@ -24,7 +24,7 @@ import { customerReducer } from './core/store/customer/customer.reducer'
     BrowserModule,
     AppRoutingModule,
     StoreModule.forRoot({ customerState: customerReducer }),
-    EffectsModule.forRoot([AuthEffects]),
+    EffectsModule.forRoot([CustomerEffects]),
     BrowserAnimationsModule,
     TuiRootModule,
     TuiDialogModule,

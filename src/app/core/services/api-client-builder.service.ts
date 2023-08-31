@@ -5,7 +5,7 @@ import { ClientBuilder } from '@commercetools/sdk-client-v2'
 
 import { environment } from '../../../environments/environment'
 import type { CustomerCredential } from '../../shared/models/customer-data.interface'
-import { Options } from '../helpers/option-helper'
+import { Options } from '../helpers/option.helper'
 import { TokenStorageService } from './token-storage.service'
 
 @Injectable({

@@ -3,10 +3,8 @@ import { Component, inject } from '@angular/core'
 import { RouterModule } from '@angular/router'
 import { TuiButtonModule, TuiSvgModule } from '@taiga-ui/core'
 import { TuiTabsModule } from '@taiga-ui/kit'
-import { map } from 'rxjs'
 
-import { AuthFacade } from '../../../auth/state/auth.facade'
-import { LoadStatus } from '../../enums/load.enum'
+import { CustomerFacade } from '../../store/customer/customer.facade'
 
 @Component({
   selector: 'ec-header',
@@ -16,13 +14,13 @@ import { LoadStatus } from '../../enums/load.enum'
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent {
-  private authFacade: AuthFacade = inject(AuthFacade)
+  private customerFacade = inject(CustomerFacade)
 
   activeItemIndex = 0
 
-  isLoggedIn$ = this.authFacade.customerIsLoaded$
+  isLoggedIn$ = this.customerFacade.customerIsLoaded$
 
   public logout(): void {
-    this.authFacade.logoutCustomer()
+    this.customerFacade.logoutCustomer()
   }
 }

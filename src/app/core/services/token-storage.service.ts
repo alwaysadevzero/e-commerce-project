@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core'
 import type { TokenCache, TokenStore } from '@commercetools/sdk-client-v2'
 
 import { FlowTokenType } from '../../shared/enums/token-type.enum'
-import type { AuthTokenStore } from '../../shared/models/token-type.inteface'
+import type { AuthTokenStore } from '../../shared/models/token-type.interface'
 import { LocalStorage } from './storage.service'
 
 const TOKEN_STORAGE_KEY = 'ct-anonymous-token'
