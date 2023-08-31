@@ -1,9 +1,9 @@
 import { inject, Injectable } from '@angular/core'
 import { Router } from '@angular/router'
-import type { Customer, MyCustomerChangePassword } from '@commercetools/platform-sdk'
+import type { Customer } from '@commercetools/platform-sdk'
 import { Actions, createEffect, ofType } from '@ngrx/effects'
 import { of } from 'rxjs'
-import { catchError, filter, first, map, mergeMap, switchMap, tap } from 'rxjs/operators'
+import { catchError, filter, first, map, mergeMap, switchMap } from 'rxjs/operators'
 
 import { AuthHttpService } from '../../auth/services/auth.service'
 import { authActions } from '../../auth/state/auth.actions'
@@ -37,7 +37,7 @@ export class ProfileEffects {
           map((customer: Customer) => {
             this.tokenStorage.clearToken()
 
-            return authActions.loginCustomer({ username: customer.email, password: passwordCredential.newPassword })
+            return authActions.reloginCustomer({ username: customer.email, password: passwordCredential.newPassword })
           }),
           catchError((errorMessage: string) => of(profileActions.changePasswordFailure(errorMessage))),
         ),
@@ -48,6 +48,7 @@ export class ProfileEffects {
   changePasswordFailure$ = createEffect(() =>
     this.actions$.pipe(
       ofType(profileActions.changePasswordFailure),
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       mergeMap(({ errorMessage }) => of(customerActions.setErrorMessage(errorMessage))),
     ),
   )

@@ -54,6 +54,22 @@ export class AuthEffects {
     ),
   )
 
+  reLoginCustomer$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(authActions.reloginCustomer),
+      switchMap(({ customerCredential }) =>
+        this.authHttpService.login(customerCredential).pipe(
+          map((customer: Customer) => {
+            this.apiClientBuilderService.setApi = this.apiClientBuilderService.apiWithPasswordFlow
+
+            return customerActions.loadCustomerSuccess(customer)
+          }),
+          catchError((errorMessage: string) => of(customerActions.loadCustomerFailure(errorMessage))),
+        ),
+      ),
+    ),
+  )
+
   registerCustomer$ = createEffect(() =>
     this.actions$.pipe(
       ofType(authActions.registerCustomer),

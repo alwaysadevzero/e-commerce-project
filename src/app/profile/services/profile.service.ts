@@ -1,10 +1,5 @@
 import { inject, Injectable } from '@angular/core'
-import type {
-  Customer,
-  MyCustomerChangePassword,
-  MyCustomerUpdate,
-  MyCustomerUpdateAction,
-} from '@commercetools/platform-sdk'
+import type { Customer, MyCustomerChangePassword, MyCustomerUpdate } from '@commercetools/platform-sdk'
 import { distinctUntilChanged, filter, map, type Observable, tap } from 'rxjs'
 import { fromPromise } from 'rxjs/internal/observable/innerFrom'
 

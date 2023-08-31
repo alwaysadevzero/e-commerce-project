@@ -8,6 +8,8 @@ export const authActions = createActionGroup({
   events: {
     /* eslint-disable @typescript-eslint/naming-convention */
     'Login Customer': (customerCredential: CustomerCredential) => ({ customerCredential }),
+    'Relogin Customer': (customerCredential: CustomerCredential) => ({ customerCredential }),
+    'Update Customer': emptyProps(),
     'Register Customer': (customerDraft: MyCustomerDraft) => ({ customerDraft }),
     'Logout Customer': emptyProps(),
     'Init Customer State': emptyProps(),
