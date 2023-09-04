@@ -1,4 +1,5 @@
 import type {
+  Address,
   BaseAddress,
   MyCustomerAddAddressAction,
   MyCustomerChangeAddressAction,
@@ -12,15 +13,45 @@ import type {
   MyCustomerUpdateAction,
 } from '@commercetools/platform-sdk'
 
-export class CustomerUpdate {
-  private actions!: MyCustomerUpdateAction[]
+import type { CustomerAddress, CustomerDetails } from '../../shared/models/customer-data.interface'
+
+export class Detail {
+  private actions: MyCustomerUpdateAction[] = []
 
   public getActions(): MyCustomerUpdateAction[] {
-    return this.actions
+    const actionArr = this.actions
+    this.actions = []
+
+    return actionArr
   }
 
-  public clearActions(): void {
-    this.actions = []
+  public getCustomerDetailActions(customerDetail: CustomerDetails): MyCustomerUpdateAction[] {
+    const { firstName, lastName, email, dateOfBirth } = customerDetail
+    this.email(email)
+    this.firstName(firstName)
+    this.lastName(lastName)
+    this.dateOfBirth(dateOfBirth)
+
+    return this.getActions()
+  }
+
+  public getCustomerChangeAddressActions(customerAddress: CustomerAddress): MyCustomerUpdateAction[] {
+    const address: Address = customerAddress
+    this.changeAddress(customerAddress.addressId, address)
+
+    return this.getActions()
+  }
+
+  public getCustomerRemoveAddressActions(addressId: string): MyCustomerUpdateAction[] {
+    this.removeAddress(addressId)
+
+    return this.getActions()
+  }
+
+  public getCustomerAddAddressActions(address: Address): MyCustomerUpdateAction[] {
+    this.addAddress(address)
+
+    return this.getActions()
   }
 
   public email(email: string): void {
@@ -62,7 +93,7 @@ export class CustomerUpdate {
     this.actions.push(action)
   }
 
-  public changeAddress(address: BaseAddress, addressId: string): void {
+  public changeAddress(addressId: string, address: Address): void {
     const action: MyCustomerChangeAddressAction = {
       action: 'changeAddress',
       addressId,

@@ -1,5 +1,5 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing'
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing'
+import { type ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing'
 import { ReactiveFormsModule } from '@angular/forms'
 import { RouterTestingModule } from '@angular/router/testing'
 import { ScannedActionsSubject, Store } from '@ngrx/store'
@@ -7,7 +7,6 @@ import { TuiButtonModule } from '@taiga-ui/core'
 import { TuiDataListWrapperModule, TuiFieldErrorPipeModule, TuiInputModule } from '@taiga-ui/kit'
 import { of } from 'rxjs'
 
-// added for mocking http calls
 import { SignUpComponent } from './sign-up.component'
 
 describe('SignUpComponent', () => {
@@ -23,7 +22,7 @@ describe('SignUpComponent', () => {
         TuiButtonModule,
         TuiDataListWrapperModule,
         TuiFieldErrorPipeModule,
-        HttpClientTestingModule, // Mocking potential HTTP calls made by the component
+        HttpClientTestingModule,
       ],
       providers: [
         {
@@ -34,7 +33,8 @@ describe('SignUpComponent', () => {
           },
         },
         {
-          provide: ScannedActionsSubject, // Providing a mocked version of ScannedActionsSubject
+          provide: ScannedActionsSubject,
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           useValue: jasmine.createSpyObj('ScannedActionsSubject', ['next', 'subscribe']),
         },
       ],

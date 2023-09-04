@@ -1,10 +1,15 @@
 import { inject, Injectable } from '@angular/core'
-import type { MyCustomerDraft } from '@commercetools/platform-sdk'
+import type { Address, MyCustomerDraft } from '@commercetools/platform-sdk'
 import { Actions, ofType } from '@ngrx/effects'
 import { Store } from '@ngrx/store'
-import { map, mapTo } from 'rxjs'
+import { map } from 'rxjs'
 
-import type { CustomerCredential, PasswordCredential } from '../../../shared/models/customer-data.interface'
+import type {
+  CustomerAddress,
+  CustomerCredential,
+  CustomerDetails,
+  PasswordCredential,
+} from '../../../shared/models/customer-data.interface'
 import { LoadStatus } from '../../enums/load.enum'
 import { customerActions } from './customer.actions'
 import { selectCustomer, selectErrorMessage, selectLoadStatus } from './customer.selector'
@@ -18,6 +23,14 @@ export class CustomerFacade {
   public customer$ = this.store$.select(selectCustomer)
   public errorMessage$ = this.store$.select(selectErrorMessage)
   public customerLoadStatus$ = this.store$.select(selectLoadStatus)
+  public customerSucceedRemoveAddress$ = this.actions$.pipe(
+    ofType(customerActions.removeAddressSuccess),
+    map(() => true),
+  )
+  public customerSucceedAddAddress$ = this.actions$.pipe(
+    ofType(customerActions.addAddressSuccess),
+    map(() => true),
+  )
   public customerIsLoaded$ = this.store$
     .select(selectLoadStatus)
     .pipe(map(userStatus => userStatus === LoadStatus.loaded))
@@ -28,6 +41,11 @@ export class CustomerFacade {
     ofType(customerActions.changePasswordCustomerSuccess),
     map(() => true),
   )
+  public detailsUpdated$ = this.actions$.pipe(
+    ofType(customerActions.updateDetailsSuccess),
+    map(() => true),
+  )
+  public addresses$ = this.customer$.pipe(map(customer => customer?.addresses))
 
   public clearErrorMessage(): void {
     this.store$.dispatch(customerActions.clearErrorMessage())
@@ -51,5 +69,21 @@ export class CustomerFacade {
 
   public customerChangePassword(passwordCredential: PasswordCredential): void {
     this.store$.dispatch(customerActions.changePasswordCustomer(passwordCredential))
+  }
+
+  public updateDetails(customerDetails: CustomerDetails): void {
+    this.store$.dispatch(customerActions.updateDetails(customerDetails))
+  }
+
+  public changeAddress(customerAddress: CustomerAddress): void {
+    this.store$.dispatch(customerActions.changeAddress(customerAddress))
+  }
+
+  public removeAddress(addressId: string): void {
+    this.store$.dispatch(customerActions.removeAddress(addressId))
+  }
+
+  public addAddress(address: Address): void {
+    this.store$.dispatch(customerActions.addAddress(address))
   }
 }

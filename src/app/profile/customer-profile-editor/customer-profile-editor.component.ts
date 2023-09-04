@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common'
 import { Component, inject, Injector, type OnDestroy } from '@angular/core'
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms'
-import { TuiDay } from '@taiga-ui/cdk'
+import { TuiDay, TuiInvalidDayException } from '@taiga-ui/cdk'
 import {
   TuiButtonModule,
   TuiDialogService,
@@ -21,7 +21,7 @@ import {
 } from '@taiga-ui/kit'
 import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus'
 import type { Subscription } from 'rxjs'
-import { take, tap } from 'rxjs/operators'
+import { distinctUntilChanged, filter, first, take, tap } from 'rxjs/operators'
 
 import { CustomerFacade } from '../../core/store/customer/customer.facade'
 import { dataValidator } from '../../shared/validators'
@@ -53,11 +53,10 @@ import { PasswordChangeDialogComponent } from '../password-change-dialog/passwor
 
   standalone: true,
 })
-export class CustomerProfileEditorComponent implements OnDestroy {
+export class CustomerProfileEditorComponent {
   private customerFacade = inject(CustomerFacade)
   private dialogs = inject(TuiDialogService)
   private injector = inject(Injector)
-  private customerSubscription: Subscription | undefined
   public editMode = false
 
   profileForm = new FormGroup({
@@ -88,9 +87,9 @@ export class CustomerProfileEditorComponent implements OnDestroy {
   }
 
   private updateProfileForm(): void {
-    this.customerSubscription = this.customerFacade.customer$
+    this.customerFacade.customer$
       .pipe(
-        take(1),
+        first(),
         tap(customer => {
           if (customer) {
             const { firstName, lastName, dateOfBirth, email } = customer
@@ -106,15 +105,30 @@ export class CustomerProfileEditorComponent implements OnDestroy {
       .subscribe()
   }
 
-  ngOnDestroy(): void {
-    if (this.customerSubscription) {
-      this.customerSubscription.unsubscribe()
-    }
-  }
-
   onSubmit(): void {
-    console.warn(this.profileForm.value)
-    this.updateProfileForm()
+    const { email, firstName, lastName, dateOfBirth } = this.profileForm.getRawValue()
+
+    if (email && firstName && lastName && dateOfBirth) {
+      this.customerFacade.updateDetails({
+        email,
+        firstName,
+        lastName,
+        dateOfBirth: dateOfBirth.toJSON(),
+      })
+
+      this.customerFacade.detailsUpdated$
+        .pipe(
+          filter(updated => updated),
+          first(),
+          tap(updated => {
+            if (updated) {
+              this.updateProfileForm()
+              this.profileForm.disable()
+            }
+          }),
+        )
+        .subscribe()
+    }
   }
 
   toggleEditMode(): void {

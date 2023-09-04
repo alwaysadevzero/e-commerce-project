@@ -36,7 +36,6 @@ import { dataValidator } from '../../shared/validators'
 export class PasswordChangeDialogComponent {
   private alertService = inject(TuiAlertService)
   private customerFacade = inject(CustomerFacade)
-  private formBuilder = inject(FormBuilder)
   public error = this.customerFacade.errorMessage$
 
   passwordForm = new FormGroup({

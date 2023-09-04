@@ -3,7 +3,7 @@ import { Router } from '@angular/router'
 import type { Customer } from '@commercetools/platform-sdk'
 import { Actions, createEffect, ofType } from '@ngrx/effects'
 import { of } from 'rxjs'
-import { catchError, filter, first, map, retry, switchMap } from 'rxjs/operators'
+import { catchError, filter, first, map, mergeMap, retry, switchMap } from 'rxjs/operators'
 
 import { FlowTokenType } from '../../../shared/enums/token-type.enum'
 import { ApiClientBuilderService } from '../../services/api-client-builder.service'
@@ -19,7 +19,6 @@ export class CustomerEffects {
   private tokenStorageService = inject(TokenStorageService)
   private authHttpService = inject(AuthHttpService)
   private profileHttpService = inject(ProfileHttpService)
-  private apiClientBuilderService = inject(ApiClientBuilderService)
   private router = inject(Router)
   private customerFacade = inject(CustomerFacade)
 
@@ -117,6 +116,10 @@ export class CustomerEffects {
     this.actions$.pipe(
       ofType(customerActions.logoutCustomer, customerActions.refreshCustomerFailure),
       switchMap(() => {
+        this.router.navigateByUrl('main').catch(error => {
+          throw error
+        })
+
         return of(customerActions.loadAnonymousCustomer())
       }),
     ),
@@ -164,6 +167,77 @@ export class CustomerEffects {
 
         return customerActions.reloginCustomer(customerCredential)
       }),
+    ),
+  )
+
+  customerUpdateDetails$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(customerActions.updateDetails),
+      switchMap(({ customerDetails }) =>
+        this.customerFacade.customer$.pipe(
+          filter((customer): customer is Customer => customer !== null),
+          first(),
+          switchMap((customer: Customer) =>
+            this.profileHttpService.updateDetails(customer.version, customerDetails).pipe(
+              map(updatedCustomer => customerActions.updateDetailsSuccess(updatedCustomer)),
+              catchError((errorMessage: string) => of(customerActions.updateDetailsFailure(errorMessage))),
+            ),
+          ),
+        ),
+      ),
+    ),
+  )
+  customerChangeAddress$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(customerActions.changeAddress),
+      switchMap(({ customerAddress }) =>
+        this.customerFacade.customer$.pipe(
+          filter((customer): customer is Customer => customer !== null),
+          first(),
+          switchMap((customer: Customer) =>
+            this.profileHttpService.changeAddress(customer.version, customerAddress).pipe(
+              map(updatedCustomer => customerActions.changeAddressSuccess(updatedCustomer)),
+              catchError((errorMessage: string) => of(customerActions.changeAddressFailure(errorMessage))),
+            ),
+          ),
+        ),
+      ),
+    ),
+  )
+
+  customerRemoveAddress$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(customerActions.removeAddress),
+      switchMap(({ addressId }) =>
+        this.customerFacade.customer$.pipe(
+          filter((customer): customer is Customer => customer !== null),
+          first(),
+          switchMap((customer: Customer) =>
+            this.profileHttpService.removeAddress(customer.version, addressId).pipe(
+              map(updatedCustomer => customerActions.removeAddressSuccess(updatedCustomer)),
+              catchError((errorMessage: string) => of(customerActions.removeAddressFailure(errorMessage))),
+            ),
+          ),
+        ),
+      ),
+    ),
+  )
+
+  customerAddAddress = createEffect(() =>
+    this.actions$.pipe(
+      ofType(customerActions.addAddress),
+      switchMap(({ address }) =>
+        this.customerFacade.customer$.pipe(
+          filter((customer): customer is Customer => customer !== null),
+          first(),
+          switchMap((customer: Customer) =>
+            this.profileHttpService.addAddress(customer.version, address).pipe(
+              map(updatedCustomer => customerActions.addAddressSuccess(updatedCustomer)),
+              catchError((errorMessage: string) => of(customerActions.addAddressFailure(errorMessage))),
+            ),
+          ),
+        ),
+      ),
     ),
   )
 }

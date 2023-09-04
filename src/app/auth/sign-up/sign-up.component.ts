@@ -309,7 +309,7 @@ export class SignUpComponent {
       defaultBillingAddress,
     }
     this.customerFacade.registerCustomer(customerDraft)
-
+    console.log(addresses)
     const formValueChangesSubscription = this.registrationForm.valueChanges.subscribe(() => {
       this.customerFacade.clearErrorMessage()
       formValueChangesSubscription.unsubscribe()

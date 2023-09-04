@@ -1,14 +1,33 @@
 <section class="profile tui-form__row tui-space_bottom-3 uiIsland">
   <div class="profile-container tui-radius-m tui-space_top-5 tui-space_bottom-5">
-    <tui-marker-icon
-      size="s"
-      src="tuiIconUserLarge"
-      class="tui-island__marker"
-      [style.color]="'yellowgreen'"
-    ></tui-marker-icon>
-    <h3 class="">User Profile</h3>
+    <div class="profile-title">
+      <tui-marker-icon
+        size="m"
+        src="tuiIconUserLarge"
+        class="tui-island__marker"
+        [style.color]="'yellowgreen'"
+      ></tui-marker-icon>
+      <h3 class="tui-text_h3">User Profile</h3>
+    </div>
+
+    <div class="profile-addaddress">
+      <tui-island textAlign="right" (click)="openAddressDialog()" class="profile-addaddress">
+        <h3>Add address</h3>
+        <tui-marker-icon
+          size="xxs"
+          src="tuiIconAddRowLarge"
+          class="tui-island__marker"
+          [style.color]="'yellowgreen'"
+        ></tui-marker-icon>
+      </tui-island>
+    </div>
   </div>
   <div class="profile-editor">
     <ec-customer-profile-editor></ec-customer-profile-editor>
+    <ec-address-profile
+      *ngFor="let address of addresses$ | async; let i = index"
+      [address]="address"
+      class="profile-address"
+    ></ec-address-profile>
   </div>
 </section>

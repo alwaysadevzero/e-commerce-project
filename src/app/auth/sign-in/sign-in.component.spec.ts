@@ -35,7 +35,8 @@ describe('SignInComponent', () => {
         },
         {
           provide: ScannedActionsSubject,
-          useValue: jasmine.createSpyObj('ScannedActionsSubject', ['next', 'subscribe']), // mock methods you use from ScannedActionsSubject
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          useValue: jasmine.createSpyObj('ScannedActionsSubject', ['next', 'subscribe']),
         },
         CustomerFacade,
       ],

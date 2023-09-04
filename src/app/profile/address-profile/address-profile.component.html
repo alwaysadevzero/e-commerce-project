@@ -1,0 +1,10 @@
+<div class="address-form">
+  <tui-island textAlign="right">
+    <div class="address-icons">
+      <tui-marker-icon size="xxs" mode="primary" src="tuiIconSettings" (click)="toggleEditMode()"> </tui-marker-icon>
+      <tui-marker-icon size="xxs" mode="primary" src="tuiIconDelete" (click)="removeAddress()"> </tui-marker-icon>
+    </div>
+    <ec-address-form [address]="address" [editMode]="editMode" (formSubmit)="onAddressFormSubmit($event)">
+    </ec-address-form>
+  </tui-island>
+</div>

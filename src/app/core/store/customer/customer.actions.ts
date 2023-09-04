@@ -1,8 +1,13 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import type { Customer, MyCustomerDraft } from '@commercetools/platform-sdk'
+import type { BaseAddress, Customer, MyCustomerDraft } from '@commercetools/platform-sdk'
 import { createActionGroup, emptyProps } from '@ngrx/store'
 
-import type { CustomerCredential, PasswordCredential } from '../../../shared/models/customer-data.interface'
+import type {
+  CustomerAddress,
+  CustomerCredential,
+  CustomerDetails,
+  PasswordCredential,
+} from '../../../shared/models/customer-data.interface'
 import { CustomerActions } from '../../enums/customer-actions.enum'
 
 export const customerActions = createActionGroup({
@@ -31,5 +36,17 @@ export const customerActions = createActionGroup({
     [CustomerActions.changePassword]: (passwordCredential: PasswordCredential) => ({ passwordCredential }),
     [CustomerActions.changePasswordFailure]: (errorMessage: string) => ({ errorMessage }),
     [CustomerActions.changePasswordSuccsess]: (customerCredential: CustomerCredential) => ({ customerCredential }),
+    [CustomerActions.updateDetails]: (customerDetails: CustomerDetails) => ({ customerDetails }),
+    [CustomerActions.updateDetailsSuccess]: (customer: Customer) => ({ customer }),
+    [CustomerActions.updateDetailsFailure]: (errorMessage: string) => ({ errorMessage }),
+    [CustomerActions.addAddress]: (address: BaseAddress) => ({ address }),
+    [CustomerActions.addAddressSuccess]: (customer: Customer) => ({ customer }),
+    [CustomerActions.addAddressFailure]: (errorMessage: string) => ({ errorMessage }),
+    [CustomerActions.removeAddress]: (addressId: string) => ({ addressId }),
+    [CustomerActions.removeAddressSuccess]: (customer: Customer) => ({ customer }),
+    [CustomerActions.removeAddressFailure]: (errorMessage: string) => ({ errorMessage }),
+    [CustomerActions.changeAddress]: (customerAddress: CustomerAddress) => ({ customerAddress }),
+    [CustomerActions.changeAddressSuccess]: (customer: Customer) => ({ customer }),
+    [CustomerActions.changeAddressFailure]: (errorMessage: string) => ({ errorMessage }),
   },
 })

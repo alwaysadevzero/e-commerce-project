@@ -15,6 +15,7 @@ export const customerReducer = createReducer(
     customerActions.logoutCustomer,
     customerActions.registerCustomer,
     customerActions.refreshCustomer,
+    customerActions.addAddress,
     (customerState: CustomerState) => ({
       ...customerState,
       loadStatus: LoadStatus.loading,
@@ -25,7 +26,11 @@ export const customerReducer = createReducer(
     customerActions.refreshCustomerSuccsess,
     customerActions.registerCustomerSuccsess,
     customerActions.reloginCustomerSuccsess,
+    customerActions.updateDetailsSuccess,
+    customerActions.changeAddressSuccess,
+    customerActions.removeAddressSuccess,
     customerActions.setCustomer,
+    customerActions.addAddressSuccess,
     (customerState, { customer }) => ({
       ...customerState,
       customer,
@@ -40,6 +45,7 @@ export const customerReducer = createReducer(
     customerActions.refreshCustomerFailure,
     customerActions.registerCustomerFailure,
     customerActions.reloginCustomerFailure,
+    customerActions.addAddressFailure,
     (customerState, { errorMessage }) => ({
       ...customerState,
       loadStatus: LoadStatus.notLoaded,
