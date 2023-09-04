@@ -1,0 +1,11 @@
+*.js
+*.ts
+*.html
+*.md
+*.svg
+*.json
+*.ico
+node_modules
+build
+dist
+documentation
