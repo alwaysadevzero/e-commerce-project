@@ -1,0 +1,36 @@
+@import '@taiga-ui/core/styles/taiga-ui-local';
+
+.profile {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 5rem);
+  padding-inline: 1rem;
+}
+
+.profile-container {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  width: 100%;
+  max-width: 100rem;
+  border: 20;
+  padding: 0.5rem;
+
+  @include shadow(2);
+}
+
+.header,
+.description {
+  margin: 0;
+}
+
+.header {
+  margin-top: 0.5rem;
+  font-weight: bold;
+}
+
+.description {
+  color: var(--tui-text-02);
+}

@@ -1,7 +1,10 @@
-import { NgModule } from '@angular/core'
+import { importProvidersFrom, NgModule } from '@angular/core'
 import { RouterModule, type Routes } from '@angular/router'
+import { EffectsModule } from '@ngrx/effects'
 
 import { authGuardFn } from './core/guards/auth.guard'
+import { profileGuardFn } from './core/guards/profile.guard'
+import { ProfileEffects } from './profile/state/profile.effects'
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'main' },
@@ -21,6 +24,13 @@ const routes: Routes = [
     title: 'Sign in',
     loadComponent: () => import('./auth/sign-in/sign-in.component').then(component => component.SignInComponent),
     canMatch: [authGuardFn],
+  },
+  {
+    path: 'profile',
+    title: 'Profile',
+    loadComponent: () => import('./profile/profile.component').then(component => component.ProfileComponent),
+    providers: [importProvidersFrom(EffectsModule.forFeature([ProfileEffects]))],
+    canMatch: [profileGuardFn],
   },
   {
     path: '**',

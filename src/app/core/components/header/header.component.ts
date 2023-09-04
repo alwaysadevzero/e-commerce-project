@@ -5,8 +5,8 @@ import { TuiButtonModule, TuiSvgModule } from '@taiga-ui/core'
 import { TuiTabsModule } from '@taiga-ui/kit'
 import { map } from 'rxjs'
 
-import { LoadStatus } from '../../../auth/enums/load.enum'
 import { AuthFacade } from '../../../auth/state/auth.facade'
+import { LoadStatus } from '../../enums/load.enum'
 
 @Component({
   selector: 'ec-header',
@@ -20,7 +20,7 @@ export class HeaderComponent {
 
   activeItemIndex = 0
 
-  isLoggedIn$ = this.authFacade.customerLoadStatus$.pipe(map((status: LoadStatus) => status === LoadStatus.loaded))
+  isLoggedIn$ = this.authFacade.customerIsLoaded$
 
   public logout(): void {
     this.authFacade.logoutCustomer()

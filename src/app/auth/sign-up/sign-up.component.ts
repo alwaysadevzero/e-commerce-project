@@ -25,6 +25,7 @@ import {
 } from '@taiga-ui/kit'
 import type { Subscription } from 'rxjs'
 
+import { CustomerFacade } from '../../core/store/customer/customer.facade'
 import { dataValidator } from '../../shared/validators'
 import { AuthHttpService } from '../services/auth.service'
 import { AuthFacade } from '../state/auth.facade'
@@ -63,6 +64,7 @@ export class SignUpComponent {
   private formBuilder: FormBuilder = inject(FormBuilder)
   private authHttpService: AuthHttpService = inject(AuthHttpService)
   private authFacade: AuthFacade = inject(AuthFacade)
+  private customerFacade = inject(CustomerFacade)
 
   public error = this.authFacade.errorMessage$
 
@@ -313,7 +315,7 @@ export class SignUpComponent {
     this.authFacade.registerCustomer(customerDraft)
 
     const formValueChangesSubscription = this.registrationForm.valueChanges.subscribe(() => {
-      this.authFacade.clearErrorMessage()
+      this.customerFacade.clearErrorMessage()
       formValueChangesSubscription.unsubscribe()
     })
   }
