@@ -23,7 +23,6 @@ export class AuthHttpService {
         .login()
         .post({
           body: { email: customerCredential.username, password: customerCredential.password },
-        })
         .execute(),
     ).pipe(map(({ body }) => body.customer))
   }
@@ -36,7 +35,7 @@ export class AuthHttpService {
     this.apiClientBuilderService.apiWithPasswordFlow = api
 
     return fromPromise(
-      this.apiClientBuilderService.apiWithPasswordFlow
+      this.apiClientBuilderService.getApi
         .me()
         .signup()
         .post({
@@ -45,7 +44,6 @@ export class AuthHttpService {
         .execute(),
     ).pipe(map(({ body }) => body.customer))
   }
-
   public getCustomer(): Observable<Customer> {
     return fromPromise(this.apiClientBuilderService.getApi.me().get().execute()).pipe(map(({ body }) => body))
   }

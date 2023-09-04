@@ -5,40 +5,40 @@
       <p class="title">Perfume</p>
     </a>
     <tui-tabs-with-more [(activeItemIndex)]="activeItemIndex" [underline]="false" class="tabs">
-      <button *tuiItem tuiTab routerLink="/">
+      <button *tuiItem tuiTab routerLink="/main" routerLinkActive="home router-active">
         <tui-svg src="tuiIconHome" class="tui-space_right-2"></tui-svg>
-        Home
+        <span>Home</span>
       </button>
-      <button *tuiItem tuiTab disabled routerLink="/about-us">
+      <button *tuiItem tuiTab routerLink="/about-us" routerLinkActive="about-us router-active">
         <tui-svg src="tuiIconUsers" class="tui-space_right-2"></tui-svg>
-        About Us
+        <span>About Us</span>
       </button>
-      <button *tuiItem tuiTab disabled routerLink="/catalog">
+      <button *tuiItem tuiTab routerLink="/catalog" routerLinkActive="catalog router-active">
         <tui-svg src="tuiIconFileText" class="tui-space_right-2"></tui-svg>
-        Catalog
+        <span>Catalog</span>
+      </button>
+      <button *tuiItem tuiTab routerLink="/cart" routerLinkActive="cart router-active">
+        <tui-svg src="tuiIconShoppingCart" class="tui-space_right-2"></tui-svg>
+        <span>Cart</span>
       </button>
       <ng-container *ngIf="!(isLoggedIn$ | async)">
-        <button *tuiItem tuiTab routerLink="/sign-in">
+        <button *tuiItem tuiTab routerLink="/sign-in" routerLinkActive="sign-in router-active">
           <tui-svg src="tuiIconUserCheck" class="tui-space_right-2"></tui-svg>
-          Sign In
+          <span>Sign In</span>
         </button>
-        <button *tuiItem tuiTab routerLink="/sign-up">
+        <button *tuiItem tuiTab routerLink="/sign-up" routerLinkActive="sign-up router-active">
           <tui-svg src="tuiIconUserPlus" class="tui-space_right-2"></tui-svg>
-          Sign Up
+          <span>Sign Up</span>
         </button>
       </ng-container>
-      <button *tuiItem tuiTab disabled routerLink="/cart">
-        <tui-svg src="tuiIconShoppingCart" class="tui-space_right-2"></tui-svg>
-        Cart
-      </button>
       <ng-container *ngIf="(isLoggedIn$ | async)">
         <button *tuiItem tuiTab routerLink="/profile">
           <tui-svg src="tuiIconUser" class="tui-space_right-2"></tui-svg>
-          Profile
+          <span>Profile</span>
         </button>
-        <button *tuiItem tuiTab routerLink="/" (click)="logout()">
+        <button *tuiItem tuiTab routerLink="/" (click)="logout()" routerLinkActive="logout router-active">
           <tui-svg src="tuiIconLogOut"></tui-svg>
-          Logout
+          <span>Logout</span>
         </button>
       </ng-container>
     </tui-tabs-with-more>
