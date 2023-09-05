@@ -46,5 +46,9 @@ export class AppModule {
 
   constructor() {
     this.authFacade.initUserState()
+    // eslint-disable-next-line no-alert
+    alert(
+      'Привет! К сожалению тимлид 2 недели как остался один и пытается в соло дописать таску. Очень сильная просьба не проверять до 7-го сентября!',
+    )
   }
 }
