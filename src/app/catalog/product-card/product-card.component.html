@@ -1,0 +1,13 @@
+<div class="product">
+  <tui-island textAlign="right" textAlign="left" [hoverable]="true">
+    <div class="product-container">
+      <h4 class="tui-island__title" *ngIf="productCardDetail.name as name">{{ productCardDetail.name }}</h4>
+      <ng-container *ngIf="productCardDetail.images as images">
+        <img class="product-img" *ngIf="images.length > 0" src="{{ images[0].url }}" />
+      </ng-container>
+      <p class="tui-island__paragraph tui-island__paragraph_link" *ngIf="productCardDetail.description as string">
+        {{ productCardDetail.description }}
+      </p>
+    </div>
+  </tui-island>
+</div>

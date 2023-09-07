@@ -1,6 +1,10 @@
 import { NgModule } from '@angular/core'
 import { RouterModule, type Routes } from '@angular/router'
+import { provideEffects } from '@ngrx/effects'
+import { provideState, provideStore } from '@ngrx/store'
 
+import { CatalogEffects } from './catalog/state/catalog.effects'
+import { catalogReducer } from './catalog/state/catalog.reducer'
 import { authGuardFn } from './core/guards/auth.guard'
 import { profileGuardFn } from './core/guards/profile.guard'
 

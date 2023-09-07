@@ -3,7 +3,7 @@ import { createReducer, on } from '@ngrx/store'
 import { LoadStatus } from '../../enums/load.enum'
 import { customerInitialState } from './constants/customer-initial-state.const'
 import { customerActions } from './customer.actions'
-import type { CustomerState } from './models/customer-state'
+import type { CustomerState } from './models/customer.state'
 
 export const customerReducer = createReducer(
   customerInitialState,

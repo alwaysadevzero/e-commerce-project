@@ -1,0 +1,24 @@
+.product {
+  max-width: 250px;
+}
+
+.product-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: max-content;
+}
+
+.product,
+.product-container {
+  flex-grow: 1;
+}
+
+.product-img {
+  max-width: 150px;
+}
+
+.product-description {
+  overflow: scroll;
+  max-height: 150px;
+}

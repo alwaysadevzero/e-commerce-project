@@ -1,1 +1,7 @@
-<p>catalog works!</p>
+<section class="catalog">
+  <ec-product-card
+    *ngFor="let card of productsCardDetail$ | async; let i = index"
+    [productCardDetail]="card"
+    class="catalog-card"
+  ></ec-product-card>
+</section>
