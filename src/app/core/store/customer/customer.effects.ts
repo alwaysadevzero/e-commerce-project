@@ -77,6 +77,8 @@ export class CustomerEffects {
             this.router.navigateByUrl('main').catch(error => {
               throw error
             })
+            this.tokenStorageService.clearToken()
+            this.authHttpService.getCustomer()
 
             return customerActions.registerCustomerSuccsess(customer)
           }),
