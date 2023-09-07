@@ -50,9 +50,8 @@
         type="button"
         class="tui-form__row"
         appearance="accent"
-        [disabled]="profileForm.invalid"
+        [disabled]="profileForm.invalid || !profileForm.dirty || !editMode"
         type="submit"
-        *ngIf="editMode && profileForm.valid && profileForm.dirty"
       >
         submit
       </button>

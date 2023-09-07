@@ -1,8 +1,10 @@
 import { CommonModule } from '@angular/common'
-import { ChangeDetectionStrategy, Component } from '@angular/core'
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core'
 import { RouterModule } from '@angular/router'
 import { TuiButtonModule, TuiSvgModule } from '@taiga-ui/core'
 import { TuiActionModule, TuiMarkerIconModule } from '@taiga-ui/kit'
+
+import { CustomerFacade } from '../core/store/customer/customer.facade'
 
 @Component({
   selector: 'ec-main',
@@ -12,4 +14,7 @@ import { TuiActionModule, TuiMarkerIconModule } from '@taiga-ui/kit'
   imports: [CommonModule, TuiSvgModule, RouterModule, TuiButtonModule, TuiMarkerIconModule, TuiActionModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MainComponent {}
+export class MainComponent {
+  private customerFacade = inject(CustomerFacade)
+  customerIsLoaded$ = this.customerFacade.customerIsLoaded$
+}

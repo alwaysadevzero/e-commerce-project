@@ -28,11 +28,9 @@ import {
 import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus'
 
 import { CustomerFacade } from '../core/store/customer/customer.facade'
-import { AddressFormComponent } from '../shared/components/address-form/address-form.component'
 import { AddressDialogComponent } from './address-dialog/address-dialog.component'
 import { AddressProfileComponent } from './address-profile/address-profile.component'
 import { CustomerProfileEditorComponent } from './customer-profile-editor/customer-profile-editor.component'
-import { PasswordChangeDialogComponent } from './password-change-dialog/password-change-dialog.component'
 
 @Component({
   selector: 'ec-profile',
