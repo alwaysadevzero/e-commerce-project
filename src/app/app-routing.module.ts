@@ -1,6 +1,5 @@
-import { importProvidersFrom, NgModule } from '@angular/core'
+import { NgModule } from '@angular/core'
 import { RouterModule, type Routes } from '@angular/router'
-import { EffectsModule } from '@ngrx/effects'
 
 import { authGuardFn } from './core/guards/auth.guard'
 import { profileGuardFn } from './core/guards/profile.guard'
@@ -29,6 +28,11 @@ const routes: Routes = [
     title: 'Profile',
     loadComponent: () => import('./profile/profile.component').then(component => component.ProfileComponent),
     canMatch: [profileGuardFn],
+  },
+  {
+    path: 'catalog',
+    title: 'Catalog',
+    loadComponent: () => import('./catalog/catalog.component').then(component => component.CatalogComponent),
   },
   {
     path: '**',
