@@ -1,0 +1,60 @@
+<tui-island textAlign="right">
+  <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="profile-form">
+    <tui-marker-icon size="xxs" mode="primary" src="tuiIconSettings" (click)="toggleEditMode()"> </tui-marker-icon>
+    <div>
+      <div>
+        <tui-input
+          tuiHintContent="Please enter a valid email address (e.g. name@example.com)"
+          [tuiTextfieldCleaner]="true"
+          formControlName="email"
+        >
+          Email<span class="required">*</span>
+        </tui-input>
+        <tui-error formControlName="email" [error]="[] | tuiFieldError | async"></tui-error>
+
+        <tui-input formControlName="firstName" class="tui-form__row" [tuiTextfieldCleaner]="true">
+          First Name
+          <input tuiTextfield />
+          <span class="tui-required"></span>
+        </tui-input>
+        <tui-error formControlName="firstName" [error]="[] | tuiFieldError | async"></tui-error>
+      </div>
+      <div class="tui-form__row">
+        <tui-input formControlName="lastName" [tuiTextfieldCleaner]="true">
+          Last Name
+          <input tuiTextfield />
+          <span class="tui-required"></span>
+        </tui-input>
+        <tui-error formControlName="lastName" [error]="[] | tuiFieldError | async"> </tui-error>
+        <tui-input-date
+          formControlName="dateOfBirth"
+          tuiCalendar="true"
+          class="tui-form__row"
+          tuiHintContent="You must be at least 13 years old"
+        >
+          Date of birth<span class="required">*</span>
+          <input tuiTextfield autocomplete="bday" />
+        </tui-input-date>
+        <tui-error
+          formControlName="dateOfBirth"
+          [error]="[] | tuiFieldError | async"
+          class="tui-space_bottom-3"
+        ></tui-error>
+      </div>
+    </div>
+
+    <div class="profile-buttons">
+      <button tuiButton type="button" appearance="accent" (click)="changePassword()">change password</button>
+      <button
+        tuiButton
+        type="button"
+        class="tui-form__row"
+        appearance="accent"
+        [disabled]="profileForm.invalid || !profileForm.dirty || !editMode"
+        type="submit"
+      >
+        submit
+      </button>
+    </div>
+  </form>
+</tui-island>

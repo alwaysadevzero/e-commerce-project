@@ -1,14 +1,14 @@
 import { type ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing'
 import { ReactiveFormsModule } from '@angular/forms'
 import { RouterTestingModule } from '@angular/router/testing'
-import { Store } from '@ngrx/store'
+import { ScannedActionsSubject, Store } from '@ngrx/store'
 import { TuiButtonModule } from '@taiga-ui/core'
 import { TuiDataListWrapperModule, TuiFieldErrorPipeModule, TuiInputModule } from '@taiga-ui/kit'
 import { of } from 'rxjs'
 
 import { AuthModule } from '../auth.module'
-import { AuthFacade } from '../state/auth.facade'
 import { SignInComponent } from './sign-in.component'
+import { CustomerFacade } from 'src/app/core/store/customer/customer.facade'
 
 describe('SignInComponent', () => {
   let component: SignInComponent
@@ -33,7 +33,12 @@ describe('SignInComponent', () => {
             select: jasmine.createSpy('select').and.returnValue(of(false)),
           },
         },
-        AuthFacade,
+        {
+          provide: ScannedActionsSubject,
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          useValue: jasmine.createSpyObj('ScannedActionsSubject', ['next', 'subscribe']),
+        },
+        CustomerFacade,
       ],
     }).compileComponents()
   }))

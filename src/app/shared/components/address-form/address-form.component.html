@@ -1,0 +1,48 @@
+<form [formGroup]="addressForm" (ngSubmit)="onSubmit()" class="address-form">
+  <div>
+    <div>
+      <tui-input formControlName="streetName" class="tui-form__row" [tuiTextfieldCleaner]="true">
+        Street
+        <input tuiTextfield />
+        <span class="tui-required"></span>
+      </tui-input>
+      <tui-error
+        class="addressform-error"
+        formControlName="streetName"
+        [error]="[] | tuiFieldError | async"
+      ></tui-error>
+    </div>
+    <div class="tui-form__row">
+      <tui-input formControlName="city" [tuiTextfieldCleaner]="true">
+        City
+        <input tuiTextfield />
+        <span class="tui-required"></span>
+      </tui-input>
+      <tui-error class="addressform-error" formControlName="city" [error]="[] | tuiFieldError | async"> </tui-error>
+    </div>
+    <div class="tui-form__row">
+      <tui-input formControlName="postalCode" [tuiTextfieldCleaner]="true">
+        Postal Code
+        <input tuiTextfield />
+        <span class="tui-required"></span>
+      </tui-input>
+      <tui-error class="addressform-error" formControlName="postalCode" [error]="[] | tuiFieldError | async">
+      </tui-error>
+    </div>
+    <tui-select formControlName="country" class="tui-form__row">
+      Country<span class="required">*</span>
+      <input tuiTextfield placeholder="Choose your country" />
+      <tui-data-list-wrapper *tuiDataList [items]="countries"></tui-data-list-wrapper>
+    </tui-select>
+  </div>
+
+  <button
+    tuiButton
+    class="tui-form__row"
+    appearance="accent"
+    [disabled]="!(addressForm.valid && addressForm.dirty)"
+    type="submit"
+  >
+    submit
+  </button>
+</form>

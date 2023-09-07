@@ -5,12 +5,13 @@ import { StoreModule } from '@ngrx/store'
 import { TUI_SANITIZER, TuiButtonModule, TuiRootModule } from '@taiga-ui/core'
 import { NgDompurifySanitizer } from '@tinkoff/ng-dompurify'
 
-import { CustomerFacade } from '../../store/customer/customer.facade'
-import { HeaderComponent } from './header.component'
+import { CustomerProfileEditorComponent } from './customer-profile-editor.component'
+import { HeaderComponent } from 'src/app/core/components/header/header.component'
+import { CustomerFacade } from 'src/app/core/store/customer/customer.facade'
 
-describe('HeaderComponent', () => {
-  let component: HeaderComponent
-  let fixture: ComponentFixture<HeaderComponent>
+describe('CustomerProfileEditorComponent', () => {
+  let component: CustomerProfileEditorComponent
+  let fixture: ComponentFixture<CustomerProfileEditorComponent>
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -28,7 +29,7 @@ describe('HeaderComponent', () => {
   })
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(HeaderComponent)
+    fixture = TestBed.createComponent(CustomerProfileEditorComponent)
     component = fixture.componentInstance
     fixture.detectChanges()
   })

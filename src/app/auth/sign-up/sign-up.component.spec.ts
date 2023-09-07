@@ -1,14 +1,15 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing'
 import { type ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing'
 import { ReactiveFormsModule } from '@angular/forms'
 import { RouterTestingModule } from '@angular/router/testing'
-import { Store } from '@ngrx/store'
+import { ScannedActionsSubject, Store } from '@ngrx/store'
 import { TuiButtonModule } from '@taiga-ui/core'
 import { TuiDataListWrapperModule, TuiFieldErrorPipeModule, TuiInputModule } from '@taiga-ui/kit'
 import { of } from 'rxjs'
 
 import { SignUpComponent } from './sign-up.component'
 
-describe('SignInComponent', () => {
+describe('SignUpComponent', () => {
   let component: SignUpComponent
   let fixture: ComponentFixture<SignUpComponent>
 
@@ -21,6 +22,7 @@ describe('SignInComponent', () => {
         TuiButtonModule,
         TuiDataListWrapperModule,
         TuiFieldErrorPipeModule,
+        HttpClientTestingModule,
       ],
       providers: [
         {
@@ -29,6 +31,11 @@ describe('SignInComponent', () => {
             dispatch: jasmine.createSpy('dispatch'),
             select: jasmine.createSpy('select').and.returnValue(of(false)),
           },
+        },
+        {
+          provide: ScannedActionsSubject,
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          useValue: jasmine.createSpyObj('ScannedActionsSubject', ['next', 'subscribe']),
         },
       ],
     }).compileComponents()

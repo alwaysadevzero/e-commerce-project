@@ -1,0 +1,20 @@
+@import '@taiga-ui/core/styles/taiga-ui-local';
+
+.address-form {
+  min-width: 280px;
+}
+
+.address-icons {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+
+.address-default-shipping {
+  color: var(--tui-negative);
+}
+
+.address-default-billing {
+  color: var(--tui-link);
+}

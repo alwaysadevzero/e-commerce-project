@@ -1,0 +1,42 @@
+@import '@taiga-ui/core/styles/taiga-ui-local';
+
+.profile {
+  padding: var(--tui-padding-l);
+}
+
+.profile-container {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+}
+
+.profile-addaddress {
+  cursor: pointer;
+  user-select: none;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  height: 50px;
+}
+
+.profile-title {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.profile-editor {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  height: 100%;
+}
+
+.profile-editor > * {
+  flex: 1 1 auto;
+  min-width: 300px;
+  max-width: 400px;
+  height: 100%;
+}

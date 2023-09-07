@@ -20,9 +20,9 @@ import {
   TuiTextAreaModule,
 } from '@taiga-ui/kit'
 
+import { CustomerFacade } from '../../core/store/customer/customer.facade'
 import { dataValidator } from '../../shared/validators'
 import { AuthModule } from '../auth.module'
-import { AuthFacade } from '../state/auth.facade'
 
 @Component({
   selector: 'ec-sign-in',
@@ -52,9 +52,8 @@ import { AuthFacade } from '../state/auth.facade'
 })
 export class SignInComponent {
   private formBuilder: FormBuilder = inject(FormBuilder)
-  private authFacade: AuthFacade = inject(AuthFacade)
-
-  public error = this.authFacade.errorMessage$
+  private customerFacade = inject(CustomerFacade)
+  public error = this.customerFacade.errorMessage$
 
   constructor() {
     this.registerInputEventListeners()
@@ -94,10 +93,10 @@ export class SignInComponent {
 
     if (email && password) {
       const user = { username: email, password }
-      this.authFacade.loginUser(user)
+      this.customerFacade.loginCustomer(user)
 
       const formValueChangesSubscription = this.loginForm.valueChanges.subscribe(() => {
-        this.authFacade.clearErrorMessage()
+        this.customerFacade.clearErrorMessage()
         formValueChangesSubscription.unsubscribe()
       })
     }

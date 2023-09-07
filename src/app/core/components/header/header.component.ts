@@ -3,10 +3,9 @@ import { Component, inject } from '@angular/core'
 import { RouterModule } from '@angular/router'
 import { TuiButtonModule, TuiSvgModule } from '@taiga-ui/core'
 import { TuiTabsModule } from '@taiga-ui/kit'
-import { map } from 'rxjs'
+import { auditTime, delay, distinctUntilChanged } from 'rxjs'
 
-import { LoadStatus } from '../../../auth/enums/load.enum'
-import { AuthFacade } from '../../../auth/state/auth.facade'
+import { CustomerFacade } from '../../store/customer/customer.facade'
 
 @Component({
   selector: 'ec-header',
@@ -16,13 +15,13 @@ import { AuthFacade } from '../../../auth/state/auth.facade'
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent {
-  private authFacade: AuthFacade = inject(AuthFacade)
+  private customerFacade = inject(CustomerFacade)
 
   activeItemIndex = 0
 
-  isLoggedIn$ = this.authFacade.userLoadStatus$.pipe(map((status: LoadStatus) => status === LoadStatus.loaded))
+  isLoggedIn$ = this.customerFacade.customerIsLoaded$.pipe(auditTime(1500))
 
   public logout(): void {
-    this.authFacade.logout()
+    this.customerFacade.logoutCustomer()
   }
 }

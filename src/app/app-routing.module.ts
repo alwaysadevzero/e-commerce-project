@@ -1,7 +1,9 @@
-import { NgModule } from '@angular/core'
+import { importProvidersFrom, NgModule } from '@angular/core'
 import { RouterModule, type Routes } from '@angular/router'
+import { EffectsModule } from '@ngrx/effects'
 
-import { AuthGuard } from './core/guards/auth.guard'
+import { authGuardFn } from './core/guards/auth.guard'
+import { profileGuardFn } from './core/guards/profile.guard'
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'main' },
@@ -14,15 +16,19 @@ const routes: Routes = [
     path: 'sign-up',
     title: 'Sign up',
     loadComponent: () => import('./auth/sign-up/sign-up.component').then(component => component.SignUpComponent),
-    canActivate: [AuthGuard],
-    canLoad: [AuthGuard],
+    canMatch: [authGuardFn],
   },
   {
     path: 'sign-in',
     title: 'Sign in',
     loadComponent: () => import('./auth/sign-in/sign-in.component').then(component => component.SignInComponent),
-    canActivate: [AuthGuard],
-    canLoad: [AuthGuard],
+    canMatch: [authGuardFn],
+  },
+  {
+    path: 'profile',
+    title: 'Profile',
+    loadComponent: () => import('./profile/profile.component').then(component => component.ProfileComponent),
+    canMatch: [profileGuardFn],
   },
   {
     path: '**',
@@ -35,6 +41,5 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
-  providers: [AuthGuard],
 })
 export class AppRoutingModule {}

@@ -12,19 +12,19 @@ import { NgDompurifySanitizer } from '@tinkoff/ng-dompurify'
 
 import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
-import { UserEffects } from './auth/state/auth.effects'
-import { AuthFacade } from './auth/state/auth.facade'
-import { userReducer } from './auth/state/auth.reducer'
 import { HeaderComponent } from './core/components/header/header.component'
 import { CoreModule } from './core/core.module'
+import { CustomerEffects } from './core/store/customer/customer.effects'
+import { CustomerFacade } from './core/store/customer/customer.facade'
+import { customerReducer } from './core/store/customer/customer.reducer'
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    StoreModule.forRoot({ userState: userReducer }, {}),
-    EffectsModule.forRoot([UserEffects]),
+    StoreModule.forRoot({ customerState: customerReducer }),
+    EffectsModule.forRoot([CustomerEffects]),
     BrowserAnimationsModule,
     TuiRootModule,
     TuiDialogModule,
@@ -42,13 +42,9 @@ import { CoreModule } from './core/core.module'
   bootstrap: [AppComponent],
 })
 export class AppModule {
-  private authFacade: AuthFacade = inject(AuthFacade)
+  private customerFacade = inject(CustomerFacade)
 
   constructor() {
-    this.authFacade.initUserState()
-    // eslint-disable-next-line no-alert
-    alert(
-      'Привет! К сожалению тимлид 2 недели как остался один и пытается в соло дописать таску. Очень сильная просьба не проверять до 7-го сентября!',
-    )
+    this.customerFacade.initCustomerState()
   }
 }
