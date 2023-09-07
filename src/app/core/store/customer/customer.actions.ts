@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import type { BaseAddress, Customer, MyCustomerDraft } from '@commercetools/platform-sdk'
+import type { Address, Customer, MyCustomerDraft } from '@commercetools/platform-sdk'
 import { createActionGroup, emptyProps } from '@ngrx/store'
 
 import type {
@@ -39,7 +39,7 @@ export const customerActions = createActionGroup({
     [CustomerActions.updateDetails]: (customerDetails: CustomerDetails) => ({ customerDetails }),
     [CustomerActions.updateDetailsSuccess]: (customer: Customer) => ({ customer }),
     [CustomerActions.updateDetailsFailure]: (errorMessage: string) => ({ errorMessage }),
-    [CustomerActions.addAddress]: (address: BaseAddress) => ({ address }),
+    [CustomerActions.addAddress]: (address: Address) => ({ address }),
     [CustomerActions.addAddressSuccess]: (customer: Customer) => ({ customer }),
     [CustomerActions.addAddressFailure]: (errorMessage: string) => ({ errorMessage }),
     [CustomerActions.removeAddress]: (addressId: string) => ({ addressId }),
@@ -48,5 +48,11 @@ export const customerActions = createActionGroup({
     [CustomerActions.changeAddress]: (customerAddress: CustomerAddress) => ({ customerAddress }),
     [CustomerActions.changeAddressSuccess]: (customer: Customer) => ({ customer }),
     [CustomerActions.changeAddressFailure]: (errorMessage: string) => ({ errorMessage }),
+    [CustomerActions.setDefaultBillingAddress]: (addressId: string) => ({ addressId }),
+    [CustomerActions.setDefaultBillingAddressSuccess]: (customer: Customer) => ({ customer }),
+    [CustomerActions.setDefaultBillingAddressFailure]: (errorMessage: string) => ({ errorMessage }),
+    [CustomerActions.setDefaultShippingAddress]: (addressId: string) => ({ addressId }),
+    [CustomerActions.setDefaultShippingAddressSuccess]: (customer: Customer) => ({ customer }),
+    [CustomerActions.setDefaultShippingAddressFailure]: (errorMessage: string) => ({ errorMessage }),
   },
 })

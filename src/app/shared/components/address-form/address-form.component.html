@@ -6,7 +6,11 @@
         <input tuiTextfield />
         <span class="tui-required"></span>
       </tui-input>
-      <tui-error formControlName="streetName" [error]="[] | tuiFieldError | async"></tui-error>
+      <tui-error
+        class="addressform-error"
+        formControlName="streetName"
+        [error]="[] | tuiFieldError | async"
+      ></tui-error>
     </div>
     <div class="tui-form__row">
       <tui-input formControlName="city" [tuiTextfieldCleaner]="true">
@@ -14,7 +18,7 @@
         <input tuiTextfield />
         <span class="tui-required"></span>
       </tui-input>
-      <tui-error formControlName="city" [error]="[] | tuiFieldError | async"> </tui-error>
+      <tui-error class="addressform-error" formControlName="city" [error]="[] | tuiFieldError | async"> </tui-error>
     </div>
     <div class="tui-form__row">
       <tui-input formControlName="postalCode" [tuiTextfieldCleaner]="true">
@@ -22,7 +26,8 @@
         <input tuiTextfield />
         <span class="tui-required"></span>
       </tui-input>
-      <tui-error formControlName="postalCode" [error]="[] | tuiFieldError | async"> </tui-error>
+      <tui-error class="addressform-error" formControlName="postalCode" [error]="[] | tuiFieldError | async">
+      </tui-error>
     </div>
     <tui-select formControlName="country" class="tui-form__row">
       Country<span class="required">*</span>

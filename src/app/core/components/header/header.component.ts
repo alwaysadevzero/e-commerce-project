@@ -3,6 +3,7 @@ import { Component, inject } from '@angular/core'
 import { RouterModule } from '@angular/router'
 import { TuiButtonModule, TuiSvgModule } from '@taiga-ui/core'
 import { TuiTabsModule } from '@taiga-ui/kit'
+import { auditTime, delay, distinctUntilChanged } from 'rxjs'
 
 import { CustomerFacade } from '../../store/customer/customer.facade'
 
@@ -18,7 +19,7 @@ export class HeaderComponent {
 
   activeItemIndex = 0
 
-  isLoggedIn$ = this.customerFacade.customerIsLoaded$
+  isLoggedIn$ = this.customerFacade.customerIsLoaded$.pipe(auditTime(1500))
 
   public logout(): void {
     this.customerFacade.logoutCustomer()

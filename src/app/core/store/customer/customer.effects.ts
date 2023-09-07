@@ -3,10 +3,9 @@ import { Router } from '@angular/router'
 import type { Customer } from '@commercetools/platform-sdk'
 import { Actions, createEffect, ofType } from '@ngrx/effects'
 import { of } from 'rxjs'
-import { catchError, filter, first, map, mergeMap, retry, switchMap } from 'rxjs/operators'
+import { catchError, filter, first, map, retry, switchMap } from 'rxjs/operators'
 
 import { FlowTokenType } from '../../../shared/enums/token-type.enum'
-import { ApiClientBuilderService } from '../../services/api-client-builder.service'
 import { TokenStorageService } from '../../services/token-storage.service'
 import { customerActions } from './customer.actions'
 import { CustomerFacade } from './customer.facade'
@@ -234,6 +233,42 @@ export class CustomerEffects {
             this.profileHttpService.addAddress(customer.version, address).pipe(
               map(updatedCustomer => customerActions.addAddressSuccess(updatedCustomer)),
               catchError((errorMessage: string) => of(customerActions.addAddressFailure(errorMessage))),
+            ),
+          ),
+        ),
+      ),
+    ),
+  )
+
+  customerSetDefaultShippingAddress = createEffect(() =>
+    this.actions$.pipe(
+      ofType(customerActions.setDefaultShippingAddress),
+      switchMap(({ addressId }) =>
+        this.customerFacade.customer$.pipe(
+          filter((customer): customer is Customer => customer !== null),
+          first(),
+          switchMap((customer: Customer) =>
+            this.profileHttpService.setDefaultShippingAddress(customer.version, addressId).pipe(
+              map(updatedCustomer => customerActions.setDefaultShippingAddressSuccess(updatedCustomer)),
+              catchError((errorMessage: string) => of(customerActions.setDefaultShippingAddressFailure(errorMessage))),
+            ),
+          ),
+        ),
+      ),
+    ),
+  )
+
+  customerSetDefaultBillingAddress = createEffect(() =>
+    this.actions$.pipe(
+      ofType(customerActions.setDefaultBillingAddress),
+      switchMap(({ addressId }) =>
+        this.customerFacade.customer$.pipe(
+          filter((customer): customer is Customer => customer !== null),
+          first(),
+          switchMap((customer: Customer) =>
+            this.profileHttpService.setDefaultBillingAddress(customer.version, addressId).pipe(
+              map(updatedCustomer => customerActions.setDefaultBillingAddressSuccess(updatedCustomer)),
+              catchError((errorMessage: string) => of(customerActions.setDefaultBillingAddressFailure(errorMessage))),
             ),
           ),
         ),

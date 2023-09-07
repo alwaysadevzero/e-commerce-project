@@ -1,8 +1,30 @@
 <div class="address-form">
   <tui-island textAlign="right">
-    <div class="address-icons">
-      <tui-marker-icon size="xxs" mode="primary" src="tuiIconSettings" (click)="toggleEditMode()"> </tui-marker-icon>
-      <tui-marker-icon size="xxs" mode="primary" src="tuiIconDelete" (click)="removeAddress()"> </tui-marker-icon>
+    <div class="adderss-header">
+      <div class="address-icons">
+        <tui-marker-icon size="xxs" mode="primary" src="tuiIconSettings" (click)="toggleEditMode()"> </tui-marker-icon>
+        <tui-marker-icon size="xxs" mode="primary" src="tuiIconDelete" (click)="removeAddress()"> </tui-marker-icon>
+      </div>
+      <div class="address-default">
+        <div *ngIf="address?.id === (defaultBillingAddress$ | async)" class="address-default-billing">
+          Default Billing Address
+        </div>
+        <div *ngIf="address?.id === (defaultShippingAddress$ | async)" class="address-default-shipping">
+          Default Shipping Address
+        </div>
+      </div>
+      <div class="address-set_default">
+        <div *ngIf="address?.id !== (defaultBillingAddress$ | async)">
+          <button tuiButton size="s" appearance="secondary" (click)="setDefaultBillingAddress()">
+            Set as Default Billing
+          </button>
+        </div>
+        <div *ngIf="address?.id !== (defaultShippingAddress$ | async)">
+          <button tuiButton size="s" appearance="secondary-destructive" (click)="setDefaultShippingAddress()">
+            Set as Default Shipping
+          </button>
+        </div>
+      </div>
     </div>
     <ec-address-form [address]="address" [editMode]="editMode" (formSubmit)="onAddressFormSubmit($event)">
     </ec-address-form>

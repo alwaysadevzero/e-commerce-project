@@ -16,6 +16,8 @@ export const customerReducer = createReducer(
     customerActions.registerCustomer,
     customerActions.refreshCustomer,
     customerActions.addAddress,
+    customerActions.setDefaultBillingAddress,
+    customerActions.setDefaultShippingAddress,
     (customerState: CustomerState) => ({
       ...customerState,
       loadStatus: LoadStatus.loading,
@@ -31,6 +33,8 @@ export const customerReducer = createReducer(
     customerActions.removeAddressSuccess,
     customerActions.setCustomer,
     customerActions.addAddressSuccess,
+    customerActions.setDefaultBillingAddressSuccess,
+    customerActions.setDefaultShippingAddressSuccess,
     (customerState, { customer }) => ({
       ...customerState,
       customer,
@@ -46,6 +50,8 @@ export const customerReducer = createReducer(
     customerActions.registerCustomerFailure,
     customerActions.reloginCustomerFailure,
     customerActions.addAddressFailure,
+    customerActions.setDefaultBillingAddressFailure,
+    customerActions.setDefaultShippingAddressFailure,
     (customerState, { errorMessage }) => ({
       ...customerState,
       loadStatus: LoadStatus.notLoaded,

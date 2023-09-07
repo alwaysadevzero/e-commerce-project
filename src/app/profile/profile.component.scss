@@ -35,16 +35,8 @@
 }
 
 .profile-editor > * {
-  flex-grow: 2;
+  flex: 1 1 auto;
   min-width: 300px;
   max-width: 400px;
-  height: 100%;
-}
-
-.profile-editor > .profile-address {
-  height: 400px;
-}
-
-.profile-address:first-child {
   height: 100%;
 }

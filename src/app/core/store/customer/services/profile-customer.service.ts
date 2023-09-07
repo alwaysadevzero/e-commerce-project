@@ -56,8 +56,38 @@ export class ProfileHttpService {
     return this.updateCustomer(customerUpdate)
   }
 
+  public setDefaultShippingAddres(version: number, addressId: string): Observable<Customer> {
+    const actions = this.details.getCustomerRemoveAddressActions(addressId)
+    const customerUpdate: MyCustomerUpdate = {
+      version,
+      actions,
+    }
+
+    return this.updateCustomer(customerUpdate)
+  }
+
   public addAddress(version: number, address: Address): Observable<Customer> {
     const actions = this.details.getCustomerAddAddressActions(address)
+    const customerUpdate: MyCustomerUpdate = {
+      version,
+      actions,
+    }
+
+    return this.updateCustomer(customerUpdate)
+  }
+
+  public setDefaultShippingAddress(version: number, addressId: string): Observable<Customer> {
+    const actions = this.details.getCustomerDefaultShippingAddressActions(addressId)
+    const customerUpdate: MyCustomerUpdate = {
+      version,
+      actions,
+    }
+
+    return this.updateCustomer(customerUpdate)
+  }
+
+  public setDefaultBillingAddress(version: number, addressId: string): Observable<Customer> {
+    const actions = this.details.getCustomerDefaultBillingAddressActions(addressId)
     const customerUpdate: MyCustomerUpdate = {
       version,
       actions,

@@ -23,28 +23,38 @@ export class CustomerFacade {
   public customer$ = this.store$.select(selectCustomer)
   public errorMessage$ = this.store$.select(selectErrorMessage)
   public customerLoadStatus$ = this.store$.select(selectLoadStatus)
+
   public customerSucceedRemoveAddress$ = this.actions$.pipe(
     ofType(customerActions.removeAddressSuccess),
     map(() => true),
   )
+
+  public defaultBillingAddress$ = this.customer$.pipe(map(customer => customer?.defaultBillingAddressId))
+  public defaultShippingAddress$ = this.customer$.pipe(map(customer => customer?.defaultShippingAddressId))
+
   public customerSucceedAddAddress$ = this.actions$.pipe(
     ofType(customerActions.addAddressSuccess),
     map(() => true),
   )
+
   public customerIsLoaded$ = this.store$
     .select(selectLoadStatus)
     .pipe(map(userStatus => userStatus === LoadStatus.loaded))
+
   public customerIsLoading$ = this.store$
     .select(selectLoadStatus)
     .pipe(map(userStatus => userStatus === LoadStatus.loading))
+
   public passwordChanged$ = this.actions$.pipe(
     ofType(customerActions.changePasswordCustomerSuccess),
     map(() => true),
   )
+
   public detailsUpdated$ = this.actions$.pipe(
     ofType(customerActions.updateDetailsSuccess),
     map(() => true),
   )
+
   public addresses$ = this.customer$.pipe(map(customer => customer?.addresses))
 
   public clearErrorMessage(): void {
@@ -85,5 +95,13 @@ export class CustomerFacade {
 
   public addAddress(address: Address): void {
     this.store$.dispatch(customerActions.addAddress(address))
+  }
+
+  public setDefaultBillingAddress(addressId: string): void {
+    this.store$.dispatch(customerActions.setDefaultBillingAddress(addressId))
+  }
+
+  public setDefaultShippingAddress(addressId: string): void {
+    this.store$.dispatch(customerActions.setDefaultShippingAddress(addressId))
   }
 }

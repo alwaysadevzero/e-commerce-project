@@ -50,11 +50,24 @@ import type { CustomerAddress } from '../../shared/models/customer-data.interfac
 })
 export class AddressProfileComponent {
   @Input() address: Address | null = null
-  // @Output() removeRequest = new EventEmitter<void>()
   private customerFacade = inject(CustomerFacade)
+  public defaultShippingAddress$ = this.customerFacade.defaultShippingAddress$
+  public defaultBillingAddress$ = this.customerFacade.defaultBillingAddress$
   public editMode = false
   public countries: string[] = ['United States (US)', 'Canada (CA)']
   public addressForm!: FormGroup
+
+  setDefaultBillingAddress(): void {
+    if (this.address?.id) {
+      this.customerFacade.setDefaultBillingAddress(this.address.id)
+    }
+  }
+
+  setDefaultShippingAddress(): void {
+    if (this.address?.id) {
+      this.customerFacade.setDefaultShippingAddress(this.address.id)
+    }
+  }
 
   onAddressFormSubmit(address: Address): void {
     const { streetName, city, postalCode, country } = address as CustomerAddress

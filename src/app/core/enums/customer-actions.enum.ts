@@ -35,4 +35,10 @@ export const enum CustomerActions {
   changeAddress = 'Change Address',
   changeAddressSuccess = 'Change Address Success',
   changeAddressFailure = 'Change Address Failure',
+  setDefaultShippingAddress = 'Set Default Shipping Address',
+  setDefaultShippingAddressSuccess = 'Set Default Shipping Address Success',
+  setDefaultShippingAddressFailure = 'Set Default Shipping Address Failure',
+  setDefaultBillingAddress = 'Set Default Billing Address',
+  setDefaultBillingAddressSuccess = 'Set Default Billing Address Success',
+  setDefaultBillingAddressFailure = 'Set Default Billing Address Failure',
 }
