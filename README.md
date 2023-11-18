@@ -41,8 +41,6 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Deployment
 
-[e-commerce](https://e-commerce-qzix.onrender.com/)
-
 <details>
 <summary><h2>Screenshots</h2></summary>
 
